@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Git">
+  <rect width="64" height="64" rx="16" fill="#fff7ed"/>
+  <path d="m32 10 22 22-22 22L10 32 32 10Z" fill="#f05133"/>
+  <path d="M28 23a4 4 0 1 1 6 3.5v10a4 4 0 1 1-4 0v-10A4 4 0 0 1 28 23Zm0 18a2 2 0 1 0 4 0 2 2 0 0 0-4 0Zm2-20a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 8a4 4 0 1 1-4-4h-4v-4h4a4 4 0 1 1 4 8Z" fill="#fff"/>
+</svg>

@@ -1,0 +1,11 @@
+# Sitemap
+Sitemap: https://marlonvargas.dev/sitemap.xml
+
+# robots.txt for Portfolio
+User-agent: *
+Allow: /
+
+# Disallow blog under construction
+Disallow: /blog
+
+Sitemap: https://marlonvargas.dev/sitemap.xml

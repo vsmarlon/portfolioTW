@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO Meta Tags -->
+  <title>Marlon Vargas | Desenvolvedor FullStack</title>
+  <meta name="description" content="Portfolio de Marlon Vargas - Desenvolvedor FullStack especializado em React, Flutter, Python e tecnologias modernas. Disponível para novos projetos." />
+  <meta name="keywords" content="desenvolvedor, fullstack, react, flutter, python, portfolio, web developer" />
+  <meta name="author" content="Marlon Vargas" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://marlonvargas.dev/" />
+  <meta property="og:title" content="Marlon Vargas | Desenvolvedor FullStack" />
+  <meta property="og:description" content="Portfolio de Marlon Vargas - Desenvolvedor FullStack especializado em criar experiências digitais modernas e escaláveis." />
+  <meta property="og:image" content="/chat.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://marlonvargas.dev/" />
+  <meta property="twitter:title" content="Marlon Vargas | Desenvolvedor FullStack" />
+  <meta property="twitter:description" content="Portfolio de Marlon Vargas - Desenvolvedor FullStack especializado em criar experiências digitais modernas e escaláveis." />
+  <meta property="twitter:image" content="/chat.jpg" />
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#06b6d4" />
+  <meta name="color-scheme" content="dark light" />
+  
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Marlon Vargas" />
+  
+  <!-- Fonts Preload -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/oi.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/oi.ico" />
+  
+  <!-- Theme Script - Prevent Flash -->
+  <script>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-gray-900 text-white overflow-x-hidden">
+  <div id="app"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

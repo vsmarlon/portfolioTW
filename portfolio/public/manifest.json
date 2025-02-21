@@ -1,0 +1,18 @@
+{
+  "name": "Marlon Vargas - Portfolio",
+  "short_name": "Marlon Vargas",
+  "description": "Portfolio de Desenvolvedor FullStack",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#06b6d4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/oi.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["portfolio", "developer"]
+}

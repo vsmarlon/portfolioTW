@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vitest:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(mkdir -p /c/Users/Qiyana/Documents/GitHub/ME/portfolioTW/portfolio/src/components/blog)",
+      "Bash(mkdir -p /c/Users/Qiyana/Documents/GitHub/ME/portfolioTW/portfolio/src/workers)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

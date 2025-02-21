@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TypeScript">
+  <rect width="64" height="64" rx="16" fill="#3178c6"/>
+  <path d="M14 20h36v24H14z" fill="#fff" fill-opacity=".1"/>
+  <path d="M18 25h18v6h-6v18h-6V31h-6v-6Zm22 8c2-5 12-4 12 2h-6c0-2-4-2-4 0 0 4 11 2 11 9 0 8-13 8-14 1h6c0 2 5 2 5 0 0-4-10-2-10-8 0-1 0-3 0-4Z" fill="#fff"/>
+</svg>
