@@ -94,7 +94,7 @@ const Home = () => {
 
           <div
             ref={reveal}
-            className="reveal mt-10 grid w-full max-w-3xl gap-3 sm:grid-cols-3"
+            className="reveal mx-auto mt-10 grid w-full max-w-3xl gap-3 sm:grid-cols-3"
             style={{ transitionDelay: '260ms' }}
           >
             {heroFacts.map((fact) => (

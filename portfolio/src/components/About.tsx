@@ -44,7 +44,7 @@ const About = () => {
               <a
                 href="/newest.pdf"
                 download
-                className="inline-flex items-center gap-2 border-2 border-black bg-cyan-400 px-6 py-3 font-bold text-black transition-all duration-200 hover:bg-black hover:text-cyan-400 dark:text-black"
+                className="inline-flex items-center gap-2 border-2 border-black bg-cyan-400 px-6 py-3 font-bold text-black transition-all duration-200 hover:bg-black hover:text-cyan-400 dark:border-cyan-400 dark:bg-black dark:text-cyan-400 dark:hover:bg-cyan-400 dark:hover:text-black"
               >
                 <Icon name="download" /> Baixar Currículo
               </a>
