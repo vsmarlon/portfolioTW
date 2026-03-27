@@ -10,6 +10,8 @@ import Home from './components/Home';
 import About from './components/About';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import Terminal from './components/Terminal';
+import SectionTimeline from './components/SectionTimeline';
 import NotFound from './components/NotFound';
 import { usePerformanceMode } from './hooks/usePerformanceMode';
 import { getRouteScrollKey, RouteScrollMemory } from './utils/routeScrollMemory';
@@ -23,18 +25,17 @@ const MainPage = () => (
     <Home />
     <About />
     <Projects />
+    <Terminal />
     <Contact />
   </main>
 );
 
-const Background = () => {
-  return (
-    <div className="app-background">
-      <div className="app-background-grid" />
-      <div className="app-background-glow" />
-    </div>
-  );
-};
+const Background = () => (
+  <div className="app-background">
+    <div className="app-background-grid" />
+    <div className="app-background-grain" />
+  </div>
+);
 
 const ScrollHandler = () => {
   const { hash, pathname, search } = useLocation();
@@ -87,6 +88,7 @@ export function App() {
             <Background />
             <ScrollHandler />
             <Header />
+            <SectionTimeline />
             <Routes>
               <Route path="/" element={<MainPage />} />
               <Route

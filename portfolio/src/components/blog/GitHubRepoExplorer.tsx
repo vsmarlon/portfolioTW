@@ -106,8 +106,7 @@ const GitHubRepoExplorer = () => {
       {
         field: 'updatedAt',
         headerName: 'Atualizado',
-        minWidth: 160,
-        flex: 0.8,
+        width: 165,
       },
     ],
     [isDark],

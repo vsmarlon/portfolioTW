@@ -199,7 +199,7 @@ const Blog = () => {
             className="hidden lg:block lg:shrink-0 lg:sticky lg:top-28"
             style={{ width: `${sidebarWidth}px` }}
           >
-            <div className="ui-sidebar-shell border-2 border-black dark:border-white bg-white dark:bg-black p-3">
+            <div className="ui-sidebar-shell border-2 border-black dark:border-white bg-white dark:bg-black">
               <BlogSidebarContent activeSlug={slug} isListingPage={isListingPage} />
             </div>
           </aside>
