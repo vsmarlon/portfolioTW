@@ -44,7 +44,7 @@ const Header = () => {
         </button>
 
         {/* Desktop Nav */}
-        <ul className="hidden md:flex items-center gap-4 text-base font-medium">
+        <ul className="hidden lg:flex items-center gap-4 text-base font-medium">
           {navItems.map((item) => (
             <li key={item.section}>
               <Link
@@ -89,7 +89,7 @@ const Header = () => {
             )}
           </button>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             {socialLinks.map((link) => (
               <a
                 key={link.label}
@@ -106,7 +106,7 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-zinc-300 dark:hover:bg-white/10 transition-colors"
+            className="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-zinc-300 dark:hover:bg-white/10 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -117,7 +117,7 @@ const Header = () => {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-zinc-100 dark:bg-slate-900 border-b border-black/5 dark:border-white/10 shadow-lg py-4 px-4 flex flex-col gap-2">
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-zinc-100 dark:bg-slate-900 border-b border-black/5 dark:border-white/10 shadow-lg py-4 px-4 flex flex-col gap-2">
           {navItems.map((item) => (
             <Link
               key={item.section}

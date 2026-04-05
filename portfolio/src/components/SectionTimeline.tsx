@@ -42,7 +42,7 @@ export default function SectionTimeline() {
     return (
       <nav
         aria-label="Navegação por seção"
-        className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center"
+        className="fixed right-3 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center"
       >
         <div className="relative flex flex-col items-center gap-8 py-1">
           {/* Track */}
@@ -66,6 +66,7 @@ export default function SectionTimeline() {
                 <span
                   className={`
                     absolute right-6 whitespace-nowrap text-xs font-bold uppercase tracking-[0.18em]
+                    hidden xl:block
                     ${isActive
                       ? 'text-cyan-600 dark:text-cyan-400'
                       : 'text-black/40 dark:text-white/35'
