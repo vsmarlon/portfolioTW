@@ -57,6 +57,12 @@ describe('Blog', () => {
     expect(document.querySelectorAll('details.sidebar-accordion').length).toBeGreaterThan(0);
   });
 
+  it('marks external reference links inside articles', () => {
+    renderBlog('/blog/postgresql-oracle-data-decisions');
+
+    expect(screen.getAllByText('(abre em nova aba)').length).toBeGreaterThan(0);
+  });
+
   it('falls back to not found when the article slug does not exist', () => {
     renderBlog('/blog/slug-inexistente');
 

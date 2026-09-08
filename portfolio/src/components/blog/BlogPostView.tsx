@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import { useLocation } from 'react-router-dom';
 import type { BlogPost } from '../../types/blog';
 import { plainText, slugifyHeading } from '../../utils/headings';
+import ExternalMark from '../ExternalMark';
 import StatusPill from '../ui/StatusPill';
 import TagChip from '../ui/TagChip';
 import SectionTimeline from '../SectionTimeline';
@@ -66,16 +67,24 @@ const markdownComponents = {
       {children}
     </pre>
   ),
-  a: ({ children, href }: { children?: ReactNode; href?: string }) => (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="font-semibold text-[#73004c] underline decoration-[#a1006b]/40 underline-offset-4 transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200"
-    >
-      {children}
-    </a>
-  ),
+  a: ({ children, href }: { children?: ReactNode; href?: string }) => {
+    const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold text-[#73004c] underline decoration-[#a1006b]/40 underline-offset-4 transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200"
+      >
+        {children}
+        {isExternal ? (
+          <>
+            {' '}<ExternalMark className="text-[0.9em] leading-none" />
+          </>
+        ) : null}
+      </a>
+    );
+  },
 };
 
 const BlogPostView = ({ post }: { post: BlogPost }) => {
