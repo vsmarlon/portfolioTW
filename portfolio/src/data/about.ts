@@ -11,10 +11,10 @@ export const timelineItems = [
     type: 'education' as const,
   },
   {
-    period: 'Em breve',
-    title: 'Novos desafios',
-    location: 'Oportunidades',
-    description: 'Buscando crescer em desafios que combinam produto, engenharia e impacto real.',
+    period: 'Projetos autorais',
+    title: 'Prática de engenharia',
+    location: 'Portfólio',
+    description: 'Construindo estudos que conectam produto, arquitetura, dados e experiência de uso.',
     type: 'work' as const,
   },
 ];
@@ -25,18 +25,18 @@ export const skills = [
     icon: 'grid' as IconName,
     items: ['React', 'JavaScript', 'TypeScript', 'HTML/CSS', 'Tailwind CSS'],
   },
-  { category: 'Backend', icon: 'server' as IconName, items: ['Python', 'Node.js', 'PostgreSQL', 'Redis'] },
+  { category: 'Backend', icon: 'server' as IconName, items: ['NestJS', 'Node.js', 'PostgreSQL', 'Oracle'] },
   { category: 'DevOps', icon: 'cogs' as IconName, items: ['Docker', 'Git', 'CI/CD'] },
   { category: 'Mobile', icon: 'mobile' as IconName, items: ['Flutter'] },
 ];
 
 export const currentFocus = {
   building: [
-    'Interfaces React com mais identidade visual e foco em performance percebida.',
-    'Demos técnicos que mostram processo de engenharia, não só resultado final.',
+    'Interfaces React e Flutter com contratos claros e foco em experiência.',
+    'Serviços NestJS e integrações que tornam as decisões de domínio legíveis.',
   ],
   learning: [
-    'Padrões full-stack com dados assíncronos, cache e UX resiliente.',
-    'Arquitetura de aplicações com Python, filas, banco relacional e integrações de IA.',
+    'Modelagem e operação de dados com PostgreSQL e Oracle.',
+    'Arquitetura full stack com eventos, cache e integrações externas.',
   ],
 };

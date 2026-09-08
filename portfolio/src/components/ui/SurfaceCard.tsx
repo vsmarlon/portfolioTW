@@ -2,12 +2,11 @@ import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { UI_CLASSES } from '../../constants/ui';
 import { classNames } from '../../utils/classNames';
 
-type SurfaceCardVariant = 'default' | 'strong' | 'muted';
+type SurfaceCardVariant = 'default' | 'strong';
 
 const SURFACE_VARIANT_CLASS: Record<SurfaceCardVariant, string> = {
   default: UI_CLASSES.surfaceCard,
   strong: UI_CLASSES.surfaceCardStrong,
-  muted: UI_CLASSES.surfaceCardMuted,
 };
 
 interface SurfaceCardProps extends ComponentPropsWithoutRef<'div'> {

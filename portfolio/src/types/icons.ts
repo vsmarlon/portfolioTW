@@ -21,5 +21,4 @@ export type IconName =
   | 'search'
   | 'server'
   | 'sun'
-  | 'terminal'
   | 'tachometer';

@@ -5,53 +5,64 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useLocation } from 'react-router-dom';
 import type { BlogPost } from '../../types/blog';
+import { plainText, slugifyHeading } from '../../utils/headings';
 import StatusPill from '../ui/StatusPill';
-import SurfaceCard from '../ui/SurfaceCard';
 import TagChip from '../ui/TagChip';
+import SectionTimeline from '../SectionTimeline';
 
 const LazyGitHubRepoExplorer = lazy(() => import('./GitHubRepoExplorer'));
 const DEMO_MARKER = '[[DEMO_GITHUB_REPOS]]';
 
 const markdownComponents = {
   h1: ({ children }: { children?: ReactNode }) => (
-    <h1 className="mt-12 text-3xl font-black text-black first:mt-0 dark:text-white">
+    <h1 className="mt-12 font-display text-3xl font-black text-stone-900 first:mt-0 dark:text-stone-100">
       {children}
     </h1>
   ),
   h2: ({ children }: { children?: ReactNode }) => (
-    <h2 className="mt-10 text-2xl font-black text-black dark:text-white">{children}</h2>
+    <h2 id={slugifyHeading(plainText(children))} className="mt-10 scroll-mt-28 font-display text-2xl font-black text-stone-900 dark:text-stone-100">{children}</h2>
   ),
   h3: ({ children }: { children?: ReactNode }) => (
-    <h3 className="mt-8 text-xl font-bold text-black dark:text-white">{children}</h3>
+    <h3 id={slugifyHeading(plainText(children))} className="mt-8 scroll-mt-28 text-xl font-bold text-stone-900 dark:text-stone-100">{children}</h3>
   ),
   p: ({ children }: { children?: ReactNode }) => (
-    <p className="mt-5 text-sm leading-7 text-black/90 dark:text-white/85 md:text-base">
+    <p className="mt-5 text-sm leading-7 text-stone-800 dark:text-stone-200 md:text-base">
       {children}
     </p>
   ),
   ul: ({ children }: { children?: ReactNode }) => (
-    <ul className="mt-5 space-y-3 text-sm text-black/90 dark:text-white/85 md:text-base">
+    <ul className="mt-5 list-disc space-y-3 pl-5 text-sm text-stone-800 dark:text-stone-200 md:text-base">
       {children}
     </ul>
   ),
   ol: ({ children }: { children?: ReactNode }) => (
-    <ol className="mt-5 list-decimal space-y-3 pl-5 text-sm text-black/90 dark:text-white/85 md:text-base">
+    <ol className="mt-5 list-decimal space-y-3 pl-5 text-sm text-stone-800 dark:text-stone-200 md:text-base">
       {children}
     </ol>
   ),
   li: ({ children }: { children?: ReactNode }) => (
-    <li className="leading-7 marker:text-cyan-400">{children}</li>
+    <li className="leading-7 marker:text-[#a1006b] dark:marker:text-fuchsia-200">{children}</li>
   ),
+  table: ({ children }: { children?: ReactNode }) => (
+    <div className="article-table-wrap">
+      <table className="article-table">{children}</table>
+    </div>
+  ),
+  thead: ({ children }: { children?: ReactNode }) => <thead>{children}</thead>,
+  tbody: ({ children }: { children?: ReactNode }) => <tbody>{children}</tbody>,
+  tr: ({ children }: { children?: ReactNode }) => <tr>{children}</tr>,
+  th: ({ children }: { children?: ReactNode }) => <th scope="col">{children}</th>,
+  td: ({ children }: { children?: ReactNode }) => <td>{children}</td>,
   code: ({ children, className }: { children?: ReactNode; className?: string }) =>
     className ? (
       <code className={`code-block ${className}`}>{children}</code>
     ) : (
-      <code className="border border-cyan-400 bg-slate-950/90 px-1.5 py-1 font-mono text-[0.9em] text-cyan-300">
+      <code className="border border-stone-900/25 bg-stone-900/[0.04] px-1.5 py-1 font-mono text-[0.9em] text-[#73004c] dark:border-stone-100/25 dark:bg-white/[0.06] dark:text-fuchsia-200">
         {children}
       </code>
     ),
   pre: ({ children }: { children?: ReactNode }) => (
-    <pre className="code-block-pre mt-5 overflow-x-auto border-2 border-black bg-slate-950 p-4 text-sm text-slate-100 dark:border-white">
+    <pre className="code-block-pre mt-5 overflow-x-auto p-4 text-sm">
       {children}
     </pre>
   ),
@@ -60,7 +71,7 @@ const markdownComponents = {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="font-semibold text-cyan-600 underline decoration-cyan-400/40 underline-offset-4 transition-colors duration-200 hover:text-cyan-400 dark:text-cyan-400"
+      className="font-semibold text-[#73004c] underline decoration-[#a1006b]/40 underline-offset-4 transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200"
     >
       {children}
     </a>
@@ -71,33 +82,35 @@ const BlogPostView = ({ post }: { post: BlogPost }) => {
   const contentChunks = post.body.split(DEMO_MARKER);
 
   return (
-    <article className="ui-border-strong border-3 border-black dark:border-white bg-white dark:bg-black p-6 md:p-8">
-      <header className="ui-divider-soft border-b pb-8">
-        <div className="flex flex-wrap items-center gap-2 pb-1 text-xs font-semibold uppercase tracking-[0.18em]">
+    <>
+      <SectionTimeline key={post.slug} />
+      <article data-blog-article className="card-interactive border-[3px] border-stone-900 bg-[#fffdf8] p-6 dark:border-stone-100 dark:bg-[#131110] md:p-8">
+      <header className="border-b-2 border-stone-900/20 pb-8 dark:border-stone-100/20">
+        <div className="flex flex-wrap items-center gap-2 pb-1 font-mono text-xs font-semibold uppercase tracking-[0.14em]">
           <StatusPill>{post.category}</StatusPill>
-          <span className="text-cyan-600 dark:text-cyan-400 whitespace-nowrap">|</span>
-          <span className="border border-cyan-400 bg-cyan-400/15 px-2 py-1 text-black dark:text-cyan-300 whitespace-nowrap">
+          <span className="whitespace-nowrap text-stone-500 dark:text-stone-400">|</span>
+          <span className="whitespace-nowrap border border-stone-900/25 bg-stone-900/[0.04] px-2 py-1 text-stone-800 dark:border-stone-100/25 dark:bg-white/[0.04] dark:text-stone-200">
             {post.formattedDate}
           </span>
-          <span className="text-cyan-600 dark:text-cyan-400 whitespace-nowrap">|</span>
-          <span className="border border-black/40 dark:border-white/40 bg-white/70 dark:bg-black px-2 py-1 text-black dark:text-white whitespace-nowrap">
+          <span className="whitespace-nowrap text-stone-500 dark:text-stone-400">|</span>
+          <span className="whitespace-nowrap border border-stone-900/25 bg-stone-900/[0.04] px-2 py-1 text-stone-800 dark:border-stone-100/25 dark:bg-white/[0.04] dark:text-stone-200">
             {post.readTime}
           </span>
           {post.hasDemo ? (
             <>
-              <span className="text-cyan-600 dark:text-cyan-400 whitespace-nowrap">|</span>
-              <span className="border border-black/40 dark:border-white/40 bg-white/70 dark:bg-black px-2 py-1 text-black dark:text-white whitespace-nowrap">
+              <span className="whitespace-nowrap text-stone-500 dark:text-stone-400">|</span>
+              <span className="whitespace-nowrap border border-stone-900/25 bg-stone-900/[0.04] px-2 py-1 text-stone-800 dark:border-stone-100/25 dark:bg-white/[0.04] dark:text-stone-200">
                 com demo interativa
               </span>
             </>
           ) : null}
         </div>
 
-        <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight text-black dark:text-white md:text-5xl">
+        <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-tight text-stone-900 dark:text-stone-100 md:text-5xl">
           {post.title}
         </h1>
 
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-black/80 dark:text-white/80 md:text-base">
+        <p className="mt-4 max-w-3xl text-sm leading-7 text-stone-700 dark:text-stone-300 md:text-base">
           {post.excerpt}
         </p>
 
@@ -127,7 +140,8 @@ const BlogPostView = ({ post }: { post: BlogPost }) => {
           </Fragment>
         ))}
       </div>
-    </article>
+      </article>
+    </>
   );
 };
 
@@ -179,16 +193,16 @@ const LazyDemoSection = () => {
 const DemoFallback = ({ loading = false }: { loading?: boolean }) => (
   <section
     id="demo"
-    className="ui-gradient-panel overflow-hidden border-3 border-black dark:border-cyan-400 bg-cyan-400/20 dark:bg-slate-900"
+    className="overflow-hidden border-2 border-stone-900 bg-[#fffdf8] dark:border-stone-100/25 dark:bg-[#1c1917]"
   >
-    <div className="border-b-2 border-black dark:border-cyan-400 px-5 py-5 sm:px-6">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black dark:text-cyan-400">
+    <div className="border-b-2 border-stone-900/20 px-5 py-5 dark:border-stone-100/20 sm:px-6">
+      <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-[#73004c] dark:text-fuchsia-200">
         Demo interativa
       </p>
-      <h2 className="mt-2 text-2xl font-black text-black dark:text-white">
+      <h2 className="mt-2 font-display text-2xl font-black text-stone-900 dark:text-stone-100">
         Repositórios reais, grid sob demanda
       </h2>
-      <p className="mt-2 text-sm leading-6 text-black/80 dark:text-white/80">
+      <p className="mt-2 text-sm leading-6 text-stone-700 dark:text-stone-300">
         {loading
           ? 'Carregando o módulo do DataGrid para manter a leitura do artigo fluida.'
           : 'O módulo interativo será carregado quando esta seção entrar no viewport ou se você chegar direto pelo link da demo.'}
@@ -196,15 +210,15 @@ const DemoFallback = ({ loading = false }: { loading?: boolean }) => (
     </div>
 
     <div className="grid min-h-[280px] place-items-center p-6">
-      <SurfaceCard className="w-full max-w-3xl p-5">
-        <div className="h-10 w-44 border-2 border-black dark:border-white bg-slate-200/80 dark:bg-slate-800/80" />
+      <div className="w-full max-w-3xl border-y border-stone-900/20 p-5 dark:border-stone-100/20">
+        <div className="h-10 w-44 border-2 border-stone-900/25 bg-stone-900/[0.06] dark:border-stone-100/25 dark:bg-white/[0.06]" />
         <div className="mt-6 grid gap-3">
-          <div className="h-12 border-2 border-black dark:border-white bg-slate-200/70 dark:bg-slate-800/70" />
-          <div className="h-12 border-2 border-black dark:border-white bg-slate-200/55 dark:bg-slate-800/55" />
-          <div className="h-12 border-2 border-black dark:border-white bg-slate-200/45 dark:bg-slate-800/45" />
-          <div className="h-12 border-2 border-black dark:border-white bg-slate-200/35 dark:bg-slate-800/35" />
+          <div className="h-12 border-2 border-stone-900/25 bg-stone-900/[0.05] dark:border-stone-100/25 dark:bg-white/[0.05]" />
+          <div className="h-12 border-2 border-stone-900/25 bg-stone-900/[0.04] dark:border-stone-100/25 dark:bg-white/[0.04]" />
+          <div className="h-12 border-2 border-stone-900/25 bg-stone-900/[0.03] dark:border-stone-100/25 dark:bg-white/[0.03]" />
+          <div className="h-12 border-2 border-stone-900/25 bg-stone-900/[0.02] dark:border-stone-100/25 dark:bg-white/[0.02]" />
         </div>
-      </SurfaceCard>
+      </div>
     </div>
   </section>
 );

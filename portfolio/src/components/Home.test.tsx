@@ -5,43 +5,13 @@ import { ThemeProvider } from '../contexts/ThemeContext';
 import { ActiveSectionProvider } from '../contexts/ActiveSectionContext';
 import Home from './Home';
 
-const Providers = ({ children }: { children: React.ReactNode }) => (
-  <ThemeProvider>
-    <MemoryRouter>
-      <ActiveSectionProvider>{children}</ActiveSectionProvider>
-    </MemoryRouter>
-  </ThemeProvider>
-);
+const Providers = ({ children }: { children: React.ReactNode }) => <ThemeProvider><MemoryRouter><ActiveSectionProvider>{children}</ActiveSectionProvider></MemoryRouter></ThemeProvider>;
 
 describe('Home', () => {
-  it('renders the hero name', () => {
+  it('presents the full-stack identity and project CTA without availability claims', () => {
     render(<Home />, { wrapper: Providers });
-    expect(screen.getByTestId('home-hero-name')).toBeInTheDocument();
-  });
-
-  it('renders the availability badge', () => {
-    render(<Home />, { wrapper: Providers });
-    expect(screen.getByTestId('home-availability-badge')).toBeInTheDocument();
-  });
-
-  it('renders the technology section heading', () => {
-    render(<Home />, { wrapper: Providers });
-    expect(screen.getByTestId('home-tech-section')).toBeInTheDocument();
-  });
-
-  it('renders core technology icons', () => {
-    render(<Home />, { wrapper: Providers });
-    expect(screen.getByRole('img', { name: /HTML5/i })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /CSS3/i })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /JavaScript/i })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /Python/i })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /PostgreSQL/i })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /Redis/i })).toBeInTheDocument();
-  });
-
-  it('renders CTA buttons', () => {
-    render(<Home />, { wrapper: Providers });
-    expect(screen.getByTestId('home-cta-projects')).toBeInTheDocument();
-    expect(screen.getByTestId('home-cta-contact')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Desenvolvedor Full Stack/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Ver projetos/i })).toBeInTheDocument();
+    expect(screen.queryByText(/Disponível/i)).not.toBeInTheDocument();
   });
 });

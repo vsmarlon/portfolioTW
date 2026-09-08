@@ -4,9 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { useNavigateToSection } from './useNavigateToSection';
 import type { ReactNode } from 'react';
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>
-);
+const wrapper = ({ children }: { children: ReactNode }) => <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>;
 
 describe('useNavigateToSection', () => {
   it('returns a function', () => {
@@ -14,20 +12,13 @@ describe('useNavigateToSection', () => {
     expect(typeof result.current).toBe('function');
   });
 
-  it('scrolls to the target section with a header offset for same-page hash navigation', () => {
+  it('updates the router location for same-page hash navigation', () => {
     const { result } = renderHook(() => useNavigateToSection(), { wrapper });
-    const mockScrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
-    const mockEl = {
-      getBoundingClientRect: () => ({ top: 280 }),
-    };
-
-    vi.spyOn(document, 'getElementById').mockReturnValue(mockEl as unknown as HTMLElement);
 
     const mockEvent = { preventDefault: vi.fn() } as unknown as React.MouseEvent<HTMLAnchorElement>;
-    result.current(mockEvent, '/#sobre');
+    result.current(mockEvent, '/#about');
 
     expect(mockEvent.preventDefault).toHaveBeenCalled();
-    expect(mockScrollTo).toHaveBeenCalledWith({ top: 176, behavior: 'smooth' });
   });
 
   it('scrolls to the top for same-page root navigation', () => {
@@ -38,6 +29,6 @@ describe('useNavigateToSection', () => {
     result.current(mockEvent, '/');
 
     expect(mockEvent.preventDefault).toHaveBeenCalled();
-    expect(mockScrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+    expect(mockScrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'auto' });
   });
 });

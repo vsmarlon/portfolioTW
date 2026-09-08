@@ -1,14 +1,11 @@
 export const UI_CLASSES = {
   surfaceCard:
-    'ui-surface-card ui-border-soft border-2 border-black dark:border-white bg-white/95 dark:bg-black/95',
+    'ui-surface-card ui-border-soft card-interactive border-2 border-stone-900/25 bg-[#fffdf8] dark:border-stone-100/20 dark:bg-[#1c1917]',
   surfaceCardStrong:
-    'ui-surface-card ui-surface-card-strong ui-border-strong border-3 border-black dark:border-white bg-white dark:bg-black',
-  surfaceCardMuted:
-    'ui-surface-card ui-border-soft border-2 border-black/60 dark:border-white/60 bg-white/90 dark:bg-black/90',
-  gradientPanel:
-    'ui-gradient-panel border-2 border-black dark:border-cyan-400 bg-cyan-400/30 dark:bg-cyan-400/10',
+    'ui-surface-card ui-surface-card-strong ui-border-strong card-interactive border-[3px] border-stone-900 bg-[#fffdf8] dark:border-stone-100 dark:bg-[#131110]',
+
   tagChip:
-    'ui-tag-chip ui-border-soft border-2 border-black dark:border-white bg-white dark:bg-black px-3 py-1 text-xs font-bold text-black dark:text-white',
+    'ui-tag-chip ui-border-soft border border-stone-900/25 bg-[#fffdf8] px-3 py-1 text-xs font-bold text-stone-900 dark:border-stone-100/25 dark:bg-[#1c1917] dark:text-stone-100',
   statusPill:
-    'ui-status-pill border-2 border-black dark:border-cyan-400 bg-cyan-400 dark:bg-black px-3 py-1 text-black dark:text-cyan-400 font-bold',
+    'ui-status-pill border-2 border-stone-900 bg-[#a1006b] px-3 py-1 font-bold text-[#fff7fb] dark:border-fuchsia-200/60 dark:bg-[#ec7cc3] dark:text-[#1c0a14]',
 } as const;

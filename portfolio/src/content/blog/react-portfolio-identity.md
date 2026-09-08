@@ -3,7 +3,6 @@ title: Como estou deixando este portfólio menos genérico
 slug: react-portfolio-identity
 excerpt: O foco não é adicionar efeito por efeito, e sim construir identidade visual, hierarquia e decisões de interface coerentes com a narrativa técnica.
 publishedAt: 2026-03-18
-readTime: 11 min de leitura
 category: Produto pessoal
 tags: [Portfolio, React, UX]
 featured: false
@@ -11,25 +10,31 @@ hasDemo: false
 ---
 # Identidade não nasce de mais componentes
 
-Portfólio técnico costuma cair em dois extremos: landing "bonita demais" sem substância ou lista fria de projetos sem narrativa. Meu objetivo é o meio: personalidade visual com contexto técnico suficiente para sustentar decisões.
+Portfólio técnico costuma cair em dois extremos: uma landing bonita demais e sem substância, ou uma lista fria de projetos. Procuro um terceiro caminho: personalidade visual apoiada por contexto técnico.
 
-## O que eu estou evitando
+## Público e problema
 
-- seções que parecem template pronto
-- widgets decorativos sem função de leitura
-- páginas que competem entre si em vez de formar uma história
+O visitante não lê um portfólio como quem usa um produto por meses. Recrutadores procuram sinais rápidos de critério. Pessoas técnicas procuram evidência de implementação. Designers observam composição e cuidado.
 
-## O que eu estou fortalecendo
+O problema é atender a essas leituras sem produzir uma página que grita para todos ao mesmo tempo. A identidade precisa organizar a atenção antes de pedir uma decisão.
 
-- tipografia com hierarquia clara
-- blocos com peso editorial, não apenas cards repetidos
-- demos que servem ao texto em vez de roubar atenção
+Por isso, evito medir qualidade apenas pela quantidade de componentes. Uma seção nova só merece existir quando melhora a narrativa, esclarece uma competência ou permite examinar uma decisão.
 
-Esse ajuste importa porque recrutador não navega portfólio como usuário de produto final. A pessoa busca sinais de critério visual, domínio técnico e clareza de comunicação.
+## Requisitos
 
-## Exemplo 1: tokens visuais centralizados
+Defini requisitos simples para o ciclo atual:
 
-Quando classe utilitária repete demais, identidade vira ruído. Centralizar tokens reduz variação acidental:
+- hierarquia visual compreensível sem animação
+- leitura confortável em telas pequenas e grandes
+- relação explícita entre projeto, decisão e evidência
+- componentes reutilizados quando compartilham comportamento
+- tema e contraste que não prejudiquem acessibilidade
+
+Esses requisitos são critérios de projeto, não resultados comprovados. A avaliação precisa confirmar se a interface os atende em uso real.
+
+## Tokens
+
+Quando cada seção escolhe suas próprias cores, raios e espaçamentos, a identidade vira uma coleção de exceções. Tokens reduzem variação acidental e tornam uma mudança visual mais localizada.
 
 ```ts
 export const UI_CLASSES = {
@@ -39,13 +44,21 @@ export const UI_CLASSES = {
 } as const;
 ```
 
-Benefícios:
+O exemplo é um vocabulário de aplicação. Ele não deve esconder diferenças semânticas apenas para forçar uniformidade. Uma superfície de leitura pode precisar de contraste e largura distintos de uma superfície de destaque.
 
-- mudanças visuais viram alteração única
-- consistência entre home, blog e projetos
-- menos "quase igual" espalhado no código
+Também trato tipografia, espaçamento e cor como decisões relacionadas. A escala precisa construir níveis. O espaçamento precisa indicar agrupamento. A cor precisa reforçar estado ou prioridade, e não competir com todo o conteúdo.
 
-## Exemplo 2: componente de superfície reutilizável
+## Composição editorial
+
+Cards repetidos são uma solução fácil para organizar informação, mas podem nivelar projetos diferentes. Prefiro alternar texto, evidência, código, diagrama e chamada quando cada forma serve a uma etapa da história.
+
+Um artigo técnico começa com uma pergunta. Depois mostra um contexto, apresenta uma decisão e oferece uma forma de examiná-la. A composição visual deve acompanhar esse ritmo, em vez de transformar todo trecho em um bloco com a mesma aparência.
+
+No blog, a navegação lateral orienta sem disputar com o conteúdo. Em telas menores, ela não deve impedir a leitura. O princípio responsivo é preservar relações importantes, não manter cada coluna intacta.
+
+## Componentes
+
+Uma superfície reutilizável faz sentido quando reduz decisões repetidas de comportamento, foco, borda ou espaçamento. Não crio um componente apenas porque duas tags possuem o mesmo número de linhas.
 
 ```tsx
 const SurfaceCard = forwardRef<HTMLDivElement, SurfaceCardProps>(
@@ -57,26 +70,25 @@ const SurfaceCard = forwardRef<HTMLDivElement, SurfaceCardProps>(
 );
 ```
 
-Isso não é abstração gratuita. É redução de decisão repetida em toda nova seção.
+A abstração permanece saudável quando seu nome comunica uma decisão. `SurfaceCard` diz que existe uma superfície com variantes. Não promete resolver qualquer caixa da aplicação.
 
-## Exemplo 3: layout editorial com flex
+## Narrativa no código
 
-Em áreas críticas do blog, priorizei composição flex:
+O código também faz parte da apresentação. Um leitor técnico precisa conseguir sair da tela e localizar o fluxo. Nomes, limites de arquivo e contratos valem mais que comentários que repetem a implementação.
 
-```tsx
-<div className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-0">
-  <aside className="hidden lg:block lg:shrink-0">...</aside>
-  <section className="min-w-0 lg:flex-1">...</section>
-</div>
-```
+Em uma seção de projeto, separo dados de composição visual quando o domínio justifica essa distinção. Assim, a narrativa pode mudar sem reescrever a forma como os dados são representados.
 
-Resultado:
+O mesmo vale para demos. Um exemplo interativo não deve ser um brinquedo solto. Ele precisa responder à pergunta levantada pelo texto e deixar claro quando depende de uma API externa ou de uma hipótese.
 
-- layout mais adaptável por breakpoint
-- menos microajuste manual de largura
-- leitura mais contínua entre navegação e conteúdo
+## Tema e acessibilidade
 
-## Exemplo 4: bloco de código como peça de narrativa
+O tema escuro não é uma licença para usar contraste agressivo. Texto, controles, foco e estados precisam continuar distinguíveis. Cores não devem ser a única forma de comunicar erro, sucesso ou seleção.
+
+Também considero movimento uma preferência do usuário. Transições podem orientar atenção, mas o conteúdo precisa funcionar quando a redução de movimento está ativa. A interface não deve esconder informação atrás de uma animação.
+
+Foco visível, ordem de teclado e nomes acessíveis entram no mesmo critério. A aparência final é incompleta se a interação só funciona com mouse ou visão sem alteração de contraste.
+
+## Exemplo de bloco de código
 
 Snippet técnico também comunica identidade:
 
@@ -91,25 +103,45 @@ Snippet técnico também comunica identidade:
 }
 ```
 
-Quando o bloco conversa com o tema, ele deixa de parecer elemento externo e vira parte da experiência.
+O bloco precisa manter legibilidade, permitir seleção e respeitar o fluxo horizontal. Estilizar sintaxe não é suficiente se o código vira uma imagem difícil de consultar.
 
-## Estrutura que eu uso para decidir interface
+## Como avalio
 
-Eu penso em três camadas:
+Avalio a identidade por perguntas observáveis. Um visitante entende o que faço sem procurar uma lista escondida? Consegue diferenciar um projeto de outro? Encontra uma evidência em vez de apenas uma afirmação?
 
-1. **narrativa**: o que quero provar sobre meu critério
-2. **sistema**: tokens, componentes e padrões de comportamento
-3. **execução**: espaçamento, tipografia, contraste e fluxo de leitura
+Na interface, verifico largura de texto, hierarquia de títulos, comportamento em viewport menor, foco e contraste. No código, procuro tokens usados de modo coerente e componentes com responsabilidades legíveis.
 
-Se só a terceira camada existe, o site pode ficar bonito, mas genérico.
+O resultado desejado não é uma taxa de conversão inventada. É um percurso que pode ser observado em testes manuais, revisão visual e navegação por teclado.
 
-## Erros comuns que estou evitando nesse ciclo
+Uma revisão visual também precisa considerar conteúdo fora do caso ideal. Títulos longos, descrições vazias, nomes de tecnologias diferentes e mensagens de erro testam a elasticidade da composição.
 
-- exagerar contraste sem motivo e quebrar hierarquia
-- usar animação para esconder falta de conteúdo
-- misturar tom visual entre páginas sem sistema comum
-- adicionar componente novo quando o ajuste era só composição
+Se o layout funciona apenas com frases curtas ou com uma quantidade previsível de cartões, ele ainda não demonstrou identidade. Demonstrou uma captura controlada. O sistema precisa tolerar variação sem perder hierarquia.
 
-## O efeito prático
+Eu registro essas verificações como critérios simples, não como uma promessa de cobertura total. A intenção é permitir que uma próxima alteração repita a avaliação e revele quando uma decisão deixou de funcionar.
 
-Com estrutura melhor, até projeto pequeno ganha força. O visitante deixa de ver só screenshot e passa a entender contexto, intenção e maturidade de implementação.
+Esse registro também reduz dependência de gosto pessoal. A revisão continua interpretativa, mas passa a discutir hierarquia, legibilidade, estados e comportamento observável em vez de apenas preferência estética.
+
+## Limitações
+
+Uma identidade visual não resolve falta de conteúdo. Tokens não impedem toda inconsistência. Componentes reutilizáveis podem ficar rígidos quando recebem variantes demais.
+
+Também não afirmo que a composição atual seja a melhor para todo público. O critério de recrutamento é uma hipótese baseada no propósito do portfólio. Entrevistas e observação de visitantes poderiam revelar outras necessidades.
+
+Essa hipótese deve ser revisada quando o público, o conteúdo ou o objetivo profissional mudar. A identidade precisa continuar servindo à leitura, não proteger decisões antigas.
+
+## Conclusão
+
+Estou deixando o portfólio menos genérico ao reduzir escolhas arbitrárias. A narrativa define o que merece destaque. O sistema visual torna essas escolhas repetíveis. Os componentes protegem comportamento sem apagar diferenças.
+
+O objetivo não é parecer complexo. É fazer com que cor, tipografia, código, navegação e conteúdo apontem para a mesma ideia: competência técnica também inclui explicar limites, contexto e intenção.
+
+Quando esses elementos concordam, a interface deixa de ser uma moldura decorativa e passa a participar da argumentação do trabalho.
+
+Essa participação é deliberada. O visual introduz a pergunta, o texto organiza a resposta e o código oferece uma forma de verificar a decisão sem transformar o portfólio em documentação integral.
+
+## Referências
+
+- [W3C: Web Content Accessibility Guidelines 2.2](https://www.w3.org/TR/WCAG22/)
+- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+- [MDN: Accessible Web Apps and Widgets](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/ARIA)
+- [React: Reusing Logic with Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)

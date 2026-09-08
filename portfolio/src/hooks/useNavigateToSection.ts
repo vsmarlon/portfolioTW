@@ -1,14 +1,15 @@
 import { useCallback, type MouseEvent } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useActiveSection } from '../contexts/ActiveSectionContext';
 import { navItems } from '../data/navigation';
-import { scrollToHash, scrollToTop } from '../utils/scroll';
+import { scrollToTop } from '../utils/scroll';
 
 const NAV_SECTION_SET = new Set(navItems.map((item) => item.section));
 
 export function useNavigateToSection() {
   const location = useLocation();
   const { setActiveSection } = useActiveSection();
+  const navigate = useNavigate();
 
   return useCallback(
     (e: MouseEvent<HTMLAnchorElement>, to: string) => {
@@ -19,19 +20,18 @@ export function useNavigateToSection() {
       if (location.pathname === targetPath) {
         e.preventDefault();
         if (targetHash) {
-          const didScroll = scrollToHash(targetHash, { smooth: true });
           const targetSection = targetHash.replace(/^#/, '');
-          if (didScroll && NAV_SECTION_SET.has(targetSection as (typeof navItems)[number]['section'])) {
+          if (NAV_SECTION_SET.has(targetSection as (typeof navItems)[number]['section'])) {
             setActiveSection(targetSection);
           }
-          window.history.pushState(null, '', to);
+          void navigate(to);
         } else {
           scrollToTop({ smooth: true });
           setActiveSection('home');
-          window.history.pushState(null, '', '/');
+          void navigate('/');
         }
       }
     },
-    [location.pathname, setActiveSection],
+    [location.pathname, navigate, setActiveSection],
   );
 }

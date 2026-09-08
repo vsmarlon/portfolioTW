@@ -116,24 +116,24 @@ const GitHubRepoExplorer = () => {
     <MuiThemeProvider theme={muiTheme}>
       <section
         id="demo"
-        className={`overflow-hidden border-3 ${isDark ? 'border-cyan-400 bg-black' : 'border-black bg-white'}`}
+        className={`overflow-hidden border-[3px] ${isDark ? 'border-stone-100 bg-[#131110]' : 'border-stone-900 bg-[#fffdf8]'}`}
       >
         <div
           className={`border-b-2 px-5 py-5 sm:px-6 ${
             isDark
-              ? 'border-cyan-400 bg-black'
-              : 'border-black bg-cyan-400/20'
+              ? 'border-stone-100/20 bg-[#131110]'
+              : 'border-stone-900/20 bg-[#fffdf8]'
           }`}
         >
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black dark:text-cyan-400">
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-[#73004c] dark:text-fuchsia-200">
                 Demo embutida
               </p>
-              <h2 className="mt-2 text-2xl font-black text-black dark:text-white">
+              <h2 className="mt-2 font-display text-2xl font-black text-stone-900 dark:text-stone-100">
                 GitHub Repository Explorer com MUI DataGrid
               </h2>
-              <p className="mt-2 text-sm leading-6 text-black/80 dark:text-white/80">
+              <p className="mt-2 text-sm leading-6 text-stone-700 dark:text-stone-300">
                 Dados reais, cache com React Query e uma tabela integrada ao visual do portfolio em
                 vez de um painel externo.
               </p>
@@ -162,7 +162,7 @@ const GitHubRepoExplorer = () => {
 
         <div className="p-4 sm:p-6">
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
               Fonte: GitHub API / usuário {DEFAULT_GITHUB_USERNAME}
             </div>
             <Button
@@ -217,9 +217,9 @@ const GitHubRepoExplorer = () => {
                 height: 520,
                 width: '100%',
                 '& .MuiDataGrid-root': {
-                  border: `2px solid ${muiTheme.palette.divider}`,
+                   border: 0,
                   borderRadius: 0,
-                  backgroundColor: alpha(muiTheme.palette.background.paper, isDark ? 0.92 : 0.98),
+                   backgroundColor: 'transparent',
                   color: muiTheme.palette.text.primary,
                 },
                 '& .MuiDataGrid-columnHeaders': {

@@ -1,22 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { scheduleHashScroll, scheduleScrollToPosition } from './scroll';
+import { scheduleHashScroll, scrollToElementId, scrollToTop } from './scroll';
 
 describe('scroll schedulers', () => {
   const originalRequestAnimationFrame = window.requestAnimationFrame;
   const originalCancelAnimationFrame = window.cancelAnimationFrame;
   const originalScrollTo = window.scrollTo;
   const originalScrollYDescriptor = Object.getOwnPropertyDescriptor(window, 'scrollY');
-  const originalScrollHeightDescriptor = Object.getOwnPropertyDescriptor(
-    document.documentElement,
-    'scrollHeight',
-  );
 
   let performanceNowSpy: ReturnType<typeof vi.spyOn>;
   let frameCallbacks: Map<number, FrameRequestCallback>;
   let nextFrameId: number;
   let now: number;
   let mockScrollY: number;
-  let mockScrollHeight: number;
 
   const runFrame = () => {
     const callbacks = Array.from(frameCallbacks.values());
@@ -34,18 +29,12 @@ describe('scroll schedulers', () => {
     nextFrameId = 0;
     now = 0;
     mockScrollY = 0;
-    mockScrollHeight = window.innerHeight + 1600;
 
     performanceNowSpy = vi.spyOn(performance, 'now').mockImplementation(() => now);
 
     Object.defineProperty(window, 'scrollY', {
       configurable: true,
       get: () => mockScrollY,
-    });
-
-    Object.defineProperty(document.documentElement, 'scrollHeight', {
-      configurable: true,
-      get: () => mockScrollHeight,
     });
 
     Object.defineProperty(window, 'scrollTo', {
@@ -85,10 +74,6 @@ describe('scroll schedulers', () => {
       Object.defineProperty(window, 'scrollY', originalScrollYDescriptor);
     }
 
-    if (originalScrollHeightDescriptor) {
-      Object.defineProperty(document.documentElement, 'scrollHeight', originalScrollHeightDescriptor);
-    }
-
     Object.defineProperty(window, 'scrollTo', {
       writable: true,
       value: originalScrollTo,
@@ -121,33 +106,96 @@ describe('scroll schedulers', () => {
     expect(window.scrollTo).toHaveBeenCalledTimes(1);
   });
 
-  it('retries restoring scroll position until the target height is reachable', () => {
-    mockScrollHeight = window.innerHeight + 120;
-    scheduleScrollToPosition(600, { timeoutMs: 1000 });
+  it('animates to the top quickly instead of jumping', () => {
+    mockScrollY = 500;
+    scrollToTop();
 
-    runFrame();
-    expect(window.scrollY).toBe(120);
-
-    mockScrollHeight = window.innerHeight + 700;
-
-    for (let frame = 0; frame < 4; frame += 1) {
+    for (let frame = 0; frame < 40; frame += 1) {
       runFrame();
     }
 
-    expect(window.scrollY).toBe(600);
+    expect(mockScrollY).toBe(0);
+    expect((window.scrollTo as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(2);
+    expect(frameCallbacks.size).toBe(0);
+  });
+
+  it('jumps instantly to a zero-distance target', () => {
+    scrollToTop();
+
+    expect(window.scrollTo).toHaveBeenCalledTimes(1);
+    expect(frameCallbacks.size).toBe(0);
+  });
+
+  it('scrolls to an element with the header offset applied', () => {
+    mockScrollY = 1000;
+    const target = document.createElement('section');
+    target.id = 'projects';
+    vi.spyOn(target, 'getBoundingClientRect').mockReturnValue({
+      top: -200,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+    document.body.append(target);
+
+    expect(scrollToElementId('projects')).toBe(true);
+
+    for (let frame = 0; frame < 40; frame += 1) {
+      runFrame();
+    }
+
+    expect(mockScrollY).toBe(1000 - 200 - 104);
+  });
+
+  it('stays instant when the user prefers reduced motion', () => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: () => ({ matches: true }),
+    });
+    mockScrollY = 500;
+
+    scrollToTop();
+
+    expect(mockScrollY).toBe(0);
+    expect(window.scrollTo).toHaveBeenCalledTimes(1);
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: () => ({ matches: false }),
+    });
+  });
+
+  it('stops the animation as soon as the user scrolls manually', () => {
+    mockScrollY = 500;
+    scrollToTop();
+
+    runFrame();
+    runFrame();
+    const callsAfterInterrupt = (window.scrollTo as ReturnType<typeof vi.fn>).mock.calls.length;
+    window.dispatchEvent(new Event('wheel'));
+
+    for (let frame = 0; frame < 40; frame += 1) {
+      runFrame();
+    }
+
+    expect((window.scrollTo as ReturnType<typeof vi.fn>).mock.calls.length).toBe(callsAfterInterrupt);
+    expect(mockScrollY).toBeGreaterThan(0);
   });
 
   it('returns cleanup functions that cancel pending retries', () => {
     const cancelHash = scheduleHashScroll('#missing-target', { timeoutMs: 1000 });
-    const cancelPosition = scheduleScrollToPosition(400, { timeoutMs: 1000 });
 
-    expect(frameCallbacks.size).toBe(2);
+    expect(frameCallbacks.size).toBe(1);
 
     cancelHash();
-    cancelPosition();
     runFrame();
 
     expect(window.scrollTo).not.toHaveBeenCalled();
-    expect(window.cancelAnimationFrame).toHaveBeenCalledTimes(2);
+    expect(window.cancelAnimationFrame).toHaveBeenCalledTimes(1);
   });
 });

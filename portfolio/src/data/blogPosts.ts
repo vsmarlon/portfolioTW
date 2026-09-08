@@ -2,6 +2,7 @@ import type { BlogPost, BlogPostMeta } from '../types/blog';
 import { failure, success, type ResponseEntity } from '../shared/result';
 import { formatPtBrDate } from '../utils/date';
 import { devError } from '../utils/devLog';
+import { getReadingTime } from '../utils/readingTime';
 
 const rawPosts = import.meta.glob('../content/blog/*.md', {
   query: '?raw',
@@ -68,9 +69,6 @@ function parseFrontmatter(
   const publishedAt = getRequiredField(record, 'publishedAt');
   if (!publishedAt.success) return publishedAt;
 
-  const readTime = getRequiredField(record, 'readTime');
-  if (!readTime.success) return readTime;
-
   const category = getRequiredField(record, 'category');
   if (!category.success) return category;
 
@@ -83,7 +81,6 @@ function parseFrontmatter(
       slug: slug.data,
       excerpt: excerpt.data,
       publishedAt: publishedAt.data,
-      readTime: readTime.data,
       category: category.data,
       tags: parseArrayValue(tags.data),
       featured: record.featured === 'true',
@@ -111,6 +108,7 @@ const parsedPosts = Object.entries(rawPosts).flatMap(([path, source]) => {
       ...meta,
       body,
       formattedDate: formatPostDate(meta.publishedAt),
+      readTime: getReadingTime(body),
     },
   ];
 });
@@ -120,7 +118,7 @@ const FALLBACK_BLOG_POST: BlogPost = {
   slug: 'conteudo-indisponivel',
   excerpt: 'Não foi possível carregar os artigos no momento.',
   publishedAt: '2026-01-01',
-  readTime: '2 min',
+  readTime: getReadingTime('O conteúdo do blog não foi carregado corretamente.'),
   category: 'Sistema',
   tags: ['status'],
   featured: true,

@@ -34,12 +34,7 @@ describe('Blog', () => {
   it('renders the article-first listing with sidebar navigation and demo entry point', () => {
     renderBlog('/blog');
 
-    expect(
-      screen.getByRole('heading', {
-        level: 2,
-        name: /Explorador de reposit[óo]rios com MUI DataGrid e GitHub/i,
-      }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Arquitetura full stack como evidência de trabalho/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Ir para a demo/i })).toBeInTheDocument();
     expect(screen.getAllByText(/Todos os artigos/i).length).toBeGreaterThan(0);
   });
@@ -47,14 +42,19 @@ describe('Blog', () => {
   it('renders an article detail page with the embedded github grid demo', async () => {
     renderBlog('/blog/github-data-grid-case-study');
 
-    expect(
-      screen.getByRole('heading', {
-        name: /Explorador de reposit[óo]rios com MUI DataGrid e GitHub/i,
-      }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Explorador de repositórios com MUI DataGrid/i })).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: /Reposit[óo]rios reais, grid sob demanda/i }),
     ).toBeInTheDocument();
+  });
+
+  it('exposes article subsections as sidebar anchors with matching heading ids', () => {
+    renderBlog('/blog/postgresql-oracle-data-decisions');
+
+    const anchor = screen.getByRole('link', { name: 'Matriz de decisão' });
+    expect(anchor).toHaveAttribute('href', '#matriz-de-decisao');
+    expect(document.querySelector('[data-blog-article] h2#matriz-de-decisao')).toBeInTheDocument();
+    expect(document.querySelectorAll('details.sidebar-accordion').length).toBeGreaterThan(0);
   });
 
   it('falls back to not found when the article slug does not exist', () => {

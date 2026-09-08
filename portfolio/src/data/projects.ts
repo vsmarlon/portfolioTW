@@ -13,14 +13,25 @@ export interface ProjectItem {
 
 export const projectsData: ProjectItem[] = [
   {
+    title: 'Freebay',
+    url: '/projects/freebay',
+    image: '/chat.webp',
+    description: 'Produto de comércio social com descoberta, relações, pagamentos e notificações tratados como um sistema full stack.',
+    tools: ['React', 'Flutter', 'NestJS', 'PostgreSQL'],
+    featured: true,
+    spotlight: true,
+    eyebrow: 'Flagship · estudo de caso',
+    focus: 'Arquitetura de produto e decisões full stack',
+  },
+  {
     title: 'ChatBot RAG',
     url: 'https://github.com/vsmarlon/chatbotRAG',
     image: '/chat.webp',
     description:
       'Projeto de busca semântica com IA para responder perguntas a partir de documentos. A proposta combina interface web, pipeline de embeddings e persistência em PostgreSQL para transformar arquivos em respostas consultáveis.',
     tools: ['React', 'Python', 'PostgreSQL', 'Tailwind CSS'],
-    featured: true,
-    spotlight: true,
+    featured: false,
+    spotlight: false,
     eyebrow: 'Projeto em foco',
     focus: 'Interface, ingestão de documentos e busca semântica',
     details: [

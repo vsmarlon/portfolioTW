@@ -11,8 +11,10 @@ describe('Contact', () => {
   it('renders the new contact pitch and direct channels', () => {
     render(<Contact />, { wrapper: Providers });
 
-    expect(screen.getByText(/Contato que vira/i)).toBeInTheDocument();
+    expect(screen.getByText(/Direto ao ponto/i)).toBeInTheDocument();
     expect(screen.getByText(/Escolha o melhor ponto de contato/i)).toBeInTheDocument();
     expect(screen.getByText(/Resposta rápida/i)).toBeInTheDocument();
+    expect(screen.getByText(/Como trabalho/i)).toBeInTheDocument();
+    expect(screen.getAllByText('(abre em nova aba)')).toHaveLength(2);
   });
 });

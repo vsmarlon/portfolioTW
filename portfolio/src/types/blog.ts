@@ -3,7 +3,6 @@ export interface BlogPostMeta {
   slug: string;
   excerpt: string;
   publishedAt: string;
-  readTime: string;
   category: string;
   tags: string[];
   featured: boolean;
@@ -13,6 +12,7 @@ export interface BlogPostMeta {
 export interface BlogPost extends BlogPostMeta {
   body: string;
   formattedDate: string;
+  readTime: string;
 }
 
 export interface GitHubRepoRow {

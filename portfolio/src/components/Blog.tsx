@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { blogPosts, featuredBlogPost, getBlogPostBySlug } from '../data/blogPosts';
-import { useBlogSidebarResize } from '../hooks/useBlogSidebarResize';
+import { extractHeadings } from '../utils/headings';
+import BackLink from './BackLink';
 import BlogListing from './blog/BlogListing';
 import BlogPostView from './blog/BlogPostView';
 import BlogSidebarContent from './blog/BlogSidebarContent';
-import Icon from './Icon';
 import NotFound from './NotFound';
+import ReadingShell from './ReadingShell';
 import SurfaceCard from './ui/SurfaceCard';
 
 const Blog = () => {
@@ -46,13 +47,10 @@ const Blog = () => {
 
     return navOptions.find((option) => option.id === slug) ?? navOptions[0];
   }, [isListingPage, navOptions, slug]);
-  const {
-    sidebarWidth,
-    sidebarMinWidth,
-    sidebarMaxWidth,
-    handleResizeMouseDown,
-    handleResizeKeyDown,
-  } = useBlogSidebarResize();
+  const activeSections = useMemo(
+    () => (activePost ? extractHeadings(activePost.body) : []),
+    [activePost],
+  );
 
   if (slug && !activePost) {
     return <NotFound />;
@@ -61,39 +59,33 @@ const Blog = () => {
   return (
     <main className="min-h-screen pt-20">
       <div className="w-full px-3 py-10 sm:px-4 lg:px-6">
-        <Link
-          to="/"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-slate-500 transition-colors duration-200 hover:text-cyan-400 group"
-        >
-          <Icon name="arrow-left" className="transition-transform group-hover:-translate-x-1" />
-          Voltar ao portfólio
-        </Link>
+        <BackLink to="/">Voltar ao portfólio</BackLink>
 
-        <div className="ui-divider-strong mx-1 flex flex-col gap-4 border-b pb-8 sm:mx-0 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mx-1 flex flex-col gap-4 border-b-2 border-stone-900/20 pb-8 dark:border-stone-100/20 sm:mx-0 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-400">
+             <p className="eyebrow">
               Escrita + demos com contexto
             </p>
-            <h1 className="mt-3 text-3xl font-black text-slate-900 dark:text-white md:text-5xl">
-              Blog <span className="text-cyan-400">&</span> estudos de caso
+            <h1 className="mt-3 font-display text-3xl font-black text-stone-900 dark:text-stone-100 md:text-5xl">
+              Blog <span className="text-[#a1006b] dark:text-fuchsia-200">&</span> estudos de caso
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500 dark:text-slate-400 md:text-base">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-600 dark:text-stone-400 md:text-base">
               Artigos em português sobre frontend, critério de interface e demos que existem para
               sustentar a história, não para competir com ela.
             </p>
           </div>
 
-          <SurfaceCard className="ui-border-strong p-5 text-sm text-slate-700 dark:text-slate-200">
-            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-cyan-600 dark:text-cyan-400">
+          <SurfaceCard className="p-5 text-sm text-stone-700 dark:text-stone-200">
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#73004c] dark:text-fuchsia-200">
               Status editorial
             </span>
-            <div className="mt-3 divide-y divide-black/25 dark:divide-white/25 border-t border-black/25 dark:border-white/25">
-              <span className="flex items-center gap-2 py-2 font-semibold text-black dark:text-white whitespace-nowrap">
-                <span className="h-2 w-2 bg-cyan-400" />
+            <div className="mt-3 divide-y divide-stone-900/15 border-t border-stone-900/15 dark:divide-stone-100/15 dark:border-stone-100/15">
+              <span className="flex items-center gap-2 py-2 font-semibold text-stone-900 dark:text-stone-100 whitespace-nowrap">
+                <span className="h-2 w-2 bg-[#a1006b] dark:bg-fuchsia-200" />
                 {blogPosts.length} artigos publicados
               </span>
-              <span className="flex items-center gap-2 py-2 text-cyan-700 dark:text-cyan-300 whitespace-nowrap">
-                <span className="h-2 w-2 bg-cyan-400" />
+              <span className="flex items-center gap-2 py-2 text-[#73004c] dark:text-fuchsia-200 whitespace-nowrap">
+                <span className="h-2 w-2 bg-[#a1006b] dark:bg-fuchsia-200" />
                 1 estudo com demo interativa embutida
               </span>
             </div>
@@ -193,33 +185,15 @@ const Blog = () => {
           />
         </div>
 
-        <div className="mt-10 flex min-h-[calc(100vh-5rem)] flex-col gap-6 lg:flex-row lg:items-start lg:gap-0">
-          <aside
-            data-testid="blog-sidebar"
-            className="hidden lg:block lg:shrink-0 lg:sticky lg:top-28"
-            style={{ width: `${sidebarWidth}px` }}
-          >
-            <div className="ui-sidebar-shell border-2 border-black dark:border-white bg-white dark:bg-black">
-              <BlogSidebarContent activeSlug={slug} isListingPage={isListingPage} />
+        <ReadingShell
+          sidebarTestId="blog-sidebar"
+          resizerTestId="blog-sidebar-resizer"
+          sidebar={
+            <div className="border-2 border-stone-900/25 bg-[#fffdf8] dark:border-stone-100/25 dark:bg-[#131110]">
+              <BlogSidebarContent activeSlug={slug} isListingPage={isListingPage} sections={activeSections} />
             </div>
-          </aside>
-
-          <button
-            type="button"
-            role="separator"
-            aria-label="Redimensionar navegação lateral"
-            aria-orientation="vertical"
-            aria-valuemin={sidebarMinWidth}
-            aria-valuemax={sidebarMaxWidth}
-            aria-valuenow={Math.round(sidebarWidth)}
-            onMouseDown={handleResizeMouseDown}
-            onKeyDown={handleResizeKeyDown}
-            data-testid="blog-sidebar-resizer"
-            className="group hidden w-10 shrink-0 cursor-col-resize touch-none select-none items-stretch justify-center lg:flex lg:self-stretch focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-100 dark:focus-visible:ring-offset-slate-950"
-          >
-            <span className="ui-sidebar-rail h-full w-px transition-colors" />
-          </button>
-
+          }
+        >
           <section
             data-testid="blog-main-content"
             className="flex min-h-[calc(100vh-5rem)] min-w-0 flex-1 flex-col"
@@ -230,7 +204,7 @@ const Blog = () => {
               <BlogListing featuredPost={featuredBlogPost} posts={secondaryPosts} />
             )}
           </section>
-        </div>
+        </ReadingShell>
       </div>
     </main>
   );

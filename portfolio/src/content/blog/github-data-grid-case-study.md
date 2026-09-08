@@ -3,15 +3,16 @@ title: Explorador de repositórios com MUI DataGrid e GitHub
 slug: github-data-grid-case-study
 excerpt: Estudo de caso sobre como transformar uma tabela comum em uma demo com dados reais, estados assíncronos previsíveis e narrativa técnica clara.
 publishedAt: 2026-03-24
-readTime: 14 min de leitura
 category: Engenharia de Frontend
 tags: [React, MUI DataGrid, React Query, GitHub API]
-featured: true
+featured: false
 hasDemo: true
 ---
 # Uma demo que parece produto, não playground
 
-No blog antigo, a experiência principal era uma demo técnica separada do conteúdo. Isso mostrava implementação, mas não comunicava decisão. Nesta versão, a lógica foi invertida: o artigo explica critérios e a demo existe para sustentar a história.
+No blog antigo, a experiência principal era uma demo técnica separada do conteúdo. Isso mostrava implementação, mas não comunicava decisão.
+
+Nesta versão, a lógica foi invertida: o artigo explica critérios e a demo existe para sustentar a história.
 
 ## Objetivo do experimento
 
@@ -50,6 +51,8 @@ components/blog/
 ```
 
 Essa separação facilita manutenção. Se eu precisar trocar endpoint, cabeçalhos, estratégia de retry ou mapeamento de erro, não encosto no JSX principal.
+
+O limite também orienta testes. O mapeador pode ser verificado com objetos fixos, enquanto a consulta pode exercitar sucesso, falha e resposta inválida sem montar a tabela inteira.
 
 ## Contrato de retorno previsível
 
@@ -127,10 +130,24 @@ Esse formato deixa o componente previsível e melhora testabilidade.
 
 O grid foi desenhado com foco em leitura rápida:
 
-- célula principal combina nome + descrição para contexto imediato
-- colunas numéricas (`Stars`, `Forks`) ficam curtas e escaneáveis
+- célula principal combina nome e descrição para contexto imediato
+- colunas numéricas, como `Stars` e `Forks`, ficam curtas e escaneáveis
 - atualização recente aparece como sinal de atividade, não só volume
 - quick filter no toolbar ajuda exploração sem navegação extra
+
+Uma tabela não é apenas uma superfície para despejar campos. Ela precisa sugerir uma ordem de leitura. O nome identifica o objeto. A descrição explica sua finalidade. Os números ajudam a comparar.
+
+O mapeador também evita que o componente conheça o formato inteiro da API. A linha do grid recebe apenas os valores necessários à apresentação. Essa redução torna explícita a fronteira entre transporte e interface.
+
+## Estados assíncronos como parte da experiência
+
+Carregamento, sucesso vazio, falha e atualização em segundo plano são estados distintos. Confundi-los produz uma tela que parece quebrada ou que oculta informação importante.
+
+O carregamento inicial deve ocupar o espaço esperado pela tabela. Um estado vazio precisa dizer que a consulta terminou sem linhas. O erro precisa explicar o contexto e oferecer uma ação possível.
+
+Durante uma atualização, o conteúdo anterior pode continuar visível. O indicador de busca informa que há trabalho em curso sem apagar uma resposta que ainda é útil.
+
+Essa escolha depende do contrato da biblioteca e deve ser verificada na implementação final.
 
 ## Erros úteis, não genéricos
 
@@ -145,33 +162,54 @@ if (status === 429) {
 }
 ```
 
-Isso reduz a sensação de quebra do produto e orienta o próximo passo.
+O status `429` é definido para excesso de requisições. Ainda assim, a aplicação não deve presumir que todo erro tem esse formato. O adaptador precisa tratar respostas incompletas e falhas de rede.
 
-## Decisões de performance
+## Cache e desempenho
 
-Boas escolhas simples já ajudam bastante:
+O cache da consulta tem duas funções: evitar trabalho repetido em navegação curta e preservar uma experiência estável ao retornar ao artigo. O tempo de validade não é uma verdade universal.
 
-- `staleTime` de 5 minutos evita requisições repetidas em navegação curta
-- split de código da demo para não pesar o carregamento do artigo
-- render condicional para loading/error/success com feedback visual claro
+O valor de cinco minutos usado no exemplo é uma hipótese de produto, não uma métrica observada. A política deve ser revisada conforme a frequência de mudança dos dados, os limites da API e o comportamento de uso.
 
-## O que eu mediria em produção
+Separar a demo também permite carregá-la sob demanda. Isso pode reduzir o custo inicial do artigo, mas só um relatório de build e uma medição no navegador confirmam o efeito. Não se deve converter essa possibilidade em promessa numérica.
 
-Se essa feature fosse para ambiente de produto, eu acompanharia:
+## Avaliação
 
-1. tempo até primeiro conteúdo útil da tabela
-2. taxa de erro por status HTTP
-3. frequência de refetch manual por sessão
-4. tempo médio entre abrir artigo e interagir com a demo
+Eu avaliaria o experimento em quatro dimensões. A primeira é correção: a linha representa o repositório certo e os erros não são confundidos com sucesso vazio.
 
-## Checklist para replicar
+A segunda é legibilidade. Um leitor precisa compreender a tabela sem conhecer o código. A terceira é manutenção: endpoint, mapeador e visual devem poder mudar em fronteiras diferentes.
 
-1. Estruture em `service -> hook -> component`.
-2. Defina um tipo de erro único para a feature.
-3. Normalize DTO em mapper separado.
-4. Configure cache de consulta com política explícita.
-5. Só depois refine visual do grid.
+A quarta é observabilidade. Em um produto real, eu registraria falhas por classe, estados de carregamento e refetch manual. Esses sinais permitem melhorar a política sem inventar resultados.
 
-## Resultado para o portfólio
+## Limitações
 
-Quando a demo vive dentro de um artigo, ela deixa de ser um bloco técnico isolado. O visitante entende contexto, trade-offs e resultado. Isso melhora leitura para recrutadores, designers e devs, porque cada perfil entra pela camada que prefere: texto, interface ou código.
+Esta demo não representa um backend proprietário. Ela depende de disponibilidade externa, limites de requisição e mudanças no contrato público do GitHub.
+
+Também não prova escalabilidade para milhões de linhas. A consulta apresentada busca uma lista limitada e o grid não deve ser confundido com uma solução para qualquer volume.
+
+O usuário exibido no exemplo é uma escolha de demonstração. A disponibilidade de seus repositórios pode mudar. O resultado visual, portanto, não é um dado fixo do artigo.
+
+## Como replicar
+
+1. Defina o DTO mínimo da resposta externa.
+2. Valide a forma recebida antes de mapear.
+3. Converta o DTO em uma linha própria da interface.
+4. Modele sucesso, falha e carregamento separadamente.
+5. Configure cache com uma hipótese explícita.
+6. Teste a consulta com resposta válida, vazia, limitada e indisponível.
+7. Meça antes de chamar qualquer mudança de otimização.
+
+## Conclusão
+
+Quando a demo vive dentro de um artigo, ela deixa de ser um bloco técnico isolado. O visitante entende contexto, trade-offs e resultado sem precisar aceitar afirmações vagas.
+
+O valor do caso está menos no componente DataGrid do que na cadeia de decisões. Dados reais revelam limites. Contratos reduzem suposições. Estados explícitos transformam falhas em parte projetada da experiência.
+
+Essa cadeia é a evidência que permanece útil mesmo quando a ferramenta muda.
+
+## Referências
+
+- [GitHub REST API: repositórios do usuário](https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user)
+- [GitHub REST API: limites de uso](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
+- [MUI X Data Grid: documentação](https://mui.com/x/react-data-grid/)
+- [TanStack Query: caching](https://tanstack.com/query/latest/docs/framework/react/guides/caching)
+- [TanStack Query: estados de consulta](https://tanstack.com/query/latest/docs/framework/react/guides/queries)

@@ -9,8 +9,8 @@ export const contactLinks = [
     description: 'Canal ideal para propostas, entrevistas e alinhamentos iniciais.',
     actionLabel: 'Responder em até 24h',
     icon: 'envelope' as IconName,
-    iconBg: 'bg-cyan-500/10 group-hover:bg-cyan-500/20',
-    iconColor: 'text-cyan-500',
+    iconBg: 'bg-[#a1006b]/10 group-hover:bg-[#a1006b]/20 dark:bg-fuchsia-200/10',
+    iconColor: 'text-[#73004c] dark:text-fuchsia-200',
   },
   {
     type: 'linkedin',
@@ -20,8 +20,8 @@ export const contactLinks = [
     description: 'Bom para networking, oportunidades e conversas sobre carreira e produto.',
     actionLabel: 'Conexão profissional',
     icon: 'linkedin' as IconName,
-    iconBg: 'bg-blue-500/10 group-hover:bg-blue-500/20',
-    iconColor: 'text-blue-500',
+    iconBg: 'bg-stone-900/5 group-hover:bg-stone-900/10 dark:bg-stone-100/10',
+    iconColor: 'text-stone-800 dark:text-stone-200',
   },
   {
     type: 'github',
@@ -31,8 +31,8 @@ export const contactLinks = [
     description: 'Veja código, experimentos e a evolução técnica dos meus projetos.',
     actionLabel: 'Ver projetos publicados',
     icon: 'github' as IconName,
-    iconBg: 'bg-slate-500/10 group-hover:bg-slate-500/20',
-    iconColor: 'text-slate-700 dark:text-slate-300',
+    iconBg: 'bg-stone-900/5 group-hover:bg-stone-900/10 dark:bg-stone-100/10',
+    iconColor: 'text-stone-800 dark:text-stone-200',
   },
 ];
 
@@ -43,7 +43,7 @@ export const contactHighlights = [
   },
   {
     label: 'Foco',
-    value: 'Front-end forte com evolução full-stack',
+    value: 'Full-stack, com front-end forte',
   },
   {
     label: 'Prioridade',
