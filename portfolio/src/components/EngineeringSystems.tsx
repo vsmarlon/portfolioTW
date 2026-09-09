@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import FreebayArchitectureDiagram from './FreebayArchitectureDiagram';
+import FreebayArchitectureDiagram from './freebay/FreebayArchitectureDiagram';
+
 import { useLocale } from '../contexts/LocaleContext';
 
 const EngineeringSystems = () => {

@@ -1,12 +1,8 @@
 import { lazy, Suspense, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, useParams } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { LocaleProvider, useLocale } from './contexts/LocaleContext';
+import { LocaleProvider, useLocale, type Locale } from './contexts/LocaleContext';
 import { ActiveSectionProvider } from './contexts/ActiveSectionContext';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import LoadingScreen from './components/LoadingScreen';
 import Home from './components/Home';
 import Projects from './components/Projects';
 import NotFound from './components/NotFound';
@@ -14,17 +10,35 @@ import EngineeringSystems from './components/EngineeringSystems';
 import About from './components/About';
 import LatestWriting from './components/LatestWriting';
 import Contact from './components/Contact';
-import FreebayCaseStudy from './components/FreebayCaseStudy';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import LoadingScreen from './components/LoadingScreen';
 import { usePerformanceMode } from './hooks/usePerformanceMode';
 import { useThemeRootRef } from './contexts/ThemeContext';
 import { useActiveSectionRoot } from './contexts/ActiveSectionContext';
 import { useRouteScrollRoot } from './hooks/useRouteScrollRoot';
-import Resume from './components/Resume';
 import type { ResumeLocale } from './data/resume';
 import { getLocalizedBlogPostBySlug } from './data/blogPosts';
 
+
+function resolvePageMeta(
+  pathname: string,
+  locale: Locale,
+  t: (key: string) => string,
+): { pageTitle: string; description: string } {
+  if (pathname === '/') return { pageTitle: t('home.title'), description: t('home.description') };
+  if (pathname === '/blog') return { pageTitle: t('blog.title'), description: t('blog.description') };
+  if (pathname === '/projects/freebay') return { pageTitle: 'Freebay', description: t('freebay.lead') };
+  if (pathname.startsWith('/blog/')) {
+    const article = getLocalizedBlogPostBySlug(pathname.slice('/blog/'.length), locale);
+    if (article) return { pageTitle: article.title, description: article.excerpt };
+  }
+  return { pageTitle: t('notFound.title'), description: t('notFound.description') };
+}
+
 const Blog = lazy(() => import('./components/Blog'));
-const queryClient = new QueryClient();
+const FreebayCaseStudy = lazy(() => import('./components/freebay/FreebayCaseStudy'));
+const Resume = lazy(() => import('./components/Resume'));
 const resumeLocales: ResumeLocale[] = ['en', 'pt-BR'];
 
 const MainPage = () => {
@@ -57,15 +71,7 @@ const Background = () => (
 const SiteLayout = () => {
   const { pathname } = useLocation();
   const { locale, t } = useLocale();
-  const article = pathname.startsWith('/blog/')
-    ? getLocalizedBlogPostBySlug(pathname.slice('/blog/'.length), locale)
-    : undefined;
-  const pageTitle = pathname === '/'
-    ? t('home.title')
-    : article?.title ?? (pathname === '/blog' ? t('blog.title') : pathname === '/projects/freebay' ? 'Freebay' : t('notFound.title'));
-  const description = pathname === '/'
-    ? t('home.description')
-    : article?.excerpt ?? (pathname === '/blog' ? t('blog.description') : pathname === '/projects/freebay' ? t('freebay.lead') : t('notFound.description'));
+  const { pageTitle, description } = resolvePageMeta(pathname, locale, t);
   const title = pathname === '/' ? `Marlon Vargas | ${pageTitle}` : `${pageTitle} | Marlon Vargas`;
 
   return (
@@ -124,10 +130,24 @@ function AppContent() {
                     </Suspense>
                   }
                 />
-                <Route path="/projects/freebay" element={<FreebayCaseStudy />} />
+                <Route
+                  path="/projects/freebay"
+                  element={
+                    <Suspense fallback={<LoadingScreen />}>
+                      <FreebayCaseStudy />
+                    </Suspense>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
               </Route>
-              <Route path="/cv/:locale" element={<ResumeRoute />} />
+              <Route
+                path="/cv/:locale"
+                element={
+                  <Suspense fallback={<LoadingScreen />}>
+                    <ResumeRoute />
+                  </Suspense>
+                }
+              />
             </Routes>
           </ActiveSectionProvider>
         </Router>
@@ -138,10 +158,8 @@ function AppContent() {
 
 export function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Link, MemoryRouter, Route, Routes } from 'react-router-dom';
-import { useRouteScrollRoot } from '../hooks/useRouteScrollRoot';
+import { useRouteScrollRoot } from './useRouteScrollRoot';
 
 const { scrollToTop, scheduleHashScroll, cancelHashScroll } = vi.hoisted(() => ({
   scrollToTop: vi.fn(),
@@ -21,7 +21,9 @@ function TestRoutes() {
       <Link to="/next">PUSH top</Link>
       <Link to="/#projects">PUSH hash</Link>
       <Link to="/replaced" replace>REPLACE</Link>
-      <Routes><Route path="*" element={<Page />} /></Routes>
+      <Routes>
+        <Route path="*" element={<Page />} />
+      </Routes>
     </MemoryRouter>
   );
 }
@@ -34,13 +36,20 @@ describe('useRouteScrollRoot', () => {
     fireEvent.click(screen.getByRole('link', { name: 'PUSH top' }));
     await waitFor(() => expect(scrollToTop).toHaveBeenCalledTimes(1));
     fireEvent.click(screen.getByRole('link', { name: 'PUSH hash' }));
-    await waitFor(() => expect(scheduleHashScroll).toHaveBeenCalledWith('#projects', expect.objectContaining({ root: expect.any(HTMLElement) })));
+    await waitFor(() =>
+      expect(scheduleHashScroll).toHaveBeenCalledWith(
+        '#projects',
+        expect.objectContaining({ root: expect.any(HTMLElement) }),
+      ),
+    );
   });
 
   it('does not perform custom scrolling for POP navigation', async () => {
     render(
       <MemoryRouter initialEntries={['/', '/previous']} initialIndex={1}>
-        <Routes><Route path="*" element={<Page />} /></Routes>
+        <Routes>
+          <Route path="*" element={<Page />} />
+        </Routes>
       </MemoryRouter>,
     );
     await waitFor(() => expect(screen.getByText('page')).toBeInTheDocument());
@@ -51,11 +60,18 @@ describe('useRouteScrollRoot', () => {
   it('schedules a hash scroll for POP navigation on the attached root', async () => {
     render(
       <MemoryRouter initialEntries={['/', '/previous#projects']} initialIndex={1}>
-        <Routes><Route path="*" element={<Page />} /></Routes>
+        <Routes>
+          <Route path="*" element={<Page />} />
+        </Routes>
       </MemoryRouter>,
     );
 
-    await waitFor(() => expect(scheduleHashScroll).toHaveBeenCalledWith('#projects', expect.objectContaining({ root: expect.any(HTMLElement) })));
+    await waitFor(() =>
+      expect(scheduleHashScroll).toHaveBeenCalledWith(
+        '#projects',
+        expect.objectContaining({ root: expect.any(HTMLElement) }),
+      ),
+    );
   });
 
   it('does not reset scroll for REPLACE navigation', async () => {

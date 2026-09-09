@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { LocaleProvider } from '../contexts/LocaleContext';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { LocaleProvider } from '../../contexts/LocaleContext';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 import FreebayCaseStudy from './FreebayCaseStudy';
-import Header from './Header';
+import Header from '../Header';
+
 
 const renderCase = () =>
   render(
@@ -63,6 +64,9 @@ describe('FreebayCaseStudy', () => {
     expect(screen.getByText('Webhook replay without duplicate debit or credit.')).toBeInTheDocument();
     expect(screen.getByText('There are no production metrics because there is no production: payouts, disputes, and one-time media remain in hardening, the web client is under construction, and domains still need to be acquired. The next steps, in this order and without shortcuts: complete the financial ledger with concurrency tests, close private-media authorization, build the web marketplace on the same contracts, and publish only then.')).toBeInTheDocument();
     expect(screen.getByText('The main result is a presentable full-stack foundation: the product can be read through its experience and through the structure that makes it possible, without invented metrics or promises beyond the evidence.')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Analysis of architectural decisions' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Implementation evidence' })).toBeInTheDocument();
+    expect(screen.getByAltText('Freebay product detail')).toBeInTheDocument();
     expect(screen.queryByText(/não há métricas|requisitos não funcionais|sem débito/i)).not.toBeInTheDocument();
   });
 });

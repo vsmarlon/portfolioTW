@@ -1,5 +1,6 @@
 import { useId, type CSSProperties } from 'react';
-import { useLocale } from '../contexts/LocaleContext';
+import { useLocale } from '../../contexts/LocaleContext';
+
 
 export type FreebayFlowId = 'descoberta' | 'conversa' | 'compra';
 

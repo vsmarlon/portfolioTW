@@ -22,7 +22,6 @@
     "@mui/material": "^7.3.9",
     "@mui/x-data-grid": "^8.28.0",
     "@tanstack/react-query": "^5.95.2",
-    "axios": "^1.13.6",
     "highlight.js": "^11.11.1",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.9.1",

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { AppError } from '../../shared/errors';
-import { getUserSafeErrorMessage } from '../../shared/errors';
 import type { GitHubRepoRow } from '../../types/blog';
 import type { ResponseEntity } from '../../shared/result';
 import {
@@ -33,12 +32,7 @@ export function useGitHubRepositoriesQuery({
     [query.data],
   );
   const stats = useMemo(() => buildRepositoryStats(rows), [rows]);
-  const hasUnexpectedQueryError = query.isError && !appError;
-  const errorMessage = appError
-    ? getUserSafeErrorMessage(appError)
-    : hasUnexpectedQueryError
-      ? 'Falha inesperada ao consultar a API.'
-      : null;
+  const errorMessage = appError?.message ?? (query.isError ? 'Falha inesperada ao consultar a API.' : null);
 
   return {
     rows,
@@ -47,7 +41,7 @@ export function useGitHubRepositoriesQuery({
     errorMessage,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-    isError: Boolean(appError) || hasUnexpectedQueryError,
+    isError: Boolean(appError) || query.isError,
     refetch: query.refetch,
   };
 }

@@ -1,5 +1,5 @@
 const DEFAULT_SCROLL_OFFSET = 96;
-const DEFAULT_HASH_SCROLL_TIMEOUT_MS = 5000;
+const DEFAULT_HASH_SCROLL_TIMEOUT_MS = 2000;
 // Fast enough not to annoy, slow enough to read as motion.
 const FAST_SCROLL_DURATION_MS = 420;
 
@@ -110,13 +110,17 @@ export function scheduleHashScroll(hash: string, { smooth = true, offset, timeou
   let rootObserver: MutationObserver | null = null;
   let finished = false;
   let cancelScroll: (() => void) | null = null;
+
   const cleanup = () => {
     finished = true;
     rootObserver?.disconnect();
     rootObserver = null;
-    if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
+    if (animationFrameId !== null) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
   };
+
   const tryScroll = () => {
     animationFrameId = null;
     if (finished) return;
@@ -131,13 +135,18 @@ export function scheduleHashScroll(hash: string, { smooth = true, offset, timeou
     }
     animationFrameId = requestAnimationFrame(tryScroll);
   };
+
   if (root && typeof MutationObserver !== 'undefined') {
     rootObserver = new MutationObserver(() => {
-      if (animationFrameId === null) tryScroll();
+      if (animationFrameId === null && !finished) {
+        animationFrameId = requestAnimationFrame(tryScroll);
+      }
     });
     rootObserver.observe(root, { childList: true, subtree: true });
   }
+
   animationFrameId = requestAnimationFrame(tryScroll);
+
   return () => {
     cleanup();
     cancelScroll?.();

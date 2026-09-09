@@ -10,6 +10,12 @@ const highlightRowClassName =
 const contactMetaClassName =
   'flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between';
 
+const contactProcessSteps = [
+  { titleKey: 'contact.scope', textKey: 'contact.scopeText' },
+  { titleKey: 'contact.proposal', textKey: 'contact.proposalText' },
+  { titleKey: 'contact.delivery', textKey: 'contact.deliveryText' },
+] as const;
+
 const ContactHighlightRow = ({ label, value }: { label: string; value: string }) => (
   <div className={highlightRowClassName}>
     <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-stone-600 dark:text-stone-300">
@@ -75,10 +81,9 @@ const Contact = () => {
   const { t } = useLocale();
 
   return (
-    <section id="contact" className="py-24 relative">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+    <section id="contact" className="content-section">
+      <div className="editorial-container">
         <div ref={reveal} className="reveal card-interactive relative border-[3px] border-stone-900 bg-[#fffdf8] p-6 dark:border-stone-100 dark:bg-[#131110] md:p-10 lg:p-12">
-
           <div className="relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div className="text-left">
               <p className="eyebrow">{t('contact.eyebrow')}</p>
@@ -88,7 +93,7 @@ const Contact = () => {
                 {t('contact.description')}
               </p>
 
-               <div className="mt-8 border-2 border-stone-900/25 px-5 py-2 dark:border-stone-100/25">
+              <div className="mt-8 border-2 border-stone-900/25 px-5 py-2 dark:border-stone-100/25">
                 {contactHighlights.map((item) => (
                   <ContactHighlightRow key={item.label} label={t(item.label)} value={t(item.value)} />
                 ))}
@@ -100,7 +105,7 @@ const Contact = () => {
                   className="focus-ring inline-flex items-center justify-center gap-2 border-2 border-stone-900 bg-stone-900 px-8 py-4 font-bold text-[#faf6ef] transition-all duration-200 hover:bg-[#a1006b] hover:border-[#73004c] dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-[#ec7cc3] dark:hover:text-[#1c0a14]"
                 >
                   <Icon name="paper-plane" />
-                   {t('contact.email')}
+                  {t('contact.email')}
                 </a>
                 <a
                   href="https://www.linkedin.com/in/marlon-vargas-917618223/"
@@ -109,40 +114,32 @@ const Contact = () => {
                   className="focus-ring inline-flex items-center justify-center gap-2 border-2 border-stone-900 bg-transparent px-8 py-4 font-bold text-stone-900 transition-all duration-200 hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100 dark:text-stone-100 dark:hover:border-fuchsia-200 dark:hover:text-fuchsia-200"
                 >
                   <Icon name="linkedin" />
-                   {t('contact.linkedin')}
+                  {t('contact.linkedin')}
                 </a>
               </div>
 
               <div ref={reveal} className="reveal mt-8 border-2 border-stone-900/20 p-5 dark:border-stone-100/20">
-                 <p className="eyebrow">{t('contact.method')}</p>
-                 <h3 className="mt-2 text-xl font-bold text-stone-900 dark:text-stone-100">{t('contact.how')}</h3>
+                <p className="eyebrow">{t('contact.method')}</p>
+                <h3 className="mt-2 text-xl font-bold text-stone-900 dark:text-stone-100">{t('contact.how')}</h3>
                 <ol className="mt-4 space-y-3">
-                   {[
-                     [t('contact.scope'), t('contact.scopeText')],
-                     [t('contact.proposal'), t('contact.proposalText')],
-                     [t('contact.delivery'), t('contact.deliveryText')],
-                  ].map(([title, text], index) => (
-                    <li key={title} className="flex gap-3 text-sm leading-6 text-stone-700 dark:text-stone-300">
+                  {contactProcessSteps.map(({ titleKey, textKey }, index) => (
+                    <li key={titleKey} className="flex gap-3 text-sm leading-6 text-stone-700 dark:text-stone-300">
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center border border-stone-900/30 font-mono text-xs font-bold text-[#73004c] dark:border-stone-100/30 dark:text-fuchsia-200">{index + 1}</span>
-                      <span><strong className="text-stone-900 dark:text-stone-100">{title}: </strong>{text}</span>
+                      <span><strong className="text-stone-900 dark:text-stone-100">{t(titleKey)}: </strong>{t(textKey)}</span>
                     </li>
                   ))}
                 </ol>
               </div>
             </div>
 
-             <div className="border-t-2 border-stone-900/20 pt-6 dark:border-stone-100/20 lg:border-l-2 lg:border-t-0 lg:pl-6 lg:pt-0">
+            <div className="border-t-2 border-stone-900/20 pt-6 dark:border-stone-100/20 lg:border-l-2 lg:border-t-0 lg:pl-6 lg:pt-0">
               <div className="flex items-start justify-between gap-4 border-b-2 border-stone-900/20 pb-5 dark:border-stone-100/20">
                 <div>
-                  <p className="eyebrow">
-                     {t('contact.channels')}
-                  </p>
-                  <h3 className="mt-2 text-2xl font-bold text-stone-900 dark:text-stone-100">
-                     {t('contact.choose')}
-                  </h3>
+                  <p className="eyebrow">{t('contact.channels')}</p>
+                  <h3 className="mt-2 text-2xl font-bold text-stone-900 dark:text-stone-100">{t('contact.choose')}</h3>
                 </div>
                 <div className="shrink-0 border-2 border-stone-900 bg-[#a1006b] px-3 py-2 text-right font-mono text-xs font-bold uppercase tracking-[0.14em] text-[#fff7fb] dark:border-fuchsia-200/60 dark:bg-[#ec7cc3] dark:text-[#1c0a14]">
-                   {t('contact.quick')}
+                  {t('contact.quick')}
                 </div>
               </div>
 
@@ -154,8 +151,8 @@ const Contact = () => {
                 ))}
               </div>
 
-               <div className="mt-5 border-2 border-dashed border-stone-900/30 bg-stone-900/[0.03] px-4 py-4 text-sm leading-6 font-medium text-stone-700 dark:border-stone-100/25 dark:bg-white/[0.03] dark:text-stone-300">
-                 {t('contact.context')}
+              <div className="mt-5 border-2 border-dashed border-stone-900/30 bg-stone-900/[0.03] px-4 py-4 text-sm leading-6 font-medium text-stone-700 dark:border-stone-100/25 dark:bg-white/[0.03] dark:text-stone-300">
+                {t('contact.context')}
               </div>
             </div>
           </div>

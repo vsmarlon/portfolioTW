@@ -37,11 +37,11 @@ const NavigationDrawer = () => {
       <button
         ref={triggerRef}
         type="button"
-         aria-label={t('header.open')}
+        aria-label={t('header.open')}
         aria-controls="site-navigation"
         aria-expanded={isOpen}
         onClick={open}
-         className="z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center border-2 border-stone-900/25 bg-[#faf6ef] text-stone-900 transition-colors hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100/25 dark:bg-[#131110] dark:text-fuchsia-200 dark:hover:border-fuchsia-200"
+        className="z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center border-2 border-stone-900/25 bg-[#faf6ef] text-stone-900 transition-colors hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100/25 dark:bg-[#131110] dark:text-fuchsia-200 dark:hover:border-fuchsia-200"
       >
         <Icon name="bars" className="text-lg" />
       </button>
@@ -49,7 +49,7 @@ const NavigationDrawer = () => {
       <dialog
         ref={dialogRef}
         id="site-navigation"
-         aria-label={t('header.main')}
+        aria-label={t('header.main')}
         onClick={(event) => {
           if (event.target === event.currentTarget) close();
         }}
@@ -70,14 +70,14 @@ const NavigationDrawer = () => {
         <div className="flex h-full flex-col p-6">
           <div className="flex items-center justify-between border-b-2 border-stone-900/20 pb-5 dark:border-stone-100/20">
             <div>
-             <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#73004c] dark:text-fuchsia-200">{t('header.portfolio')}</p>
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#73004c] dark:text-fuchsia-200">{t('header.portfolio')}</p>
               <p className="mt-2 text-lg font-bold">Marlon Vargas</p>
             </div>
-             <button type="button" onClick={close} aria-label={t('header.close')} className="focus-ring p-2 text-stone-700 hover:text-[#a1006b] dark:text-stone-300 dark:hover:text-fuchsia-200">
+            <button type="button" onClick={close} aria-label={t('header.close')} className="focus-ring p-2 text-stone-700 hover:text-[#a1006b] dark:text-stone-300 dark:hover:text-fuchsia-200">
               <Icon name="close" />
             </button>
           </div>
-           <nav className="mt-8" aria-label={t('header.destinations')}>
+          <nav className="mt-8" aria-label={t('header.destinations')}>
             <ul className="space-y-1">
               {navItems.map((item) => {
                 const current = isHome && activeSection === item.section;
@@ -89,11 +89,11 @@ const NavigationDrawer = () => {
                         navigateToSection(event, item.to);
                         close();
                       }}
-                       aria-current={current ? 'location' : undefined}
-                       className={`focus-ring flex items-center gap-3 border-l-2 px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${current ? 'border-[#a1006b] text-[#a1006b] dark:border-fuchsia-200 dark:text-fuchsia-200' : 'border-transparent text-stone-600 hover:border-stone-900/30 hover:text-stone-900 dark:text-stone-300 dark:hover:border-stone-100/40 dark:hover:text-stone-100'}`}
+                      aria-current={current ? 'location' : undefined}
+                      className={`focus-ring flex items-center gap-3 border-l-2 px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${current ? 'border-[#a1006b] text-[#a1006b] dark:border-fuchsia-200 dark:text-fuchsia-200' : 'border-transparent text-stone-600 hover:border-stone-900/30 hover:text-stone-900 dark:text-stone-300 dark:hover:border-stone-100/40 dark:hover:text-stone-100'}`}
                     >
                       <Icon name={item.icon} aria-hidden="true" />
-                       {t(`nav.${item.section}`)}
+                      {t(`nav.${item.section}`)}
                     </Link>
                   </li>
                 );
@@ -106,7 +106,7 @@ const NavigationDrawer = () => {
                   className={({ isActive }) => `focus-ring flex items-center gap-3 border-l-2 px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${isActive ? 'border-[#a1006b] text-[#a1006b] dark:border-fuchsia-200 dark:text-fuchsia-200' : 'border-transparent text-stone-600 hover:border-stone-900/30 hover:text-stone-900 dark:text-stone-300 dark:hover:border-stone-100/40 dark:hover:text-stone-100'}`}
                 >
                   <Icon name="pen" aria-hidden="true" />
-                   {t('nav.blog')}
+                  {t('nav.blog')}
                 </NavLink>
               </li>
             </ul>

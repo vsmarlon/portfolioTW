@@ -1,6 +1,4 @@
-import { Autocomplete, TextField } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useTheme } from '../contexts/ThemeContext';
 import { getBlogPosts, getLocalizedBlogPostBySlug } from '../data/blogPosts';
 import { extractHeadings } from '../utils/headings';
 import BackLink from './BackLink';
@@ -13,18 +11,15 @@ import SurfaceCard from './ui/SurfaceCard';
 import { useLocale } from '../contexts/LocaleContext';
 import { useRouteScrollRoot } from '../hooks/useRouteScrollRoot';
 import { useReadingSection } from '../hooks/useReadingSection';
-import ReadingNavigation from './ReadingNavigation';
 import Icon from './Icon';
 
 const Blog = () => {
   const { slug } = useParams();
   const routeRootRef = useRouteScrollRoot();
   const { activeId, articleRef } = useReadingSection();
-  const { theme } = useTheme();
   const { t, locale } = useLocale();
   const blogPosts = getBlogPosts(locale);
   const featuredBlogPost = blogPosts.find((post) => post.featured) ?? blogPosts[0];
-  const isDark = theme === 'dark';
   const navigate = useNavigate();
   const activePost = getLocalizedBlogPostBySlug(slug, locale);
   const isListingPage = !slug;
@@ -80,107 +75,38 @@ const Blog = () => {
         </div>
 
         <div className="mt-6 lg:hidden">
-          <Autocomplete
-            disablePortal
-            disableClearable
-            options={navOptions}
-            value={selectedNavOption}
-            onChange={(_, option) => {
-              if (option) {
-                void navigate(option.to);
-              }
-            }}
-            getOptionLabel={(option) => option.label}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-             label={t('blog.navigate')}
-                size="small"
-                slotProps={{
-                  inputLabel: {
-                    sx: {
-                      fontSize: '0.825rem',
-                      fontWeight: 600,
-                    },
-                  },
-                }}
-              />
-            )}
-            renderOption={(props, option) => (
-              <li {...props}>
-                <div className="flex min-w-0 flex-col py-1">
-                  <span className="truncate text-sm font-semibold">{option.label}</span>
-                  {option.date ? (
-                    <span className="text-xs text-slate-500 dark:text-slate-400">{option.date}</span>
-                  ) : null}
-                </div>
-              </li>
-            )}
-            sx={{
-              '& .MuiInputBase-root': {
-                borderRadius: 0,
-                fontFamily: 'var(--font-mono)',
-                color: isDark ? '#fafafa' : '#0a0a0a',
-                backgroundColor: isDark ? '#0a0a0a' : '#fafafa',
-              },
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: isDark ? '#fafafa' : '#0a0a0a',
-                borderWidth: '2px',
-              },
-              '& .MuiInputLabel-root': {
-                color: isDark ? '#fafafa' : '#0a0a0a',
-              },
-              '& .MuiInputLabel-root.Mui-focused': {
-                color: '#22d3ee',
-              },
-              '& .MuiAutocomplete-popupIndicator, & .MuiAutocomplete-clearIndicator': {
-                color: isDark ? '#22d3ee' : '#0a0a0a',
-              },
-            }}
-            slotProps={{
-              paper: {
-                elevation: 0,
-                sx: {
-                  mt: 1,
-                  borderRadius: 0,
-                  border: `2px solid ${isDark ? '#fafafa' : '#0a0a0a'}`,
-                  backgroundColor: isDark ? '#0a0a0a' : '#fafafa',
-                  boxShadow: 'none',
-                  '& .MuiAutocomplete-listbox': {
-                    p: '0.4rem',
-                  },
-                  '& .MuiAutocomplete-option': {
-                    borderRadius: 0,
-                    border: `1px solid ${isDark ? '#fafafa' : '#0a0a0a'}`,
-                    minHeight: 44,
-                    alignItems: 'flex-start',
-                    color: isDark ? '#fafafa' : '#0a0a0a',
-                    '& .MuiTypography-root': {
-                      color: isDark ? '#fafafa' : '#0a0a0a',
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: isDark ? 'rgba(34, 211, 238, 0.2)' : 'rgba(34, 211, 238, 0.24)',
-                    },
-                    '&[aria-selected="true"]': {
-                      backgroundColor: isDark ? 'rgba(34, 211, 238, 0.26)' : 'rgba(34, 211, 238, 0.3)',
-                    },
-                  },
-                },
-              },
-            }}
-          />
+          <label htmlFor="blog-mobile-nav" className="block font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#73004c] dark:text-fuchsia-200 mb-2">
+            {t('blog.navigate')}
+          </label>
+          <div className="relative">
+            <select
+              id="blog-mobile-nav"
+              value={selectedNavOption.id}
+              onChange={(event) => {
+                const option = navOptions.find((opt) => opt.id === event.target.value);
+                if (option) {
+                  void navigate(option.to);
+                }
+              }}
+              aria-label={t('blog.navigate')}
+              className="h-12 w-full appearance-none border-2 border-stone-900 bg-[#fffdf8] px-4 pr-10 font-mono text-sm font-semibold text-stone-900 shadow-sm focus:border-[#a1006b] focus:outline-none dark:border-stone-100/30 dark:bg-[#131110] dark:text-stone-100 dark:focus:border-fuchsia-200"
+            >
+              {navOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label} {option.date ? `(${option.date})` : ''}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-stone-700 dark:text-stone-300">
+              <Icon name="chevron-down" className="text-sm" />
+            </div>
+          </div>
         </div>
 
-        {activeSections.length > 0 ? (
-          <div className="mt-4 border-2 border-stone-900/25 bg-[#fffdf8] lg:hidden dark:border-stone-100/25 dark:bg-[#131110]">
-            <ReadingNavigation sections={activeSections} activeId={activeId} />
-          </div>
-        ) : (
-          <div className="mt-4 border-2 border-stone-900/25 bg-[#fffdf8] lg:hidden dark:border-stone-100/25 dark:bg-[#131110]">
-            <BlogSidebarContent activeSlug={slug} isListingPage={isListingPage} sections={activeSections} activeSectionId={activeId} />
-          </div>
-        )}
+        <div className="mt-4 border-2 border-stone-900/25 bg-[#fffdf8] lg:hidden dark:border-stone-100/25 dark:bg-[#131110]">
+          <BlogSidebarContent activeSlug={slug} isListingPage={isListingPage} sections={activeSections} activeSectionId={activeId} />
+        </div>
+
 
         <ReadingShell
           sidebarTestId="blog-sidebar"

@@ -8,4 +8,14 @@ export default defineConfig({
     react(),
     tailwindcss(), 
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('@mui/x-data-grid')) return 'mui-data-grid'
+          if (id.includes('@mui/') || id.includes('@emotion/')) return 'mui'
+        },
+      },
+    },
+  },
 })

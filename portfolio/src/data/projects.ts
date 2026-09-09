@@ -1,28 +1,21 @@
-export interface ProjectItem {
+export type ProjectItem = {
   title: string;
   url: string;
   image: string;
   description: string;
   tools: string[];
-  featured: boolean;
-  spotlight?: boolean;
   eyebrow: string;
-  focus: string;
   details?: string[];
-  translationKey?: string;
-}
+};
 
 export const projectsData: ProjectItem[] = [
   {
     title: 'Freebay',
     url: '/projects/freebay',
-    image: '/chat.webp',
+    image: '/freebay-login.webp',
     description: 'projectsData.freebayDescription',
     tools: ['React', 'Flutter', 'NestJS', 'PostgreSQL'],
-    featured: true,
-    spotlight: true,
     eyebrow: 'projectsData.freebayEyebrow',
-    focus: 'projectsData.freebayFocus',
   },
   {
     title: 'ChatBot RAG',
@@ -30,14 +23,11 @@ export const projectsData: ProjectItem[] = [
     image: '/chat.webp',
     description: 'projectsData.ragDescription',
     tools: ['React', 'Python', 'PostgreSQL', 'Tailwind CSS'],
-    featured: false,
-    spotlight: false,
-    eyebrow: 'Projeto em foco',
-    focus: 'Interface, ingestão de documentos e busca semântica',
+    eyebrow: 'projectsData.ragEyebrow',
     details: [
-      'Fluxo pensado para upload, indexação e consulta com contexto recuperado antes da resposta.',
-      'Backend voltado para embeddings, armazenamento vetorial e integração com modelos de linguagem.',
-      'Frontend criado para explicar melhor a proposta técnica e deixar o experimento fácil de navegar.',
+      'projectsData.ragDetail1',
+      'projectsData.ragDetail2',
+      'projectsData.ragDetail3',
     ],
   },
   {
@@ -46,9 +36,7 @@ export const projectsData: ProjectItem[] = [
     image: '/Capturar.webp',
     description: 'projectsData.animeDescription',
     tools: ['HTML', 'CSS', 'JavaScript', 'API Jikan v4'],
-    featured: false,
-    eyebrow: 'Case prático',
-    focus: 'Consumo de API e organização de interface',
+    eyebrow: 'projectsData.animeEyebrow',
   },
   {
     title: 'To-do List',
@@ -56,8 +44,7 @@ export const projectsData: ProjectItem[] = [
     image: '/todolist.webp',
     description: 'projectsData.todoDescription',
     tools: ['HTML', 'CSS', 'JavaScript'],
-    featured: false,
-    eyebrow: 'Entrega objetiva',
-    focus: 'Fundamentos de interface e lógica de interação',
+    eyebrow: 'projectsData.todoEyebrow',
   },
 ];
+

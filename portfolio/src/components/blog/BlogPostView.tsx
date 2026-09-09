@@ -4,6 +4,7 @@ import rehypeHighlight from 'rehype-highlight';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { BlogPost } from '../../types/blog';
 import { extractHeadings, plainText, slugifyHeading } from '../../utils/headings';
 import ExternalMark from '../ExternalMark';
@@ -15,6 +16,7 @@ import { getLocalizedBlogPostBySlug } from '../../data/blogPosts';
 
 const LazyGitHubRepoExplorer = lazy(() => import('./GitHubRepoExplorer'));
 const DEMO_MARKER = '[[DEMO_GITHUB_REPOS]]';
+const demoQueryClient = new QueryClient();
 
 const markdownComponents = {
   h1: ({ children }: { children?: ReactNode }) => (
@@ -92,9 +94,41 @@ const markdownComponents = {
 const BlogPostView = ({ post, articleRef }: { post: BlogPost; articleRef?: (node: HTMLElement | null) => void }) => {
   const { t } = useLocale();
   const canonicalBody = getLocalizedBlogPostBySlug(post.slug, 'pt-BR')?.body;
-  const headingIds = useMemo(() => extractHeadings(post.body, canonicalBody).map((heading) => heading.id), [canonicalBody, post.body]);
+  const headingMap = useMemo(() => {
+    const sections = extractHeadings(post.body, canonicalBody);
+    const map = new Map<string, string>();
+    for (const section of sections) {
+      map.set(slugifyHeading(section.label), section.id);
+    }
+    return map;
+  }, [canonicalBody, post.body]);
+
+  const components = useMemo(
+    () => ({
+      ...markdownComponents,
+      h2: ({ children }: { children?: ReactNode }) => {
+        const slug = slugifyHeading(plainText(children));
+        const id = headingMap.get(slug) ?? slug;
+        return (
+          <h2 id={id} className="mt-10 scroll-mt-28 font-display text-2xl font-black text-stone-900 dark:text-stone-100">
+            {children}
+          </h2>
+        );
+      },
+      h3: ({ children }: { children?: ReactNode }) => {
+        const slug = slugifyHeading(plainText(children));
+        const id = headingMap.get(slug) ?? slug;
+        return (
+          <h3 id={id} className="mt-8 scroll-mt-28 text-xl font-bold text-stone-900 dark:text-stone-100">
+            {children}
+          </h3>
+        );
+      },
+    }),
+    [headingMap],
+  );
+
   const contentChunks = post.body.split(DEMO_MARKER);
-  let headingIndex = 0;
 
   return (
     <Fragment key={post.slug}>
@@ -144,7 +178,7 @@ const BlogPostView = ({ post, articleRef }: { post: BlogPost; articleRef?: (node
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeHighlight]}
-                   components={{ ...markdownComponents, h2: ({ children }: { children?: ReactNode }) => <h2 id={headingIds[headingIndex++]} className="mt-10 scroll-mt-28 font-display text-2xl font-black text-stone-900 dark:text-stone-100">{children}</h2>, h3: ({ children }: { children?: ReactNode }) => <h3 id={headingIds[headingIndex++]} className="mt-8 scroll-mt-28 text-xl font-bold text-stone-900 dark:text-stone-100">{children}</h3> }}
+                  components={components}
                 >
                   {chunk}
                 </ReactMarkdown>
@@ -183,7 +217,9 @@ const LazyDemoSection = () => {
     <div ref={sentinelRef}>
       {shouldLoad ? (
         <Suspense fallback={<DemoFallback loading />}>
-          <LazyGitHubRepoExplorer />
+          <QueryClientProvider client={demoQueryClient}>
+            <LazyGitHubRepoExplorer />
+          </QueryClientProvider>
         </Suspense>
       ) : (
         <DemoFallback />
