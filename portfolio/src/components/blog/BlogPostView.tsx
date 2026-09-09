@@ -1,15 +1,17 @@
-import { Fragment, Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { Fragment, Suspense, lazy, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import rehypeHighlight from 'rehype-highlight';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useLocation } from 'react-router-dom';
 import type { BlogPost } from '../../types/blog';
-import { plainText, slugifyHeading } from '../../utils/headings';
+import { extractHeadings, plainText, slugifyHeading } from '../../utils/headings';
 import ExternalMark from '../ExternalMark';
 import StatusPill from '../ui/StatusPill';
 import TagChip from '../ui/TagChip';
 import SectionTimeline from '../SectionTimeline';
+import { useLocale } from '../../contexts/LocaleContext';
+import { getLocalizedBlogPostBySlug } from '../../data/blogPosts';
 
 const LazyGitHubRepoExplorer = lazy(() => import('./GitHubRepoExplorer'));
 const DEMO_MARKER = '[[DEMO_GITHUB_REPOS]]';
@@ -87,13 +89,17 @@ const markdownComponents = {
   },
 };
 
-const BlogPostView = ({ post }: { post: BlogPost }) => {
+const BlogPostView = ({ post, articleRef }: { post: BlogPost; articleRef?: (node: HTMLElement | null) => void }) => {
+  const { t } = useLocale();
+  const canonicalBody = getLocalizedBlogPostBySlug(post.slug, 'pt-BR')?.body;
+  const headingIds = useMemo(() => extractHeadings(post.body, canonicalBody).map((heading) => heading.id), [canonicalBody, post.body]);
   const contentChunks = post.body.split(DEMO_MARKER);
+  let headingIndex = 0;
 
   return (
-    <>
-      <SectionTimeline key={post.slug} />
-      <article data-blog-article className="card-interactive border-[3px] border-stone-900 bg-[#fffdf8] p-6 dark:border-stone-100 dark:bg-[#131110] md:p-8">
+    <Fragment key={post.slug}>
+      <SectionTimeline />
+      <article ref={articleRef} data-blog-article className="card-interactive border-[3px] border-stone-900 bg-[#fffdf8] p-6 dark:border-stone-100 dark:bg-[#131110] md:p-8">
       <header className="border-b-2 border-stone-900/20 pb-8 dark:border-stone-100/20">
         <div className="flex flex-wrap items-center gap-2 pb-1 font-mono text-xs font-semibold uppercase tracking-[0.14em]">
           <StatusPill>{post.category}</StatusPill>
@@ -109,7 +115,7 @@ const BlogPostView = ({ post }: { post: BlogPost }) => {
             <>
               <span className="whitespace-nowrap text-stone-500 dark:text-stone-400">|</span>
               <span className="whitespace-nowrap border border-stone-900/25 bg-stone-900/[0.04] px-2 py-1 text-stone-800 dark:border-stone-100/25 dark:bg-white/[0.04] dark:text-stone-200">
-                com demo interativa
+                 {t('blog.interactiveDemo')}
               </span>
             </>
           ) : null}
@@ -138,7 +144,7 @@ const BlogPostView = ({ post }: { post: BlogPost }) => {
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeHighlight]}
-                  components={markdownComponents}
+                   components={{ ...markdownComponents, h2: ({ children }: { children?: ReactNode }) => <h2 id={headingIds[headingIndex++]} className="mt-10 scroll-mt-28 font-display text-2xl font-black text-stone-900 dark:text-stone-100">{children}</h2>, h3: ({ children }: { children?: ReactNode }) => <h3 id={headingIds[headingIndex++]} className="mt-8 scroll-mt-28 text-xl font-bold text-stone-900 dark:text-stone-100">{children}</h3> }}
                 >
                   {chunk}
                 </ReactMarkdown>
@@ -150,41 +156,28 @@ const BlogPostView = ({ post }: { post: BlogPost }) => {
         ))}
       </div>
       </article>
-    </>
+    </Fragment>
   );
 };
 
 const LazyDemoSection = () => {
   const { hash } = useLocation();
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-  const [shouldLoad, setShouldLoad] = useState(hash === '#demo');
-
-  useEffect(() => {
-    if (hash === '#demo') {
-      setShouldLoad(true);
-    }
-  }, [hash]);
-
-  useEffect(() => {
-    if (shouldLoad || !sentinelRef.current) {
-      return;
-    }
-
-    const node = sentinelRef.current;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setShouldLoad(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '320px 0px' },
-    );
-
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const shouldLoad = hash === '#demo' || hasLoaded;
+  const sentinelRef = (node: HTMLDivElement | null) => {
+    observerRef.current?.disconnect();
+    observerRef.current = null;
+    if (!node || shouldLoad) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setHasLoaded(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '320px 0px' });
+    observerRef.current = observer;
     observer.observe(node);
-
-    return () => observer.disconnect();
-  }, [shouldLoad]);
+  };
 
   return (
     <div ref={sentinelRef}>
@@ -199,22 +192,24 @@ const LazyDemoSection = () => {
   );
 };
 
-const DemoFallback = ({ loading = false }: { loading?: boolean }) => (
+const DemoFallback = ({ loading = false }: { loading?: boolean }) => {
+  const { t } = useLocale();
+  return (
   <section
     id="demo"
     className="overflow-hidden border-2 border-stone-900 bg-[#fffdf8] dark:border-stone-100/25 dark:bg-[#1c1917]"
   >
     <div className="border-b-2 border-stone-900/20 px-5 py-5 dark:border-stone-100/20 sm:px-6">
-      <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-[#73004c] dark:text-fuchsia-200">
-        Demo interativa
+       <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-[#73004c] dark:text-fuchsia-200">
+         {t('blog.demo')}
       </p>
       <h2 className="mt-2 font-display text-2xl font-black text-stone-900 dark:text-stone-100">
-        Repositórios reais, grid sob demanda
+         {t('blog.demoTitle')}
       </h2>
       <p className="mt-2 text-sm leading-6 text-stone-700 dark:text-stone-300">
         {loading
-          ? 'Carregando o módulo do DataGrid para manter a leitura do artigo fluida.'
-          : 'O módulo interativo será carregado quando esta seção entrar no viewport ou se você chegar direto pelo link da demo.'}
+           ? t('blog.demoLoading')
+           : t('blog.demoWaiting')}
       </p>
     </div>
 
@@ -230,6 +225,7 @@ const DemoFallback = ({ loading = false }: { loading?: boolean }) => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default BlogPostView;

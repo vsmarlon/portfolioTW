@@ -1,7 +1,7 @@
 import type { IconName } from '../types/icons';
 
 export const notFoundQuickLinks: Array<{ to: string; label: string; icon: IconName }> = [
-  { to: '/', label: 'Voltar para o inicio', icon: 'home' },
-  { to: '/#projects', label: 'Ver projetos', icon: 'grid' },
-  { to: '/blog', label: 'Abrir blog e demos', icon: 'pen' },
+  { to: '/', label: 'notFound.home', icon: 'home' },
+  { to: '/#projects', label: 'home.projects', icon: 'grid' },
+  { to: '/blog', label: 'nav.blog', icon: 'pen' },
 ];

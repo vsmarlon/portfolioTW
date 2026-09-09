@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { scheduleHashScroll, scrollToElementId, scrollToTop } from './scroll';
+import { getScrollOffset, scheduleHashScroll, scrollToElementId, scrollToTop } from './scroll';
 
 describe('scroll schedulers', () => {
   const originalRequestAnimationFrame = window.requestAnimationFrame;
@@ -149,7 +149,36 @@ describe('scroll schedulers', () => {
       runFrame();
     }
 
-    expect(mockScrollY).toBe(1000 - 200 - 104);
+    expect(mockScrollY).toBe(1000 - 200 - 96);
+  });
+
+  it('derives the offset from the fixed header and leaves a readable gap', () => {
+    const header = document.createElement('header');
+    header.className = 'fixed';
+    vi.spyOn(header, 'getBoundingClientRect').mockReturnValue({
+      top: 0, bottom: 132, left: 0, right: 0, width: 0, height: 132, x: 0, y: 0, toJSON: () => {},
+    });
+    document.body.append(header);
+
+    expect(getScrollOffset()).toBe(148);
+  });
+
+  it('uses the final header height while its entrance transform is running', () => {
+    const header = document.createElement('header');
+    header.className = 'fixed';
+    vi.spyOn(header, 'getBoundingClientRect').mockReturnValue({
+      top: -100, bottom: 32, left: 0, right: 0, width: 375, height: 132, x: 0, y: -100, toJSON: () => {},
+    });
+    document.body.append(header);
+    expect(getScrollOffset()).toBe(148);
+  });
+
+  it('does not start nested browser smooth scrolling inside animation frames', () => {
+    mockScrollY = 500;
+    scrollToTop();
+    runFrame();
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 500, behavior: 'instant' });
+    window.dispatchEvent(new Event('wheel'));
   });
 
   it('stays instant when the user prefers reduced motion', () => {
@@ -198,4 +227,18 @@ describe('scroll schedulers', () => {
     expect(window.scrollTo).not.toHaveBeenCalled();
     expect(window.cancelAnimationFrame).toHaveBeenCalledTimes(1);
   });
+
+  it('removes the previous wheel cancellation listener when replacing an animation', () => {
+    mockScrollY = 500;
+    const removeEventListener = vi.spyOn(window, 'removeEventListener');
+    scrollToTop();
+    scrollToTop();
+    expect(removeEventListener).toHaveBeenCalledWith('wheel', expect.any(Function));
+    runFrame();
+    window.dispatchEvent(new Event('wheel'));
+    runFrame();
+
+    expect(frameCallbacks.size).toBe(0);
+  });
+
 });

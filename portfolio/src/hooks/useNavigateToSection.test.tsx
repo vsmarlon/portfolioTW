@@ -29,6 +29,6 @@ describe('useNavigateToSection', () => {
     result.current(mockEvent, '/');
 
     expect(mockEvent.preventDefault).toHaveBeenCalled();
-    expect(mockScrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'auto' });
+    expect(mockScrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'instant' });
   });
 });

@@ -1,7 +1,9 @@
 import { useTheme } from '../contexts/ThemeContext';
+import { useLocale } from '../contexts/LocaleContext';
 
 const LoadingScreen = () => {
   const { theme } = useTheme();
+  const { t } = useLocale();
   return (
     <div className={`min-h-screen flex items-center justify-center ${
       theme === 'dark' ? 'bg-[#131110]' : 'bg-[#faf6ef]'
@@ -16,7 +18,7 @@ const LoadingScreen = () => {
         }`}></div>
         <p className={`font-mono text-sm font-semibold uppercase tracking-[0.16em] ${
           theme === 'dark' ? 'text-stone-200' : 'text-stone-700'
-        }`}>Carregando...</p>
+        }`}>{t('blog.demoLoading')}</p>
       </div>
     </div>
   );

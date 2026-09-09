@@ -3,8 +3,9 @@ import { failure, success, type ResponseEntity } from '../shared/result';
 import { formatPtBrDate } from '../utils/date';
 import { devError } from '../utils/devLog';
 import { getReadingTime } from '../utils/readingTime';
+import type { Locale } from '../contexts/LocaleContext';
 
-const rawPosts = import.meta.glob('../content/blog/*.md', {
+const rawPosts = import.meta.glob('../content/blog/**/*.md', {
   query: '?raw',
   import: 'default',
   eager: true,
@@ -90,8 +91,10 @@ function parseFrontmatter(
   });
 }
 
-function formatPostDate(date: string): string {
-  return formatPtBrDate(`${date}T00:00:00`);
+function formatPostDate(date: string, locale: Locale): string {
+  return locale === 'en'
+    ? new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(`${date}T00:00:00`))
+    : formatPtBrDate(`${date}T00:00:00`);
 }
 
 const parsedPosts = Object.entries(rawPosts).flatMap(([path, source]) => {
@@ -107,7 +110,8 @@ const parsedPosts = Object.entries(rawPosts).flatMap(([path, source]) => {
     {
       ...meta,
       body,
-      formattedDate: formatPostDate(meta.publishedAt),
+       formattedDate: formatPostDate(meta.publishedAt, path.includes('/en/') ? 'en' : 'pt-BR'),
+       locale: (path.includes('/en/') ? 'en' : 'pt-BR') as Locale,
       readTime: getReadingTime(body),
     },
   ];
@@ -124,16 +128,21 @@ const FALLBACK_BLOG_POST: BlogPost = {
   featured: true,
   hasDemo: false,
   body: 'O conteúdo do blog não foi carregado corretamente.',
-  formattedDate: formatPostDate('2026-01-01'),
+  formattedDate: formatPostDate('2026-01-01', 'pt-BR'),
 };
 
-export const blogPosts: BlogPost[] = [...(parsedPosts.length > 0 ? parsedPosts : [FALLBACK_BLOG_POST])]
-  .sort((left, right) => right.publishedAt.localeCompare(left.publishedAt));
+const postsByLocale: Record<Locale, BlogPost[]> = {
+  'pt-BR': parsedPosts.filter((post) => post.locale === 'pt-BR'),
+  en: parsedPosts.filter((post) => post.locale === 'en'),
+};
 
-export const featuredBlogPost = blogPosts.find((post) => post.featured) ?? blogPosts[0];
+function postsFor(locale: Locale): BlogPost[] {
+  return [...(postsByLocale[locale].length > 0 ? postsByLocale[locale] : [FALLBACK_BLOG_POST])]
+    .sort((left, right) => right.publishedAt.localeCompare(left.publishedAt));
+}
 
-export const demoBlogPost = blogPosts.find((post) => post.hasDemo) ?? blogPosts[0];
+export function getBlogPosts(locale: Locale): BlogPost[] { return postsFor(locale); }
 
-export function getBlogPostBySlug(slug?: string): BlogPost | undefined {
-  return blogPosts.find((post) => post.slug === slug);
+export function getLocalizedBlogPostBySlug(slug: string | undefined, locale: Locale): BlogPost | undefined {
+  return getBlogPosts(locale).find((post) => post.slug === slug);
 }

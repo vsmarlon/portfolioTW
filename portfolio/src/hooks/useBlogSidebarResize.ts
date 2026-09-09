@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react';
 
 const SIDEBAR_WIDTH_STORAGE_KEY = 'portfolio.blog.sidebarWidth';
@@ -11,47 +11,40 @@ function clampSidebarWidth(width: number) {
   return Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, width));
 }
 
+function readSidebarWidth() {
+  try {
+    const value = Number.parseFloat(window.localStorage.getItem(SIDEBAR_WIDTH_STORAGE_KEY) ?? '');
+    return Number.isFinite(value) ? clampSidebarWidth(value) : SIDEBAR_DEFAULT_WIDTH;
+  } catch {
+    return SIDEBAR_DEFAULT_WIDTH;
+  }
+}
+
 interface BlogSidebarResizeState {
   sidebarWidth: number;
   sidebarMinWidth: number;
   sidebarMaxWidth: number;
   handleResizeMouseDown: (event: ReactMouseEvent<HTMLButtonElement>) => void;
   handleResizeKeyDown: (event: ReactKeyboardEvent<HTMLButtonElement>) => void;
+  resizeHandleRef: (node: HTMLButtonElement | null) => void;
 }
 
 export function useBlogSidebarResize(): BlogSidebarResizeState {
-  const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_DEFAULT_WIDTH);
+  const [sidebarWidth, setSidebarWidth] = useState(readSidebarWidth);
+  const stopResizingRef = useRef<(() => void) | null>(null);
 
-  useEffect(() => {
-    const persistedWidth = window.localStorage.getItem(SIDEBAR_WIDTH_STORAGE_KEY);
-
-    if (!persistedWidth) {
-      return;
-    }
-
-    const parsedWidth = Number.parseFloat(persistedWidth);
-
-    if (!Number.isFinite(parsedWidth)) {
-      return;
-    }
-
-    setSidebarWidth(clampSidebarWidth(parsedWidth));
+  const resizeHandleRef = useCallback((node: HTMLButtonElement | null) => {
+    if (!node) stopResizingRef.current?.();
   }, []);
 
-  useEffect(() => {
-    window.localStorage.setItem(SIDEBAR_WIDTH_STORAGE_KEY, String(sidebarWidth));
-  }, [sidebarWidth]);
-
-  useEffect(
-    () => () => {
-      document.body.style.removeProperty('cursor');
-      document.body.style.removeProperty('user-select');
-    },
-    [],
-  );
-
   const resizeSidebar = useCallback((nextWidth: number) => {
-    setSidebarWidth(clampSidebarWidth(nextWidth));
+    const width = clampSidebarWidth(nextWidth);
+    setSidebarWidth(width);
+    try {
+      window.localStorage.setItem(SIDEBAR_WIDTH_STORAGE_KEY, String(width));
+    } catch {
+      // Storage is optional; the current drag remains usable in memory.
+    }
   }, []);
 
   const handleResizeMouseDown = useCallback(
@@ -74,11 +67,14 @@ export function useBlogSidebarResize(): BlogSidebarResizeState {
         document.body.style.removeProperty('user-select');
         window.removeEventListener('mousemove', handleMouseMove);
         window.removeEventListener('mouseup', handleMouseUp);
+        stopResizingRef.current = null;
       };
 
       const handleMouseUp = () => {
         stopResizing();
       };
+
+      stopResizingRef.current = stopResizing;
 
       document.body.style.cursor = 'col-resize';
       document.body.style.userSelect = 'none';
@@ -109,5 +105,6 @@ export function useBlogSidebarResize(): BlogSidebarResizeState {
     sidebarMaxWidth: SIDEBAR_MAX_WIDTH,
     handleResizeMouseDown,
     handleResizeKeyDown,
+    resizeHandleRef,
   };
 }

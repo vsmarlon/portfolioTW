@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,10 +50,18 @@
   <!-- Theme Script - Prevent Flash -->
   <script>
     (function() {
-      const stored = localStorage.getItem('theme');
+      let stored = null;
+      let locale = 'pt-BR';
+      try {
+        stored = localStorage.getItem('theme');
+        const storedLocale = localStorage.getItem('locale');
+        if (storedLocale === 'en' || storedLocale === 'pt-BR') locale = storedLocale;
+      } catch (_) {}
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = stored || (prefersDark ? 'dark' : 'light');
+      const theme = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.lang = locale;
+      document.title = locale === 'en' ? 'Marlon Vargas | Full Stack Developer' : 'Marlon Vargas | Desenvolvedor Full Stack';
     })();
   </script>
 </head>

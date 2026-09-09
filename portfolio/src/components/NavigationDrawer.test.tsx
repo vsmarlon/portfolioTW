@@ -3,13 +3,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ActiveSectionProvider } from '../contexts/ActiveSectionContext';
 import { ThemeProvider } from '../contexts/ThemeContext';
+import { LocaleProvider } from '../contexts/LocaleContext';
 import NavigationDrawer from './NavigationDrawer';
 
 const Providers = ({ children, initialEntries = ['/'] }: { children: React.ReactNode; initialEntries?: string[] }) => (
   <ThemeProvider>
-    <MemoryRouter initialEntries={initialEntries}>
+    <LocaleProvider><MemoryRouter initialEntries={initialEntries}>
       <ActiveSectionProvider>{children}</ActiveSectionProvider>
-    </MemoryRouter>
+    </MemoryRouter></LocaleProvider>
   </ThemeProvider>
 );
 

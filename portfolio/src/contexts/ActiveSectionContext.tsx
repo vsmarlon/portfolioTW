@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navItems } from '../data/navigation';
 import { devWarn } from '../utils/devLog';
@@ -7,12 +7,14 @@ import { getDocumentPerformanceMode } from '../utils/performanceMode';
 interface ActiveSectionContextType {
   activeSection: string;
   setActiveSection: (section: string) => void;
+  observeSections: (root: HTMLElement | null) => void;
 }
 
 const ActiveSectionContext = createContext<ActiveSectionContextType | undefined>(undefined);
 const FALLBACK_ACTIVE_SECTION_CONTEXT: ActiveSectionContextType = {
   activeSection: 'home',
   setActiveSection: () => {},
+  observeSections: () => {},
 };
 
 const sectionIds = navItems.map((item) => item.section);
@@ -20,19 +22,18 @@ const sectionIds = navItems.map((item) => item.section);
 export function ActiveSectionProvider({ children }: { children: ReactNode }) {
   const [activeSection, setActiveSection] = useState('home');
   const activeSectionRef = useRef('home');
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname !== '/') {
-      setActiveSection('home');
+  const observeSections = useCallback((root: HTMLElement | null) => {
+    observerRef.current?.disconnect();
+    observerRef.current = null;
+    if (!root || location.pathname !== '/') {
       activeSectionRef.current = 'home';
+      setActiveSection('home');
       return;
     }
 
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
+    const elements = sectionIds.map((id) => root.querySelector<HTMLElement>(`#${id}`)).filter((el): el is HTMLElement => el !== null);
     if (elements.length === 0) return;
 
     const visibilityBySection = new Map<string, number>();
@@ -79,14 +80,18 @@ export function ActiveSectionProvider({ children }: { children: ReactNode }) {
       observer.observe(el);
     }
 
-    return () => observer.disconnect();
+    observerRef.current = observer;
   }, [location.pathname]);
 
   return (
-    <ActiveSectionContext.Provider value={{ activeSection, setActiveSection }}>
+    <ActiveSectionContext.Provider value={{ activeSection, setActiveSection, observeSections }}>
       {children}
     </ActiveSectionContext.Provider>
   );
+}
+
+export function useActiveSectionRoot() {
+  return useActiveSection().observeSections;
 }
 
 export function useActiveSection() {

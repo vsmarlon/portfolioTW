@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
-import { blogPosts } from '../data/blogPosts';
+import { getBlogPosts } from '../data/blogPosts';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useLocale } from '../contexts/LocaleContext';
 
 const LatestWriting = () => {
   const reveal = useScrollReveal();
+  const { t, locale } = useLocale();
+  const blogPosts = getBlogPosts(locale);
   return (
     <section id="writing" className="content-section">
       <div ref={reveal} className="reveal editorial-container">
         <div className="section-heading flex items-end justify-between gap-6">
-           <div><p className="eyebrow">Últimos textos</p><h2>Escrita com contexto técnico.</h2></div>
-           <Link to="/blog" className="focus-ring hidden text-sm font-semibold text-[#73004c] underline-offset-4 hover:underline dark:text-fuchsia-200 sm:inline">Ver todos →</Link>
+           <div><p className="eyebrow">{t('writing.eyebrow')}</p><h2>{t('writing.title')}</h2></div>
+            <Link to="/blog" className="focus-ring hidden text-sm font-semibold text-[#73004c] underline-offset-4 hover:underline dark:text-fuchsia-200 sm:inline">{t('writing.all')}</Link>
         </div>
         <div className="mt-8 border-y-2 border-stone-900/20 dark:border-stone-100/20">
           {blogPosts.slice(0, 3).map((post) => (

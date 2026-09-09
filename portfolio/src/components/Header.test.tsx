@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import { ThemeProvider } from '../contexts/ThemeContext';
+import { LocaleProvider } from '../contexts/LocaleContext';
 import Header from './Header';
 
 const LocationProbe = () => {
@@ -19,7 +20,7 @@ const RouteControls = () => {
 function renderHeader(initialEntry: string) {
   return render(
     <ThemeProvider>
-      <MemoryRouter initialEntries={[initialEntry]}>
+      <LocaleProvider><MemoryRouter initialEntries={[initialEntry]}>
         <Header />
         <LocationProbe />
         <NavigationProbe />
@@ -27,14 +28,44 @@ function renderHeader(initialEntry: string) {
         <Routes>
           <Route path="/blog" element={<span>listing</span>} />
           <Route path="/blog/:slug" element={<span>article</span>} />
+          <Route path="/projects/freebay" element={<span>case study</span>} />
           <Route path="/" element={<button>home</button>} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter></LocaleProvider>
     </ThemeProvider>,
   );
 }
 
 describe('Header blog search', () => {
+  it('uses the same searchable reading header on the case study', () => {
+    renderHeader('/projects/freebay');
+    const search = screen.getByRole('searchbox', { name: 'Buscar artigos' });
+    expect(within(search.closest('form')!).getByRole('link', { name: /Marlon Vargas/i })).toHaveTextContent('MV');
+    fireEvent.keyDown(document, { key: 'k', ctrlKey: true });
+    expect(search).toHaveFocus();
+    fireEvent.change(search, { target: { value: 'Freebay' } });
+    expect(screen.getByTestId('location')).toHaveTextContent('/blog?q=Freebay');
+  });
+
+  it('keeps the blog monogram inside the search field', () => {
+    renderHeader('/blog');
+
+    const banner = screen.getByRole('banner');
+    const form = screen.getByRole('searchbox').closest('form')!;
+
+    expect(within(form).getByRole('link', { name: /Marlon Vargas/i })).toHaveTextContent('MV');
+    expect(form.querySelectorAll('a')).toHaveLength(1);
+    expect(banner.querySelector('[data-header-group="brand"] > a')).not.toBeInTheDocument();
+    expect(banner.querySelector('[data-header-group="actions"]')).toBeInTheDocument();
+  });
+
+  it('keeps the full home monogram and name beside the hamburger', () => {
+    renderHeader('/');
+
+    expect(screen.getByRole('link', { name: /Marlon Vargas/i })).toHaveTextContent(/MV.*MARLON VARGAS/);
+    expect(screen.getByRole('banner').querySelector('form')).not.toBeInTheDocument();
+  });
+
   it('syncs typing and empty values with the URL', () => {
     renderHeader('/blog?q=old');
     const input = screen.getByRole('searchbox', { name: 'Buscar artigos' });

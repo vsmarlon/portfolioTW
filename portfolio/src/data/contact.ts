@@ -4,10 +4,10 @@ export const contactLinks = [
   {
     type: 'email',
     href: 'mailto:vsmarlonvargas@gmail.com',
-    label: 'Email',
+    label: 'contactData.email.label',
     value: 'vsmarlonvargas@gmail.com',
-    description: 'Canal ideal para propostas, entrevistas e alinhamentos iniciais.',
-    actionLabel: 'Responder em até 24h',
+    description: 'contactData.email.description',
+    actionLabel: 'contactData.email.action',
     icon: 'envelope' as IconName,
     iconBg: 'bg-[#a1006b]/10 group-hover:bg-[#a1006b]/20 dark:bg-fuchsia-200/10',
     iconColor: 'text-[#73004c] dark:text-fuchsia-200',
@@ -15,10 +15,10 @@ export const contactLinks = [
   {
     type: 'linkedin',
     href: 'https://www.linkedin.com/in/marlon-vargas-917618223/',
-    label: 'LinkedIn',
+    label: 'contactData.linkedin.label',
     value: '/marlon-vargas',
-    description: 'Bom para networking, oportunidades e conversas sobre carreira e produto.',
-    actionLabel: 'Conexão profissional',
+    description: 'contactData.linkedin.description',
+    actionLabel: 'contactData.linkedin.action',
     icon: 'linkedin' as IconName,
     iconBg: 'bg-stone-900/5 group-hover:bg-stone-900/10 dark:bg-stone-100/10',
     iconColor: 'text-stone-800 dark:text-stone-200',
@@ -26,10 +26,10 @@ export const contactLinks = [
   {
     type: 'github',
     href: 'https://github.com/vsmarlon',
-    label: 'GitHub',
+    label: 'contactData.github.label',
     value: '@vsmarlon',
-    description: 'Veja código, experimentos e a evolução técnica dos meus projetos.',
-    actionLabel: 'Ver projetos publicados',
+    description: 'contactData.github.description',
+    actionLabel: 'contactData.github.action',
     icon: 'github' as IconName,
     iconBg: 'bg-stone-900/5 group-hover:bg-stone-900/10 dark:bg-stone-100/10',
     iconColor: 'text-stone-800 dark:text-stone-200',
@@ -38,16 +38,16 @@ export const contactLinks = [
 
 export const contactHighlights = [
   {
-    label: 'Formato',
-    value: 'Remoto, híbrido ou freelance',
+    label: 'contactData.highlights.format',
+    value: 'contactData.highlights.formatValue',
   },
   {
-    label: 'Foco',
-    value: 'Full-stack, com front-end forte',
+    label: 'contactData.highlights.focus',
+    value: 'contactData.highlights.focusValue',
   },
   {
-    label: 'Prioridade',
-    value: 'Produtos com impacto real e boa experiência',
+    label: 'contactData.highlights.priority',
+    value: 'contactData.highlights.priorityValue',
   },
 ];
 

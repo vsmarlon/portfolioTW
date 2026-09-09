@@ -1,15 +1,16 @@
 import { useId, type CSSProperties } from 'react';
+import { useLocale } from '../contexts/LocaleContext';
 
 export type FreebayFlowId = 'descoberta' | 'conversa' | 'compra';
 
 const nodes = [
-  { id: 'clients', x: 20, y: 100, w: 150, label: 'React + Flutter', sub: 'clientes' },
-  { id: 'nestjs', x: 235, y: 100, w: 150, label: 'NestJS', sub: 'serviços' },
-  { id: 'auth', x: 450, y: 28, w: 155, label: 'Auth / Social', sub: 'identidade e relações' },
-  { id: 'listings', x: 450, y: 100, w: 155, label: 'Listings', sub: 'produto e descoberta' },
-  { id: 'db', x: 450, y: 172, w: 155, label: 'PostgreSQL', sub: 'persistência' },
-  { id: 'stripe', x: 670, y: 64, w: 145, label: 'Stripe', sub: 'pagamentos' },
-  { id: 'socket', x: 670, y: 152, w: 145, label: 'Socket.IO', sub: 'notificações' },
+  { id: 'clients', x: 20, y: 100, w: 150, label: 'React + Flutter', sub: 'diagram.clients' },
+  { id: 'nestjs', x: 235, y: 100, w: 150, label: 'NestJS', sub: 'diagram.services' },
+  { id: 'auth', x: 450, y: 28, w: 155, label: 'Auth / Social', sub: 'diagram.identity' },
+  { id: 'listings', x: 450, y: 100, w: 155, label: 'Listings', sub: 'diagram.discovery' },
+  { id: 'db', x: 450, y: 172, w: 155, label: 'PostgreSQL', sub: 'diagram.persistence' },
+  { id: 'stripe', x: 670, y: 64, w: 145, label: 'Stripe', sub: 'diagram.payments' },
+  { id: 'socket', x: 670, y: 152, w: 145, label: 'Socket.IO', sub: 'diagram.notifications' },
 ];
 
 const FLOW_NODES: Record<FreebayFlowId, string[]> = {
@@ -29,12 +30,13 @@ const FLOW_PATHS = [
 
 const FreebayArchitectureDiagram = ({ activeFlow = null }: { activeFlow?: FreebayFlowId | null }) => {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
+  const { t } = useLocale();
 
   return (
   <figure className="architecture-frame card-interactive" aria-labelledby={`architecture-title-${uid}`} aria-describedby={`architecture-description-${uid}`}>
     <svg viewBox="0 0 835 250" role="img" focusable="false">
-      <title id={`architecture-title-${uid}`}>Arquitetura do Freebay</title>
-      <desc id={`architecture-description-${uid}`}>Clientes React e Flutter passam pelo NestJS, que direciona o fluxo para autenticação, listagens, PostgreSQL, Stripe e Socket.IO.</desc>
+      <title id={`architecture-title-${uid}`}>{t('diagram.title')}</title>
+      <desc id={`architecture-description-${uid}`}>{t('diagram.description')}</desc>
       <defs>
         <marker id={`architecture-arrow-${uid}`} markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
           <path d="M0 0L8 4L0 8Z" fill="#a78bfa" />
@@ -57,7 +59,7 @@ const FreebayArchitectureDiagram = ({ activeFlow = null }: { activeFlow?: Freeba
         <g key={node.label} transform={`translate(${node.x} ${node.y})`} className="architecture-node-group" style={{ '--i': index } as CSSProperties}>
           <rect width={node.w} height="56" className={`architecture-node${isActive ? ' is-active' : ' is-dim'}`} />
           <text x="16" y="23" className="architecture-label">{node.label}</text>
-          <text x="16" y="41" className="architecture-sub">{node.sub}</text>
+           <text x="16" y="41" className="architecture-sub">{t(node.sub)}</text>
         </g>
         );
       })}

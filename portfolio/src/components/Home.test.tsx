@@ -3,9 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from '../contexts/ThemeContext';
 import { ActiveSectionProvider } from '../contexts/ActiveSectionContext';
+import { LocaleProvider } from '../contexts/LocaleContext';
 import Home from './Home';
 
-const Providers = ({ children }: { children: React.ReactNode }) => <ThemeProvider><MemoryRouter><ActiveSectionProvider>{children}</ActiveSectionProvider></MemoryRouter></ThemeProvider>;
+const Providers = ({ children }: { children: React.ReactNode }) => <ThemeProvider><LocaleProvider><MemoryRouter><ActiveSectionProvider>{children}</ActiveSectionProvider></MemoryRouter></LocaleProvider></ThemeProvider>;
 
 describe('Home', () => {
   it('presents the full-stack identity and project CTA without availability claims', () => {

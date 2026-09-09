@@ -2,6 +2,7 @@ import { contactHighlights, contactLinks } from '../data/contact';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import ExternalMark from './ExternalMark';
 import Icon from './Icon';
+import { useLocale } from '../contexts/LocaleContext';
 
 const highlightRowClassName =
   'flex flex-col gap-2 border-b border-stone-900/15 py-4 last:border-b-0 dark:border-stone-100/15 sm:flex-row sm:items-start sm:justify-between';
@@ -71,6 +72,7 @@ const ContactChannelRow = ({
 
 const Contact = () => {
   const reveal = useScrollReveal();
+  const { t } = useLocale();
 
   return (
     <section id="contact" className="py-24 relative">
@@ -79,18 +81,16 @@ const Contact = () => {
 
           <div className="relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div className="text-left">
-              <p className="eyebrow">Contato</p>
-              <h2 className="mt-4 text-3xl font-black tracking-tight text-stone-900 dark:text-stone-100 md:text-5xl">
-                Direto ao ponto.
-              </h2>
+              <p className="eyebrow">{t('contact.eyebrow')}</p>
+              <h2 className="mt-4 text-3xl font-black tracking-tight text-stone-900 dark:text-stone-100 md:text-5xl">{t('contact.title')}</h2>
 
               <p className="mt-5 max-w-2xl text-lg leading-8 text-stone-700 dark:text-stone-300">
-                Interface, backend e dados como um sistema só. Me mande stack, objetivo e prazo.
+                {t('contact.description')}
               </p>
 
                <div className="mt-8 border-2 border-stone-900/25 px-5 py-2 dark:border-stone-100/25">
                 {contactHighlights.map((item) => (
-                  <ContactHighlightRow key={item.label} {...item} />
+                  <ContactHighlightRow key={item.label} label={t(item.label)} value={t(item.value)} />
                 ))}
               </div>
 
@@ -100,7 +100,7 @@ const Contact = () => {
                   className="focus-ring inline-flex items-center justify-center gap-2 border-2 border-stone-900 bg-stone-900 px-8 py-4 font-bold text-[#faf6ef] transition-all duration-200 hover:bg-[#a1006b] hover:border-[#73004c] dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-[#ec7cc3] dark:hover:text-[#1c0a14]"
                 >
                   <Icon name="paper-plane" />
-                  Falar por email
+                   {t('contact.email')}
                 </a>
                 <a
                   href="https://www.linkedin.com/in/marlon-vargas-917618223/"
@@ -109,18 +109,18 @@ const Contact = () => {
                   className="focus-ring inline-flex items-center justify-center gap-2 border-2 border-stone-900 bg-transparent px-8 py-4 font-bold text-stone-900 transition-all duration-200 hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100 dark:text-stone-100 dark:hover:border-fuchsia-200 dark:hover:text-fuchsia-200"
                 >
                   <Icon name="linkedin" />
-                  Chamar no LinkedIn
+                   {t('contact.linkedin')}
                 </a>
               </div>
 
               <div ref={reveal} className="reveal mt-8 border-2 border-stone-900/20 p-5 dark:border-stone-100/20">
-                <p className="eyebrow">Método</p>
-                <h3 className="mt-2 text-xl font-bold text-stone-900 dark:text-stone-100">Como trabalho</h3>
+                 <p className="eyebrow">{t('contact.method')}</p>
+                 <h3 className="mt-2 text-xl font-bold text-stone-900 dark:text-stone-100">{t('contact.how')}</h3>
                 <ol className="mt-4 space-y-3">
-                  {[
-                    ['Escopo', 'Problema, restrições e critérios de aceite antes de qualquer código.'],
-                    ['Proposta', 'Desenho técnico, fronteiras e estimativa explícita.'],
-                    ['Entrega', 'Implementação testada e documentada, sem caixa-preta.'],
+                   {[
+                     [t('contact.scope'), t('contact.scopeText')],
+                     [t('contact.proposal'), t('contact.proposalText')],
+                     [t('contact.delivery'), t('contact.deliveryText')],
                   ].map(([title, text], index) => (
                     <li key={title} className="flex gap-3 text-sm leading-6 text-stone-700 dark:text-stone-300">
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center border border-stone-900/30 font-mono text-xs font-bold text-[#73004c] dark:border-stone-100/30 dark:text-fuchsia-200">{index + 1}</span>
@@ -135,27 +135,27 @@ const Contact = () => {
               <div className="flex items-start justify-between gap-4 border-b-2 border-stone-900/20 pb-5 dark:border-stone-100/20">
                 <div>
                   <p className="eyebrow">
-                    Canais diretos
+                     {t('contact.channels')}
                   </p>
                   <h3 className="mt-2 text-2xl font-bold text-stone-900 dark:text-stone-100">
-                    Escolha o melhor ponto de contato
+                     {t('contact.choose')}
                   </h3>
                 </div>
                 <div className="shrink-0 border-2 border-stone-900 bg-[#a1006b] px-3 py-2 text-right font-mono text-xs font-bold uppercase tracking-[0.14em] text-[#fff7fb] dark:border-fuchsia-200/60 dark:bg-[#ec7cc3] dark:text-[#1c0a14]">
-                  Resposta rápida
+                   {t('contact.quick')}
                 </div>
               </div>
 
               <div className="mt-5 grid gap-3">
                 {contactLinks.map((link, index) => (
                   <div key={link.type} ref={reveal} className="reveal" style={{ transitionDelay: `${index * 90}ms` }}>
-                    <ContactChannelRow {...link} />
+                    <ContactChannelRow {...link} label={t(link.label)} description={t(link.description)} actionLabel={t(link.actionLabel)} />
                   </div>
                 ))}
               </div>
 
                <div className="mt-5 border-2 border-dashed border-stone-900/30 bg-stone-900/[0.03] px-4 py-4 text-sm leading-6 font-medium text-stone-700 dark:border-stone-100/25 dark:bg-white/[0.03] dark:text-stone-300">
-                Prefere chegar com contexto? Me manda a stack, objetivo e prazo desejado. Isso acelera bastante a conversa.
+                 {t('contact.context')}
               </div>
             </div>
           </div>

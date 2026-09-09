@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import SectionTimeline from './SectionTimeline';
 
@@ -12,8 +12,7 @@ function renderTimeline(pathname: string, scrollY: number, article: DOMRect, foo
 
   return render(
     <MemoryRouter initialEntries={[pathname]}>
-      <SectionTimeline />
-      <Routes>
+       <Routes>
         <Route
           path="/blog/:slug"
           element={
@@ -30,8 +29,9 @@ function renderTimeline(pathname: string, scrollY: number, article: DOMRect, foo
           }
         />
         <Route path="/blog" element={<span>listing</span>} />
-      </Routes>
-    </MemoryRouter>
+       </Routes>
+       <SectionTimeline />
+     </MemoryRouter>
   );
 }
 
@@ -59,9 +59,9 @@ describe('SectionTimeline', () => {
     expect(screen.queryByTestId('section-timeline')).not.toBeInTheDocument();
   });
 
-  it('shows clamped progress inside the article, including short geometry', () => {
+  it('shows clamped progress inside the article, including short geometry', async () => {
     renderTimeline('/blog/post', 500, rect(-500, 500), rect(1000, 1200));
-    expect(screen.getByTestId('section-timeline')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId('section-timeline')).toBeInTheDocument());
     expect(screen.getByTestId('section-timeline').firstElementChild?.firstElementChild).toHaveStyle({ height: '100%' });
   });
 

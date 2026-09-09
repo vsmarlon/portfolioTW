@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useBlogSidebarResize } from '../hooks/useBlogSidebarResize';
+import { useLocale } from '../contexts/LocaleContext';
 
 interface ReadingShellProps {
   sidebar: ReactNode;
@@ -15,7 +16,9 @@ const ReadingShell = ({ sidebar, sidebarTestId, resizerTestId, children }: Readi
     sidebarMaxWidth,
     handleResizeMouseDown,
     handleResizeKeyDown,
+    resizeHandleRef,
   } = useBlogSidebarResize();
+  const { t } = useLocale();
 
   return (
     <div className="mt-10 flex min-h-[calc(100vh-5rem)] flex-col gap-6 lg:flex-row lg:items-start lg:gap-0">
@@ -30,13 +33,14 @@ const ReadingShell = ({ sidebar, sidebarTestId, resizerTestId, children }: Readi
       <button
         type="button"
         role="separator"
-        aria-label="Redimensionar navegação lateral"
+        aria-label={t('blog.navigation')}
         aria-orientation="vertical"
         aria-valuemin={sidebarMinWidth}
         aria-valuemax={sidebarMaxWidth}
         aria-valuenow={Math.round(sidebarWidth)}
         onMouseDown={handleResizeMouseDown}
         onKeyDown={handleResizeKeyDown}
+        ref={resizeHandleRef}
         data-testid={resizerTestId}
         className="group hidden w-10 shrink-0 cursor-col-resize touch-none select-none items-stretch justify-center lg:flex lg:self-stretch focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf6ef] dark:focus-visible:ring-offset-[#131110]"
       >

@@ -4,6 +4,7 @@ import Icon from '../Icon';
 import StatusPill from '../ui/StatusPill';
 import SurfaceCard from '../ui/SurfaceCard';
 import TagChip from '../ui/TagChip';
+import { useLocale } from '../../contexts/LocaleContext';
 
 interface BlogListingProps {
   featuredPost: BlogPost;
@@ -35,6 +36,7 @@ const MetaRow = ({ post, size }: { post: BlogPost; size: 'xs' | 'sm' }) => (
 
 const BlogListing = ({ featuredPost, posts }: BlogListingProps) => {
   const [searchParams] = useSearchParams();
+  const { t } = useLocale();
   const query = searchParams.get('q') ?? '';
   const allPosts = [featuredPost, ...posts];
   const filtered = query.trim() ? allPosts.filter((p) => matchesQuery(p, query)) : null;
@@ -46,12 +48,12 @@ const BlogListing = ({ featuredPost, posts }: BlogListingProps) => {
         <div>
           {filtered.length === 0 ? (
                <p className="py-4 font-mono text-sm text-stone-700 dark:text-stone-300">
-              nenhum artigo encontrado para &quot;{query}&quot;
+               {t('blog.noResults')} &quot;{query}&quot;
             </p>
           ) : (
             <div className="space-y-4">
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-stone-500 dark:text-stone-400">
-                {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
+                 {filtered.length} {t('blog.results')}{filtered.length !== 1 ? 's' : ''}
               </p>
               {filtered.map((post) => (
                 <SurfaceCard key={post.slug} className="p-6">
@@ -67,7 +69,7 @@ const BlogListing = ({ featuredPost, posts }: BlogListingProps) => {
                     to={`/blog/${post.slug}`}
                     className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#73004c] transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200 dark:hover:text-fuchsia-100"
                   >
-                    Abrir artigo
+                     {t('blog.openArticle')}
                     <Icon name="arrow-right" />
                   </Link>
                 </SurfaceCard>
@@ -83,7 +85,7 @@ const BlogListing = ({ featuredPost, posts }: BlogListingProps) => {
           <SurfaceCard variant="strong" className="overflow-hidden">
              <div className="border-b-2 border-stone-900/20 p-8 dark:border-stone-100/20">
               <div className="flex flex-wrap items-center gap-2 pb-1 text-xs font-semibold uppercase tracking-[0.18em]">
-                <StatusPill>Destaque</StatusPill>
+                 <StatusPill>{t('projects.flagship')}</StatusPill>
                 <MetaRow post={featuredPost} size="xs" />
               </div>
 
@@ -105,7 +107,7 @@ const BlogListing = ({ featuredPost, posts }: BlogListingProps) => {
                 to={`/blog/${featuredPost.slug}`}
                 className="focus-ring mt-8 inline-flex items-center gap-2 border-2 border-stone-900 bg-stone-900 px-5 py-3 text-sm font-bold text-[#faf6ef] transition-colors duration-200 hover:border-[#73004c] hover:bg-[#a1006b] dark:border-stone-100 dark:bg-stone-100 dark:text-stone-900 dark:hover:border-[#ec7cc3] dark:hover:bg-[#ec7cc3]"
               >
-                Ler artigo
+                 {t('blog.readArticle')}
                 <Icon name="arrow-right" />
               </Link>
             </div>
@@ -113,10 +115,10 @@ const BlogListing = ({ featuredPost, posts }: BlogListingProps) => {
 
           <div>
             <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-stone-500 dark:text-stone-400">
-              Arquivo
+               {t('blog.archive')}
             </p>
             <h2 className="mt-2 font-display text-2xl font-black text-stone-900 dark:text-stone-100">
-              Mais artigos publicados
+               {t('blog.moreArticles')}
             </h2>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -141,7 +143,7 @@ const BlogListing = ({ featuredPost, posts }: BlogListingProps) => {
                     to={`/blog/${post.slug}`}
                     className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#73004c] transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200 dark:hover:text-fuchsia-100"
                   >
-                    Abrir artigo
+                     {t('blog.openArticle')}
                     <Icon name="arrow-right" />
                   </Link>
                 </SurfaceCard>

@@ -51,6 +51,7 @@ npm test -- --grep "renders the contact pitch"  # Filter by test name
   - `/` renders the single-page portfolio sections.
   - `/blog` renders the article listing with sidebar navigation.
   - `/blog/:slug` renders individual blog posts.
+  - `/cv/:locale` renders the standalone English or Portuguese resume viewer; unsupported locales render `NotFound`.
   - `*` renders `portfolio/src/components/NotFound.tsx`.
 
 ## Important Implementation Notes
@@ -60,6 +61,8 @@ npm test -- --grep "renders the contact pitch"  # Filter by test name
 - Scroll reveal animations are handled by `portfolio/src/hooks/useScrollReveal.ts`; AOS custom scroll implementation is not used.
 - Blog posts are authored as Markdown files under `portfolio/src/content/blog/`.
 - Blog post metadata and routing data are derived in `portfolio/src/data/blogPosts.ts` via `import.meta.glob`.
+- UI translations are JSON in `portfolio/src/locales/en.json` and `portfolio/src/locales/pt-BR.json`. Resume copy is separate in `resume-en.json` and `resume-pt-BR.json`; shared resume facts live in `portfolio/src/data/resume.ts` and PDF URLs in `portfolio/src/data/resumeLinks.ts`.
+- Resume presentation is `portfolio/src/components/Resume.tsx` plus `Resume.css`. `/cv/en` and `/cv/pt-BR` are print-oriented viewers without site chrome. Their links open static PDFs in `public/cv/` in a new tab and intentionally have no `download` attribute. Keep Canva originals until the owner removes them.
 - The blog case-study demo uses `@tanstack/react-query` for fetching/caching and `@mui/x-data-grid` for the repository explorer.
 - Hero tech icons are rendered via `portfolio/src/components/TechIcon.tsx` using inline SVGs for reliability.
 
@@ -157,7 +160,7 @@ devError('Failed to load data', error);
   import { classNames } from '../utils/classNames';
   classNames('base-class', isActive && 'active-class');
   ```
-- current design system: cyan/blue accents, glassy cards, soft gradients
+- Current design system: ivory light canvas, warm graphite dark canvas, firm borders, restrained magenta accents, and editorial technical surfaces. See `portfolio/DESIGN.md`.
 - Favor one strong parent surface per section; use borders to separate content
 
 ### Testing Guidelines
@@ -192,13 +195,25 @@ devError('Failed to load data', error);
 - Check performance mode via `usePerformanceMode` hook
 - Respect `prefers-reduced-motion` (handled in `useScrollReveal`)
 
+### Effect policy
+
+- Authored runtime code contains no React effect APIs: no `useEffect`, `useLayoutEffect`, or `useInsertionEffect`, including wrappers and aliases around them.
+- Prefer render derivation, event handlers, CSS, callback refs with cleanup, and `useSyncExternalStore`. The restriction is project policy, not a blanket recommendation about React. Use [React's effect guidance](https://react.dev/learn/you-might-not-need-an-effect) when deciding whether an external synchronization boundary is real.
+
 ## Testing And Validation
 
 - Use `npm run lint` for static checks.
 - Use `npm run build` for TypeScript + production build verification.
 - Use `npm run test:run` for the Vitest suite.
+- Use `node scripts/portfolio-smoke.mjs` for browser checks across responsive widths, themes, localized pages, blog anchors, and resume routes. It requires Playwright's browser binaries.
 - `portfolio/src/test/setup.ts` mocks browser APIs used by routing, observers, and the MUI grid.
 - There is no backend or database in this repo.
+
+### Resume generation and hooks
+
+- `npx playwright install chromium` is required once before `npm run cv:generate`.
+- `npm run cv:generate` renders both `/cv/en` and `/cv/pt-BR`, enforces an exact one-page A4 result, and writes static PDFs to `portfolio/public/cv/`. The app ships no PDF-generation library.
+- `npm run install:hooks` is opt-in and copies `.githooks/pre-commit`; review an existing Git hook first because the target is replaced. CI enforces full lint, while the hook checks staged runtime files.
 
 ## Editing Conventions
 

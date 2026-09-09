@@ -4,7 +4,7 @@ Living design guidance for the portfolio. The primary audience is recruiters and
 
 > **Desenvolvedor Full Stack**
 
-This means presenting React and TypeScript together with NestJS, PostgreSQL, Oracle, and backend architecture—not positioning the work as frontend-only.
+This means presenting React and TypeScript together with NestJS, PostgreSQL, Oracle, and backend architecture, not positioning the work as frontend-only.
 
 ## Migration status
 
@@ -40,7 +40,7 @@ Use semantic roles in components and CSS variables rather than accumulating raw 
 | `accent-contrast` | Ivory on magenta · deep plum on light magenta | Text on accent controls |
 | `status-negative` | Restrained red | Errors only |
 
-Magenta is a signal, never a full-surface wash. Light mode is a first-class readable theme, not a recolored dark mode. Raw cyan/blue fills are out.
+Magenta is a signal, never a full-surface wash. Light mode is a first-class readable theme, not a recolored dark mode. Bright unrelated accent fills are out.
 
 ## Typography
 
@@ -84,11 +84,11 @@ Responsive behavior must explicitly hide or recompose desktop-only rails on smal
 
 - `useScrollReveal` uses a shared `IntersectionObserver`, adds `revealed`, and unobserves after entry. CSS owns the transition. Attach it to every card/row, not only section wrappers, with small stagger delays.
 - Route and anchor scrolls run a custom 420ms ease-in-out animation that yields to wheel/touch input, with an instant fallback under `prefers-reduced-motion`. The drawer trigger sits in the header flow on desktop (title adjacent, theme action last on the right) and overlays as fixed chrome on mobile.
-- Freebay flagship keeps a static accent baseline plus flow-driven diagram highlighting (`is-active`/`is-dim` nodes and edges) on the purple architecture frame. Arrows carry a continuous dash flow plus a sequential brightness pulse per edge. The diagram is exempt from the Firefox performance heuristic; only a genuine `prefers-reduced-motion` setting stills it. No animation `useEffect` anywhere. Header enters with `slideDown`.
+- Freebay flagship keeps a static accent baseline plus flow-driven diagram highlighting (`is-active`/`is-dim` nodes and edges) on the purple architecture frame. Arrows carry a continuous dash flow plus a sequential brightness pulse per edge. The diagram is exempt from the Firefox performance heuristic; only a genuine `prefers-reduced-motion` setting stills it. Header enters with `slideDown`.
 - Reading surfaces share one shell: `ReadingShell` owns the resizable sidebar row used by `/blog` and `/projects/freebay`. Sidebar groups are native `details` accordions (no JS); article subsections come from `extractHeadings` with matching heading ids, so `SectionTimeline` follows any long reading.
 - Cross-page navigation speaks one language: `BackLink` for every return link, the same bordered shell for reading pages, and the 404 inside the editorial token system. Info rows use a uniform `border-2` frame with single dividers, never mixed widths.
 - Prefer CSS transitions for hover/focus/active feedback and CSS animation only for a clear communication purpose.
-- Do not add visual-animation `useEffect` logic. Follow React’s “You Might Not Need an Effect” guidance: derive values during render, handle interaction in event handlers, use CSS for presentation, and reserve Effects for genuine external synchronization.
+- Authored runtime code has a project-level ban on `useEffect`, `useLayoutEffect`, and `useInsertionEffect`, including wrappers and aliases. Prefer render derivation, event handlers, CSS, callback refs with cleanup, and `useSyncExternalStore`. This is project policy, not a blanket recommendation about React. See [React's effect guidance](https://react.dev/learn/you-might-not-need-an-effect).
 - Always respect `prefers-reduced-motion`; reveal content without motion and avoid decorative animation. The Freebay flow explorer stays fully usable as text.
 
 ## Responsive navigation
@@ -103,7 +103,7 @@ Responsive behavior must explicitly hide or recompose desktop-only rails on smal
 
 - Use a semantic `<button>` for the drawer trigger, with a useful accessible name plus `aria-expanded`, `aria-controls`, and an appropriate current/active indication for navigation.
 - Preserve a predictable Tab order: trigger, drawer contents when open, then page content as appropriate. Escape closes an open drawer and returns focus to the trigger.
-- Keep visible `:focus-visible` treatment. Cyan focus rings are acceptable when contrast remains clear against the active surface.
+- Keep visible `:focus-visible` treatment. Magenta focus treatment should remain clear against the active surface.
 - Navigation labels and links must remain understandable without color, animation, hover, or icons.
 - Keep meaningful image alt text, semantic headings, landmark regions, and keyboard access to the blog resizer. The current resizer’s separator semantics and min/max/now values are the baseline to preserve.
 - `Ctrl+K` is optional and **TBD**. Add it only if it is justified by a real navigation/search need, and provide a discoverable, accessible alternative.
@@ -116,7 +116,7 @@ The hero is the first recruiter-facing statement. Replace frontend-only language
 
 ### Engineering Systems
 
-Replace the animated `Terminal` section with **Engineering Systems** (`Sistemas de Engenharia`). It should explain architecture and backend thinking—React/TypeScript clients, NestJS services, PostgreSQL/Oracle persistence, boundaries, and integration patterns—using dense, readable content. Retain a small static terminal/code accent as a visual cue, not as a timer-driven experience or the section’s primary interaction.
+Replace the animated `Terminal` section with **Engineering Systems** (`Sistemas de Engenharia`). It should explain architecture and backend thinking: React/TypeScript clients, NestJS services, PostgreSQL/Oracle persistence, boundaries, and integration patterns, using dense, readable content. Retain a small static terminal/code accent as a visual cue, not as a timer-driven experience or the section’s primary interaction.
 
 ### Projects
 
@@ -139,6 +139,10 @@ Prefer the existing `SurfaceCard`, `TagChip`, `Icon`, `useScrollReveal`, theme c
 5. **Action:** project details, resume/GitHub where relevant, and contact.
 
 Avoid presenting “frontend” as the user’s complete identity. It may describe a specific project or strength, but not the hero promise.
+
+## Resume viewer
+
+The resume is a dedicated `/cv/:locale` print-oriented surface for `en` and `pt-BR`, backed by locale JSON plus shared facts in `src/data/resume.ts`. `Resume.css` owns the A4 layout and the generator checks that each locale fits exactly one page. The viewer opens static PDFs from `public/cv/` in a new tab without a forced download. No PDF-generation library belongs in the shipped app; Playwright is a development tool for `npm run cv:generate`. Keep Canva originals until the owner explicitly removes them.
 
 ## Anti-patterns
 

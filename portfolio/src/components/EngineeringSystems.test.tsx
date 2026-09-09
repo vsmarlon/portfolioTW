@@ -2,12 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import EngineeringSystems from './EngineeringSystems';
+import { LocaleProvider } from '../contexts/LocaleContext';
 
 const renderSystems = () =>
   render(
-    <MemoryRouter>
-      <EngineeringSystems />
-    </MemoryRouter>,
+    <LocaleProvider><MemoryRouter><EngineeringSystems /></MemoryRouter></LocaleProvider>,
   );
 
 describe('EngineeringSystems', () => {

@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Marlon Stein Vargas - Software Developer Résumé",
+    "role": "Software Developer",
+    "location": "Porto Alegre, RS, Brazil",
+    "education": "Systems Analysis and Development"
+  },
+  "toolbar": {
+    "ariaLabel": "Résumé actions",
+    "print": "Print",
+    "viewPdf": "View PDF",
+    "switchLanguage": "Português"
+  },
+  "summary": "Software developer with experience in financial services, building NestJS and TypeScript services, Flutter applications, and internal web platforms. Combines API design, relational data, and product-focused interfaces to deliver maintainable software.",
+  "sections": {
+    "summary": "Professional summary",
+    "experience": "Experience",
+    "education": "Education",
+    "projects": "Projects",
+    "skills": "Skills & languages"
+  },
+  "education": {
+    "period": "2024 – present",
+    "expected": "Second half of 2027"
+  },
+  "labels": {
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "portfolio": "Portfolio",
+    "technologies": "Technologies",
+    "expected": "Expected completion",
+    "languages": "Languages",
+    "tools": "Tools"
+  },
+  "experience": {
+    "title": "Software Development Intern",
+    "period": "February 2025 – Present",
+    "items": [
+      "Build BFFs with NestJS and TypeScript, integrated with Oracle databases.",
+      "Develop mobile features with Flutter for Android and iOS.",
+      "Build an internal admin dashboard with Next.js, React, and MUI, consuming Oracle data.",
+      "Maintain CI/CD pipelines in Azure DevOps.",
+      "Work with RAG chatbot technology across HTML, TailwindCSS, JavaScript, Node.js, Express, PostgreSQL, and Redis."
+    ]
+  },
+  "skills": {
+    "languages": "Portuguese (native); English (advanced, spoken and written).",
+    "technologies": "TypeScript, JavaScript, NestJS, Node.js, Express, Flutter, Dart, HTML, TailwindCSS, PostgreSQL, Oracle, Python, Redis, Next.js, React, and MUI.",
+    "tools": "Azure DevOps, Git, GitHub, Figma, Postman, and VS Code."
+  },
+  "projects": [
+    {
+      "name": "Freebay",
+      "period": "",
+      "technologies": "Flutter (Riverpod), NestJS, Prisma, PostgreSQL, Redis, and Socket.IO.",
+      "description": [
+        "C2C marketplace with a social feed, profiles, real-time chat, and dispute resolution.",
+        "Escrow holds payments until delivery is confirmed, with automatic release or refund.",
+        "Payments via PIX (AbacatePay), payouts through PagBank, and push notifications via FCM."
+      ],
+      "link": "https://github.com/vsmarlon/freebay"
+    },
+    {
+      "name": "Chatbot RAG",
+      "period": "February – August 2025",
+      "technologies": "HTML, TailwindCSS, JavaScript, Python, PostgreSQL, Node.js (Express), Sequelize, Redis, and Vite.",
+      "description": [
+        "REST APIs connected to PostgreSQL with secure bcrypt password hashing and cookie sessions.",
+        "Admin panel for users, documents used for AI responses, and session management.",
+        "Uses llama-3-70b-8192 for responses and intfloat/multilingual-e5-large for embeddings."
+      ],
+      "link": "https://github.com/vsmarlon/chatbotRAG"
+    }
+  ]
+}

@@ -1,21 +1,19 @@
-import { getCurrentSemester } from '../utils/semester';
 import type { IconName } from '../types/icons';
 
 export const timelineItems = [
   {
-    period: getCurrentSemester(2024, 8, -1),
-    title: 'Análise e Desenvolvimento de Sistemas',
-    location: 'Faculdade',
-    description:
-      'Aprofundando conhecimentos em arquitetura de software, programação orientada a objetos e desenvolvimento web full-stack.',
-    type: 'education' as const,
+    period: 'about.timeline.qqtech.period',
+    title: 'about.timeline.qqtech.title',
+    location: 'about.timeline.qqtech.location',
+    description: 'about.timeline.qqtech.description',
+    type: 'work' as const,
   },
   {
-    period: 'Projetos autorais',
-    title: 'Prática de engenharia',
-    location: 'Portfólio',
-    description: 'Construindo estudos que conectam produto, arquitetura, dados e experiência de uso.',
-    type: 'work' as const,
+    period: 'about.timeline.unisinos.period',
+    title: 'about.timeline.unisinos.title',
+    location: 'about.timeline.unisinos.location',
+    description: 'about.timeline.unisinos.description',
+    type: 'education' as const,
   },
 ];
 
@@ -32,11 +30,11 @@ export const skills = [
 
 export const currentFocus = {
   building: [
-    'Interfaces React e Flutter com contratos claros e foco em experiência.',
-    'Serviços NestJS e integrações que tornam as decisões de domínio legíveis.',
+    'about.focus.buildingOne',
+    'about.focus.buildingTwo',
   ],
   learning: [
-    'Modelagem e operação de dados com PostgreSQL e Oracle.',
-    'Arquitetura full stack com eventos, cache e integrações externas.',
+    'about.focus.learningOne',
+    'about.focus.learningTwo',
   ],
 };

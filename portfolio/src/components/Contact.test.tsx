@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '../contexts/ThemeContext';
+import { LocaleProvider } from '../contexts/LocaleContext';
 import Contact from './Contact';
 
 const Providers = ({ children }: { children: React.ReactNode }) => (
-  <ThemeProvider>{children}</ThemeProvider>
+  <ThemeProvider><LocaleProvider>{children}</LocaleProvider></ThemeProvider>
 );
 
 describe('Contact', () => {

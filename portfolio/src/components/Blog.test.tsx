@@ -2,6 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { LocaleProvider } from '../contexts/LocaleContext';
 import Blog from './Blog';
 
 function renderBlog(initialEntry: string) {
@@ -14,14 +15,16 @@ function renderBlog(initialEntry: string) {
   });
 
   return render(
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={[initialEntry]}>
-        <Routes>
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Blog />} />
-        </Routes>
-      </MemoryRouter>
-    </QueryClientProvider>,
+      <QueryClientProvider client={queryClient}>
+        <LocaleProvider>
+          <MemoryRouter initialEntries={[initialEntry]}>
+            <Routes>
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<Blog />} />
+            </Routes>
+          </MemoryRouter>
+        </LocaleProvider>
+      </QueryClientProvider>,
   );
 }
 
@@ -35,7 +38,7 @@ describe('Blog', () => {
     renderBlog('/blog');
 
     expect(screen.getByRole('heading', { name: /Arquitetura full stack como evidência de trabalho/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Ir para a demo/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: /Ir para a demo/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Todos os artigos/i).length).toBeGreaterThan(0);
   });
 
@@ -51,7 +54,7 @@ describe('Blog', () => {
   it('exposes article subsections as sidebar anchors with matching heading ids', () => {
     renderBlog('/blog/postgresql-oracle-data-decisions');
 
-    const anchor = screen.getByRole('link', { name: 'Matriz de decisão' });
+    const anchor = screen.getAllByRole('link', { name: 'Matriz de decisão' })[0];
     expect(anchor).toHaveAttribute('href', '#matriz-de-decisao');
     expect(document.querySelector('[data-blog-article] h2#matriz-de-decisao')).toBeInTheDocument();
     expect(document.querySelectorAll('details.sidebar-accordion').length).toBeGreaterThan(0);

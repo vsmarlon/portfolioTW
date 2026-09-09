@@ -28,14 +28,26 @@ export function plainText(node: ReactNode): string {
   return '';
 }
 
-export function extractHeadings(markdown: string): ContentSection[] {
+export function extractHeadings(markdown: string, canonicalMarkdown = markdown): ContentSection[] {
   const sections: ContentSection[] = [];
+  const canonical = extractHeadingLabels(canonicalMarkdown);
+  let index = 0;
   for (const line of markdown.split('\n')) {
     const match = /^(#{2,3})\s+(.+)$/.exec(line.trim());
     if (!match) continue;
     const label = match[2].replace(/[*_`[\]()#]/g, '').trim();
     if (!label) continue;
-    sections.push({ id: slugifyHeading(label), label, depth: match[1].length });
+    sections.push({ id: slugifyHeading(canonical[index]?.label ?? label), label, depth: match[1].length });
+    index += 1;
   }
   return sections;
+}
+
+function extractHeadingLabels(markdown: string): Array<{ label: string; depth: number }> {
+  return markdown.split('\n').flatMap((line) => {
+    const match = /^(#{2,3})\s+(.+)$/.exec(line.trim());
+    if (!match) return [];
+    const label = match[2].replace(/[*_`[\]()#]/g, '').trim();
+    return label ? [{ label, depth: match[1].length }] : [];
+  });
 }

@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { blogPosts } from './blogPosts';
+import { getBlogPosts } from './blogPosts';
 import { getReadingTime } from '../utils/readingTime';
 
 describe('blog post reading time', () => {
+  const blogPosts = getBlogPosts('pt-BR');
   it('derives every imported post value from its body', () => {
     expect(blogPosts.length).toBeGreaterThan(0);
     expect(blogPosts.every((post) => post.readTime === getReadingTime(post.body))).toBe(true);

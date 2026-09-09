@@ -8,8 +8,13 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
+    "lint:effects": "node scripts/lint-effects-all.mjs",
+    "lint:effects:staged": "node scripts/lint-effects.mjs",
+    "test:effects": "vitest run scripts/lint-effects.test.mjs",
+    "install:hooks": "node scripts/install-hooks.mjs",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "cv:generate": "node scripts/generate-resume.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -38,6 +43,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "jsdom": "^26.1.0",
+    "playwright": "^1.63.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13",
     "tailwindcss-animate": "^1.0.7",

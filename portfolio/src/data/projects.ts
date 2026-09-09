@@ -9,6 +9,7 @@ export interface ProjectItem {
   eyebrow: string;
   focus: string;
   details?: string[];
+  translationKey?: string;
 }
 
 export const projectsData: ProjectItem[] = [
@@ -16,19 +17,18 @@ export const projectsData: ProjectItem[] = [
     title: 'Freebay',
     url: '/projects/freebay',
     image: '/chat.webp',
-    description: 'Produto de comércio social com descoberta, relações, pagamentos e notificações tratados como um sistema full stack.',
+    description: 'projectsData.freebayDescription',
     tools: ['React', 'Flutter', 'NestJS', 'PostgreSQL'],
     featured: true,
     spotlight: true,
-    eyebrow: 'Flagship · estudo de caso',
-    focus: 'Arquitetura de produto e decisões full stack',
+    eyebrow: 'projectsData.freebayEyebrow',
+    focus: 'projectsData.freebayFocus',
   },
   {
     title: 'ChatBot RAG',
     url: 'https://github.com/vsmarlon/chatbotRAG',
     image: '/chat.webp',
-    description:
-      'Projeto de busca semântica com IA para responder perguntas a partir de documentos. A proposta combina interface web, pipeline de embeddings e persistência em PostgreSQL para transformar arquivos em respostas consultáveis.',
+    description: 'projectsData.ragDescription',
     tools: ['React', 'Python', 'PostgreSQL', 'Tailwind CSS'],
     featured: false,
     spotlight: false,
@@ -44,8 +44,7 @@ export const projectsData: ProjectItem[] = [
     title: 'Buscador de Animes',
     url: 'https://animeghost.vercel.app/',
     image: '/Capturar.webp',
-    description:
-      'Aplicação para busca e exploração de animes com favoritos, consumo da API Jikan v4 e alternância entre temas claro e escuro.',
+    description: 'projectsData.animeDescription',
     tools: ['HTML', 'CSS', 'JavaScript', 'API Jikan v4'],
     featured: false,
     eyebrow: 'Case prático',
@@ -55,8 +54,7 @@ export const projectsData: ProjectItem[] = [
     title: 'To-do List',
     url: 'https://todolist-drab-one.vercel.app/',
     image: '/todolist.webp',
-    description:
-      'Projeto de base para consolidar manipulação do DOM, estado local e pequenas interações em JavaScript puro.',
+    description: 'projectsData.todoDescription',
     tools: ['HTML', 'CSS', 'JavaScript'],
     featured: false,
     eyebrow: 'Entrega objetiva',

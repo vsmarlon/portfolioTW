@@ -1,7 +1,7 @@
 ---
 title: PostgreSQL ou Oracle: decisões de dados em sistemas reais
 slug: postgresql-oracle-data-decisions
-excerpt: A escolha entre PostgreSQL e Oracle começa pelo contexto dos dados, das transações e das integrações — não por uma disputa de preferência.
+excerpt: A escolha entre PostgreSQL e Oracle começa pelo contexto dos dados, das transações e das integrações, não por uma disputa de preferência.
 publishedAt: 2026-04-05
 category: Dados
 tags: [PostgreSQL, Oracle, Dados, Backend]

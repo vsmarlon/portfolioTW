@@ -13,6 +13,7 @@ export interface BlogPost extends BlogPostMeta {
   body: string;
   formattedDate: string;
   readTime: string;
+  locale?: 'pt-BR' | 'en';
 }
 
 export interface GitHubRepoRow {

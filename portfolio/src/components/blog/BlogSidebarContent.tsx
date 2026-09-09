@@ -1,19 +1,26 @@
 import { Link } from 'react-router-dom';
-import { blogPosts, demoBlogPost } from '../../data/blogPosts';
 import type { ContentSection } from '../../utils/headings';
 import Icon from '../Icon';
 import TagChip from '../ui/TagChip';
+import { useLocale } from '../../contexts/LocaleContext';
+import { getBlogPosts } from '../../data/blogPosts';
+import ReadingNavigation from '../ReadingNavigation';
 
 interface BlogSidebarContentProps {
   activeSlug?: string;
   isListingPage: boolean;
   sections?: ContentSection[];
+  activeSectionId?: string | null;
 }
 
-const BlogSidebarContent = ({ activeSlug, isListingPage, sections = [] }: BlogSidebarContentProps) => (
+const BlogSidebarContent = ({ activeSlug, isListingPage, sections = [], activeSectionId }: BlogSidebarContentProps) => {
+  const { t, locale } = useLocale();
+  const localizedPosts = getBlogPosts(locale);
+  const localizedDemoPost = localizedPosts.find((post) => post.hasDemo) ?? localizedPosts[0];
+  return (
   <div>
     <details className="sidebar-accordion" open>
-      <summary><span>Navegação</span></summary>
+       <summary><span className="inline-flex items-center gap-2"><Icon name="grid" />{t('blog.navigation')}</span></summary>
       <div className="accordion-body">
         <div className="divide-y divide-black/5 dark:divide-white/10">
           <Link
@@ -24,10 +31,10 @@ const BlogSidebarContent = ({ activeSlug, isListingPage, sections = [] }: BlogSi
                 : 'text-stone-700 hover:text-[#a1006b] dark:text-stone-200 dark:hover:text-fuchsia-200'
             }`}
           >
-            Todos os artigos
+             {t('blog.allTopics')}
           </Link>
 
-          {blogPosts.map((post) => (
+           {localizedPosts.map((post) => (
             <Link
               key={post.slug}
               to={`/blog/${post.slug}`}
@@ -48,55 +55,39 @@ const BlogSidebarContent = ({ activeSlug, isListingPage, sections = [] }: BlogSi
     </details>
 
     {sections.length > 0 ? (
-      <details className="sidebar-accordion" open>
-        <summary><span>Nesta leitura</span></summary>
-        <div className="accordion-body">
-          <ul className="space-y-1 font-mono text-xs uppercase tracking-wider">
-            {sections.map((section) => (
-              <li key={section.id}>
-                <a
-                  href={`#${section.id}`}
-                  className={`block px-3 py-2 text-stone-600 hover:bg-[#a1006b]/10 hover:text-[#a1006b] dark:text-stone-300 dark:hover:bg-fuchsia-200/10 dark:hover:text-fuchsia-200${section.depth > 2 ? ' pl-6' : ''}`}
-                >
-                  {section.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </details>
+      <ReadingNavigation sections={sections} activeId={activeSectionId} />
     ) : null}
 
     <details className="sidebar-accordion" open={isListingPage}>
-      <summary><span>Demo acessível</span></summary>
+       <summary><span className="inline-flex items-center gap-2"><Icon name="server" />{t('blog.accessibleDemo')}</span></summary>
       <div className="accordion-body">
         <h2 className="text-lg font-black text-stone-900 dark:text-stone-100">
-          Abrir o estudo com DataGrid
+           {t('blog.openStudy')}
         </h2>
         <p className="mt-2 text-sm leading-6 text-stone-700 dark:text-stone-300">
-          O experimento com MUI DataGrid agora vive dentro de um artigo técnico, com contexto e
-          dados reais do GitHub.
+           {t('blog.demoDescription')}
         </p>
         <Link
-          to={`/blog/${demoBlogPost.slug}#demo`}
+           to={`/blog/${localizedDemoPost.slug}#demo`}
           className="focus-ring mt-4 inline-flex items-center gap-2 border-2 border-stone-900 bg-stone-900 px-4 py-2 text-sm font-bold text-[#faf6ef] transition-colors duration-200 hover:border-[#73004c] hover:bg-[#a1006b] dark:border-stone-100 dark:bg-stone-100 dark:text-stone-900 dark:hover:border-[#ec7cc3] dark:hover:bg-[#ec7cc3]"
         >
           <Icon name="grid" />
-          Ir para a demo
+           {t('blog.goToDemo')}
         </Link>
       </div>
     </details>
 
     <div className="p-5">
       <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-stone-500 dark:text-stone-400">
-        Temas recorrentes
+         {t('blog.recurringTopics')}
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
-        {Array.from(new Set(blogPosts.flatMap((post) => post.tags))).map((tag) => (
+         {Array.from(new Set(localizedPosts.flatMap((post) => post.tags))).map((tag) => (
           <TagChip key={tag}>{tag}</TagChip>
         ))}
       </div>
     </div>
   </div>
-);
+  );
+};
 export default BlogSidebarContent;
