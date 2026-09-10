@@ -64,15 +64,19 @@ const Projects = () => {
           </div>
 
           <div className="flex items-start justify-center p-6">
-            <picture>
-              <source media="(prefers-reduced-motion: reduce)" srcSet={freebayProject.image} />
-              <img
-                src="/freebay-login.gif"
-                alt="Tela de autenticação do aplicativo Freebay"
-                className="h-auto w-[250px] rounded-sm border border-stone-900/20 dark:border-stone-100/20"
-                loading="lazy"
-              />
-            </picture>
+            <video
+              data-testid="freebay-flagship-media"
+              className="h-auto w-[250px] rounded-sm border border-stone-900/20 dark:border-stone-100/20"
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={freebayProject.image}
+              preload="metadata"
+              aria-label="Tela de autenticação do aplicativo Freebay"
+            >
+              <source src="/freebay-login.mp4" type="video/mp4" />
+            </video>
           </div>
         </article>
 

@@ -10,6 +10,11 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #faf6ef;
+}
+
+html[data-theme="dark"] {
+  background-color: #131110;
 }
 
 html[data-performance-mode="reduced"] {
@@ -22,7 +27,7 @@ html[data-performance-mode="reduced"] {
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: only light;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -40,11 +45,6 @@ html[data-performance-mode="reduced"] {
   --ui-resizer-line-hover: rgba(161, 0, 107, 0.66);
   --scroll-header-offset: 96px;
 }
-
-.dark {
-  color-scheme: dark;
-}
-
 
 :root[data-performance-mode="reduced"] {
   --surface-blur: 0px;

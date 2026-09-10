@@ -252,7 +252,8 @@ const FreebayCaseStudy = () => {
                   </figcaption>
                 </figure>
                 <div
-                  className="mt-6 grid auto-cols-[82%] snap-x snap-mandatory grid-flow-col gap-5 overflow-x-auto pb-3 touch-pan-x sm:auto-cols-[47%] lg:auto-cols-auto lg:snap-none lg:grid-flow-row lg:grid-cols-4 lg:overflow-visible lg:pb-0"
+                  data-testid="freebay-evidence-carousel"
+                  className="mt-6 grid auto-cols-[82%] snap-x snap-mandatory grid-flow-col gap-5 overflow-x-auto pb-3 sm:auto-cols-[47%] lg:auto-cols-auto lg:snap-none lg:grid-flow-row lg:grid-cols-4 lg:overflow-visible lg:pb-0"
                   role="region"
                   aria-label={analysis.evidenceTitle}
                 >
