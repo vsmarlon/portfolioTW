@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/cv/(.*)\\.pdf",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "inline" }
+      ]
+    }
+  ],
+  "rewrites": [{ "source": "/((?!.*\\..*).*)", "destination": "/index.html" }]
+}
