@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, useParams } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LocaleProvider, useLocale, type Locale } from './contexts/LocaleContext';
@@ -160,6 +161,7 @@ export function App() {
   return (
     <ThemeProvider>
       <AppContent />
+      <Analytics />
     </ThemeProvider>
   );
 }
