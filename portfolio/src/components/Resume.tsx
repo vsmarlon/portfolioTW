@@ -1,4 +1,5 @@
 import { useCallback, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import './Resume.css';
 import en from '../locales/resume-en.json';
 import ptBR from '../locales/resume-pt-BR.json';
@@ -40,9 +41,9 @@ const Resume = ({ locale }: ResumeProps) => {
   return (
     <main ref={rootRef} className="resume" data-testid="resume-ready" lang={locale}>
       <nav className="resume__toolbar" aria-label={copy.toolbar.ariaLabel}>
-        <a href={`/cv/${locale === 'en' ? 'pt-BR' : 'en'}`}>
+        <Link to={`/cv/${locale === 'en' ? 'pt-BR' : 'en'}`}>
           {copy.toolbar.switchLanguage}
-        </a>
+        </Link>
         <button type="button" onClick={() => window.print()}>{copy.toolbar.print}</button>
         <a href={`/cv/${pdfName}`} target="_blank" rel="noopener noreferrer">
           {copy.toolbar.viewPdf} <ExternalMark />

@@ -5,7 +5,6 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 import Icon from './Icon';
 import { useLocale } from '../contexts/LocaleContext';
 import { resumeLinks } from '../data/resumeLinks';
-import ExternalMark from './ExternalMark';
 
 const Home = () => {
   const navigateToSection = useNavigateToSection();
@@ -35,14 +34,12 @@ const Home = () => {
           >
             {t('home.projects')} <Icon name="arrow-right" />
           </Link>
-          <a
-            href={resumeLinks[locale]}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to={resumeLinks[locale]}
             className="focus-ring inline-flex items-center gap-2 border-2 border-stone-900/25 px-5 py-3 font-semibold text-stone-900 transition-all duration-200 hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100/25 dark:text-stone-100 dark:hover:border-fuchsia-200 dark:hover:text-fuchsia-200"
           >
-            {t('home.resume')} <ExternalMark />
-          </a>
+            {t('home.resume')} <Icon name="arrow-right" />
+          </Link>
           <Link
             data-testid="home-cta-contact"
             to="/#contact"

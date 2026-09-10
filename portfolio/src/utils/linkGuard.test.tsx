@@ -16,7 +16,7 @@ describe('installLinkGuard', () => {
   const renderLink = () => {
     let prevented = false;
     render(
-      <a href="/alvo" onClick={(event) => { prevented = event.defaultPrevented; }}>
+      <a href="#alvo" onClick={(event) => { prevented = event.defaultPrevented; }}>
         texto selecionavel do cartao
       </a>,
     );

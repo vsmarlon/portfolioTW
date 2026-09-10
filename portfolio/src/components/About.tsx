@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { timelineItems, skills, currentFocus } from '../data/about';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import ExternalMark from './ExternalMark';
@@ -38,14 +39,12 @@ const About = () => {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <a
-                href={resumeLinks[locale]}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to={resumeLinks[locale]}
                 className="focus-ring inline-flex items-center gap-2 border-2 border-stone-900 bg-stone-900 px-6 py-3 font-bold text-[#faf6ef] transition-all duration-200 hover:border-[#73004c] hover:bg-[#a1006b] dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-[#ec7cc3]"
               >
-                {t('about.resume')} <ExternalMark />
-              </a>
+                {t('about.resume')} <Icon name="arrow-right" />
+              </Link>
               <a
                 href="https://github.com/vsmarlon"
                 target="_blank"

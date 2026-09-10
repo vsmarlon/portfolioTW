@@ -37,15 +37,14 @@ describe('About', () => {
     expect(screen.queryByText(/about\.(timeline|focus)\./)).not.toBeInTheDocument();
   });
 
-  it('opens the localized resume without downloading it', () => {
+  it('routes to the localized resume in the same tab without downloading it', () => {
     window.localStorage.setItem('locale', 'en');
     render(<About />, { wrapper: Providers });
 
     const resumeLink = screen.getByRole('link', { name: /view resume/i });
     expect(resumeLink).toHaveAttribute('href', '/cv/en');
 
-    expect(resumeLink).toHaveAttribute('target', '_blank');
-    expect(resumeLink).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(resumeLink).not.toHaveAttribute('target');
     expect(resumeLink).not.toHaveAttribute('download');
   });
 });
