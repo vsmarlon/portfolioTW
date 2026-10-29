@@ -12,6 +12,6 @@ export const navItems: NavItem[] = [
   { to: '/#projects', label: 'Projetos', section: 'projects', icon: 'grid' },
   { to: '/#systems', label: 'Sistemas', section: 'systems', icon: 'server' },
   { to: '/#about', label: 'Sobre', section: 'about', icon: 'map-pin' },
-  { to: '/#writing', label: 'Escrita', section: 'writing', icon: 'pen' },
+  { to: '/#writing', label: 'Escrita', section: 'writing', icon: 'feather' },
   { to: '/#contact', label: 'Contato', section: 'contact', icon: 'envelope' },
 ];

@@ -18,6 +18,27 @@ const LazyGitHubRepoExplorer = lazy(() => import('./GitHubRepoExplorer'));
 const DEMO_MARKER = '[[DEMO_GITHUB_REPOS]]';
 const demoQueryClient = new QueryClient();
 
+const MarkdownExternalLink = ({ children, href }: { children?: ReactNode; href?: string }) => {
+  const { t } = useLocale();
+  const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-semibold text-[#73004c] underline decoration-[#a1006b]/40 underline-offset-4 transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200"
+    >
+      {children}
+      {isExternal ? (
+        <>
+          {'\u00A0'}<ExternalMark className="text-[0.9em] leading-none" label={t('externalLink')} />
+        </>
+      ) : null}
+    </a>
+  );
+};
+
 const markdownComponents = {
   h1: ({ children }: { children?: ReactNode }) => (
     <h1 className="mt-12 font-display text-3xl font-black text-stone-900 first:mt-0 dark:text-stone-100">
@@ -71,25 +92,85 @@ const markdownComponents = {
       {children}
     </pre>
   ),
-  a: ({ children, href }: { children?: ReactNode; href?: string }) => {
-    const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-semibold text-[#73004c] underline decoration-[#a1006b]/40 underline-offset-4 transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200"
-      >
-        {children}
-        {isExternal ? (
-          <>
-            {' '}<ExternalMark className="text-[0.9em] leading-none" />
-          </>
-        ) : null}
-      </a>
-    );
-  },
+  a: MarkdownExternalLink,
 };
+
+type FigureInfo = { src: string; alt: string; caption: string };
+
+type ArticleToken =
+  | { kind: 'markdown'; value: string }
+  | { kind: 'figure'; data: FigureInfo }
+  | { kind: 'figureRow'; items: FigureInfo[] }
+  | { kind: 'demo' };
+
+const parseFigureMarker = (marker: string): FigureInfo => {
+  const [src = '', alt = '', caption = ''] = marker.slice('[['.length + 'FIGURE:'.length, -2).split('|');
+  return { src, alt, caption };
+};
+
+const isDiagram = (src: string) => src.endsWith('.svg');
+
+const figureBody = (body: string) =>
+  body
+    .replace(/\r\n/g, '\n')
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)\n\n\*([^*\n]+)\*/g, (_match, alt: string, src: string, caption: string) => `\n\n[[FIGURE:${src}|${alt}|${caption}]]\n\n`)
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_match, alt: string, src: string) => `\n\n[[FIGURE:${src}|${alt}|]]\n\n`);
+
+const parseArticleTokens = (body: string): ArticleToken[] => {
+  const chunks = figureBody(body).split(DEMO_MARKER);
+  const flat: ArticleToken[] = [];
+  chunks.forEach((chunk, index) => {
+    for (const segment of chunk.split(/(\[\[FIGURE:[^\]]*\]\])/)) {
+      if (segment.startsWith('[[FIGURE:')) {
+        flat.push({ kind: 'figure', data: parseFigureMarker(segment) });
+      } else if (segment.trim()) {
+        flat.push({ kind: 'markdown', value: segment });
+      }
+    }
+    if (index < chunks.length - 1) flat.push({ kind: 'demo' });
+  });
+
+  // Screenshots in sequence share one row; diagrams never join a row (full width).
+  const tokens: ArticleToken[] = [];
+  for (const token of flat) {
+    const isScreenshot = token.kind === 'figure' && !isDiagram(token.data.src);
+    const previous = tokens[tokens.length - 1];
+    if (isScreenshot && previous?.kind === 'figureRow') {
+      previous.items.push(token.data);
+    } else if (token.kind === 'figure' && isScreenshot) {
+      tokens.push({ kind: 'figureRow', items: [token.data] });
+    } else {
+      tokens.push(token);
+    }
+  }
+  return tokens;
+};
+
+const FigureCard = ({ data, inRow = false }: { data: FigureInfo; inRow?: boolean }) => {
+  // Diagrams sit ~20% under the text column on desktop; screenshots match the approved card width.
+  const widthClass = inRow ? '' : isDiagram(data.src) ? 'max-w-[69rem]' : 'max-w-2xl';
+  return (
+    <figure className={`w-full border-2 border-stone-900/20 p-3 dark:border-stone-100/20 ${widthClass}`}>
+      <img src={data.src} alt={data.alt} loading="lazy" decoding="async" className="block w-full" />
+      {data.caption ? (
+        <figcaption className="mt-3 font-mono text-xs leading-5 text-stone-600 dark:text-stone-400">
+          {data.caption}
+        </figcaption>
+      ) : null}
+    </figure>
+  );
+};
+
+const FigureBlock = ({ items }: { items: FigureInfo[] }) =>
+  items.length > 1 ? (
+    <div className="grid gap-5 sm:grid-cols-2">
+      {items.map((data) => (
+        <FigureCard key={data.src} data={data} inRow />
+      ))}
+    </div>
+  ) : (
+    <FigureCard data={items[0]} />
+  );
 
 const BlogPostView = ({ post, articleRef }: { post: BlogPost; articleRef?: (node: HTMLElement | null) => void }) => {
   const { t } = useLocale();
@@ -128,7 +209,7 @@ const BlogPostView = ({ post, articleRef }: { post: BlogPost; articleRef?: (node
     [headingMap],
   );
 
-  const contentChunks = post.body.split(DEMO_MARKER);
+  const contentTokens = useMemo(() => parseArticleTokens(post.body), [post.body]);
 
   return (
     <Fragment key={post.slug}>
@@ -171,23 +252,28 @@ const BlogPostView = ({ post, articleRef }: { post: BlogPost; articleRef?: (node
       </header>
 
       <div className="mt-8 space-y-8">
-        {contentChunks.map((chunk, index) => (
-          <Fragment key={`${post.slug}-${index}`}>
-            {chunk.trim() ? (
-              <div className="prose-none">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeHighlight]}
-                  components={components}
-                >
-                  {chunk}
-                </ReactMarkdown>
-              </div>
-            ) : null}
-
-            {index < contentChunks.length - 1 ? <LazyDemoSection /> : null}
-          </Fragment>
-        ))}
+        {contentTokens.map((token, index) => {
+          if (token.kind === 'figure') {
+            return <FigureCard key={`${post.slug}-${index}`} data={token.data} />;
+          }
+          if (token.kind === 'figureRow') {
+            return <FigureBlock key={`${post.slug}-${index}`} items={token.items} />;
+          }
+          if (token.kind === 'demo') {
+            return <LazyDemoSection key={`${post.slug}-${index}`} />;
+          }
+          return (
+            <div key={`${post.slug}-${index}`} className="prose-none">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeHighlight]}
+                components={components}
+              >
+                {token.value}
+              </ReactMarkdown>
+            </div>
+          );
+        })}
       </div>
       </article>
     </Fragment>

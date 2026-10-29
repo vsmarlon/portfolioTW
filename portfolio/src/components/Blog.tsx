@@ -47,7 +47,7 @@ const Blog = () => {
         <div className="mx-1 flex flex-col gap-4 border-b-2 border-stone-900/20 pb-8 dark:border-stone-100/20 sm:mx-0 lg:flex-row lg:items-end lg:justify-between">
           <div>
              <p className="eyebrow inline-flex items-center gap-2">
-               <Icon name="pen" />{t('blog.eyebrow')}
+               <Icon name="article" />{t('blog.eyebrow')}
             </p>
             <h1 className="mt-3 font-display text-3xl font-black text-stone-900 dark:text-stone-100 md:text-5xl">
                {t('blog.title')} <span className="text-[#a1006b] dark:text-fuchsia-200">{t('blog.and')}</span> {t('blog.caseStudies')}

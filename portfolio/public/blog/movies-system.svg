@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" role="img" aria-labelledby="title desc">
+  <title id="title">MoviesFlutter: duas fontes de dados, uma experiência</title>
+  <desc id="desc">O aplicativo Flutter lê o catálogo no TMDB e usa uma API Express com PostgreSQL para contas e favoritos.</desc>
+  <style>
+    .flow { stroke-dasharray: 12 50; stroke-linecap: round; animation: flow 1.4s linear infinite; }
+    @keyframes flow { to { stroke-dashoffset: -62; } }
+    @media (prefers-reduced-motion: reduce) { .flow { display: none; } }
+  </style>
+  <rect width="1000" height="420" fill="#171416"/>
+  <path d="M0 60H1000M0 360H1000" stroke="#6E5965"/>
+  <text x="36" y="38" fill="#F1E9EC" font-family="monospace" font-size="17" font-weight="700">MOVIESFLUTTER / FONTES DE DADOS</text>
+  <g fill="none" stroke="#BD7D9D" stroke-width="3">
+    <path d="M277 209H393"/>
+    <path d="M575 169H697"/>
+    <path d="M575 252H636V309H697"/>
+  </g>
+  <g class="flow" fill="none" stroke="#FFE3F3" stroke-width="5">
+    <path d="M277 209H393" style="animation-delay:-.3s"/>
+    <path d="M575 169H697" style="animation-delay:-.6s"/>
+    <path d="M575 252H636V309H697"/>
+  </g>
+  <g stroke-width="2">
+    <rect x="45" y="130" width="232" height="158" fill="#2A2228" stroke="#EC7CC3"/>
+    <rect x="393" y="130" width="182" height="158" fill="#211E22" stroke="#B7A7B0"/>
+    <rect x="697" y="104" width="255" height="130" fill="#211E22" stroke="#B7A7B0"/>
+    <rect x="697" y="254" width="255" height="110" fill="#211E22" stroke="#B7A7B0"/>
+  </g>
+  <g fill="#FFF7FB" font-family="sans-serif">
+    <text x="68" y="174" font-size="19" font-weight="700">Aplicativo Flutter</text>
+    <text x="68" y="206" font-size="14">Busca, detalhes, favoritos</text>
+    <text x="416" y="174" font-size="19" font-weight="700">Dois contratos</text>
+    <text x="416" y="206" font-size="14">Dados públicos</text>
+    <text x="416" y="235" font-size="14">Dados privados</text>
+    <text x="720" y="148" font-size="19" font-weight="700">TMDB</text>
+    <text x="720" y="180" font-size="14">Catálogo e pôsteres</text>
+    <text x="720" y="295" font-size="19" font-weight="700">Express + PostgreSQL</text>
+    <text x="720" y="327" font-size="14">Sessão e favoritos</text>
+  </g>
+  <text x="36" y="395" fill="#C4AFBB" font-family="monospace" font-size="13">A interface reúne as fontes; a API própria decide a quem pertencem os favoritos.</text>
+</svg>

@@ -10,11 +10,13 @@ describe('blog post reading time', () => {
     expect(blogPosts.every((post) => post.body.trim().split(/\s+/).length >= 1200)).toBe(true);
   });
 
-  it('imports the six restored articles with a single featured and demo marker', () => {
+  it('imports the complete Portuguese collection with a single featured and demo marker', () => {
     expect(blogPosts.map((post) => post.slug).sort()).toEqual([
       'freebay-product-architecture',
       'full-stack-architecture-evidence',
       'github-data-grid-case-study',
+      'movies-flutter-produto-completo',
+      'pokedex-interface-regras',
       'postgresql-oracle-data-decisions',
       'react-cleanup-before-optimization',
       'react-portfolio-identity',

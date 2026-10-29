@@ -5,7 +5,7 @@ excerpt: Como usar um portfólio para mostrar decisões de produto, contratos e 
 publishedAt: 2026-04-12
 category: Arquitetura
 tags: [Full Stack, React, NestJS, Arquitetura]
-featured: true
+featured: false
 hasDemo: false
 ---
 # Arquitetura também é comunicação

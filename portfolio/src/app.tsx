@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, useParams } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { LocaleProvider, useLocale, type Locale } from './contexts/LocaleContext';
+import { LocaleProvider, useLocale } from './contexts/LocaleContext';
 import { ActiveSectionProvider } from './contexts/ActiveSectionContext';
 import Home from './components/Home';
 import Projects from './components/Projects';
@@ -24,14 +24,15 @@ import { getLocalizedBlogPostBySlug } from './data/blogPosts';
 
 function resolvePageMeta(
   pathname: string,
-  locale: Locale,
+  locale: 'pt-BR' | 'en',
   t: (key: string) => string,
 ): { pageTitle: string; description: string } {
   if (pathname === '/') return { pageTitle: t('home.title'), description: t('home.description') };
   if (pathname === '/blog') return { pageTitle: t('blog.title'), description: t('blog.description') };
   if (pathname === '/projects/freebay') return { pageTitle: 'Freebay', description: t('freebay.lead') };
   if (pathname.startsWith('/blog/')) {
-    const article = getLocalizedBlogPostBySlug(pathname.slice('/blog/'.length), locale);
+    const slug = decodeURIComponent(pathname.slice('/blog/'.length));
+    const article = slug ? getLocalizedBlogPostBySlug(slug, locale) : undefined;
     if (article) return { pageTitle: article.title, description: article.excerpt };
   }
   return { pageTitle: t('notFound.title'), description: t('notFound.description') };
@@ -161,7 +162,7 @@ export function App() {
   return (
     <ThemeProvider>
       <AppContent />
-      <Analytics />
+      {import.meta.env.PROD ? <Analytics /> : null}
     </ThemeProvider>
   );
 }

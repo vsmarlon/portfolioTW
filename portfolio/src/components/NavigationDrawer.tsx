@@ -105,7 +105,7 @@ const NavigationDrawer = () => {
                   aria-current={location.pathname.startsWith('/blog') ? 'page' : undefined}
                   className={({ isActive }) => `focus-ring flex items-center gap-3 border-l-2 px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${isActive ? 'border-[#a1006b] text-[#a1006b] dark:border-fuchsia-200 dark:text-fuchsia-200' : 'border-transparent text-stone-600 hover:border-stone-900/30 hover:text-stone-900 dark:text-stone-300 dark:hover:border-stone-100/40 dark:hover:text-stone-100'}`}
                 >
-                  <Icon name="pen" aria-hidden="true" />
+                  <Icon name="article" aria-hidden="true" />
                   {t('nav.blog')}
                 </NavLink>
               </li>

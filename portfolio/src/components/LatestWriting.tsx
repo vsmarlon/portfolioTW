@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { getBlogPosts } from '../data/blogPosts';
+import { getBlogHighlights } from '../data/blogHighlights';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLocale } from '../contexts/LocaleContext';
 
 const LatestWriting = () => {
   const reveal = useScrollReveal();
   const { t, locale } = useLocale();
-  const blogPosts = getBlogPosts(locale);
+  const blogPosts = getBlogHighlights(locale);
   return (
     <section id="writing" className="content-section">
       <div ref={reveal} className="reveal editorial-container">
@@ -15,7 +15,7 @@ const LatestWriting = () => {
             <Link to="/blog" className="focus-ring hidden text-sm font-semibold text-[#73004c] underline-offset-4 hover:underline dark:text-fuchsia-200 sm:inline">{t('writing.all')}</Link>
         </div>
         <div className="mt-8 border-y-2 border-stone-900/20 dark:border-stone-100/20">
-          {blogPosts.slice(0, 3).map((post) => (
+          {blogPosts.map((post) => (
              <Link key={post.slug} to={`/blog/${post.slug}`} className="card-interactive focus-ring grid gap-3 border-b border-stone-900/15 px-4 py-5 last:border-b-0 dark:border-stone-100/15 md:grid-cols-[1fr_auto] md:items-center">
               <div><p className="font-mono text-xs uppercase tracking-[0.18em] text-[#73004c] dark:text-fuchsia-200">{post.category}</p><h3 className="mt-2 text-lg font-bold text-stone-900 dark:text-stone-100">{post.title}</h3><p className="mt-2 max-w-2xl text-sm leading-6 text-stone-700 dark:text-stone-300">{post.excerpt}</p></div>
               <span className="font-mono text-xs text-stone-600 dark:text-stone-400">{post.formattedDate} · {post.readTime}</span>

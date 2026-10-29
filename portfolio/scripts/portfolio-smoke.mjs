@@ -38,6 +38,20 @@ async function openPage(browser, path, width, locale, theme) {
   return { context, page }
 }
 
+async function captureSection(page, selector, path) {
+  const section = page.locator(selector)
+  await section.scrollIntoViewIfNeeded()
+  await section.evaluate((node) => {
+    node.style.contentVisibility = 'visible'
+    node.querySelectorAll('.reveal, .reveal-right').forEach((item) => item.classList.add('revealed'))
+    const header = globalThis.document.querySelector('header')
+    if (header) header.style.visibility = 'hidden'
+  })
+  await page.waitForFunction(() => globalThis.document.getAnimations().every((animation) => animation.playState === 'finished' || animation.effect?.getComputedTiming().iterations === Infinity))
+  await section.screenshot({ path })
+  await page.locator('header').evaluate((node) => { node.style.visibility = '' })
+}
+
 async function checkLayout(page, label) {
   const layout = await page.evaluate(() => ({
     viewport: globalThis.innerWidth,
@@ -104,21 +118,24 @@ async function checkHome(browser, width, locale, theme) {
   await checkLayout(page, label)
   await checkHeader(page, label)
   await checkVisibleCopy(page, label)
-  const aboutCopy = await page.locator('#about').innerText()
+  const aboutCopy = await page.locator('#about').textContent()
   check(aboutCopy.includes(locale === 'en' ? 'Software Engineering Intern · QQTech' : 'Estagiário de Engenharia de Software · QQTech'), `${label}: QQTech title is not translated`)
   check(aboutCopy.includes('Unisinos'), `${label}: Unisinos entry is missing or untranslated`)
   check(await page.locator('html').getAttribute('lang') === locale, `${label}: html lang is wrong`)
   const colorScheme = await page.locator('html').evaluate((node) => globalThis.getComputedStyle(node).colorScheme)
   check(colorScheme.includes('light') && !colorScheme.includes('dark'), `${label}: authored themes are exposed to browser recoloring (${colorScheme})`)
   const flagshipMedia = page.getByTestId('freebay-flagship-media')
-  check(await flagshipMedia.getAttribute('poster') === '/freebay-login.webp', `${label}: flagship video has no high-resolution poster`)
-  check(await flagshipMedia.locator('source[type="video/mp4"]').getAttribute('src') === '/freebay-login.mp4', `${label}: flagship video is not using the high-resolution MP4`)
+  check(await flagshipMedia.getAttribute('src') === '/freebay-login.webp', `${label}: featured project is not using the optimized WebP image`)
+  check(await flagshipMedia.getAttribute('loading') === 'lazy', `${label}: featured project image is not lazy loaded`)
+  check(await flagshipMedia.getAttribute('decoding') === 'async', `${label}: featured project image is not decoded asynchronously`)
   if (width <= 375) {
     const headerBottom = await page.locator('header').evaluate((node) => node.getBoundingClientRect().bottom)
     const homeTop = await page.locator('main > section h1').first().evaluate((node) => node.getBoundingClientRect().top)
     check(homeTop >= headerBottom - 1, `${label}: header overlaps the home content`)
   }
   if (width === 1440 && locale === 'en' && theme === 'light') await page.screenshot({ path: resolve(artifactDir, 'home-desktop-header.png') })
+  if (width === 1440 && locale === 'en' && theme === 'light') await captureSection(page, '#projects', resolve(artifactDir, 'projects-desktop.png'))
+  if (width === 375 && locale === 'pt-BR' && theme === 'light') await captureSection(page, '#projects', resolve(artifactDir, 'projects-mobile.png'))
   if (width === 1440 && locale === 'en' && theme === 'light') {
     await page.goto(`${baseUrl}/#about`, { waitUntil: 'domcontentloaded' })
     await page.locator('#about').waitFor()

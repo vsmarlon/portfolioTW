@@ -37,7 +37,8 @@ const ContactChannelRow = ({
   icon,
   iconBg,
   iconColor,
-}: (typeof contactLinks)[number]) => (
+  externalLinkLabel,
+}: (typeof contactLinks)[number] & { externalLinkLabel: string }) => (
   <a
     href={href}
     target={type === 'email' ? undefined : '_blank'}
@@ -59,7 +60,7 @@ const ContactChannelRow = ({
               {value}
               {type !== 'email' ? (
                 <>
-                  {' '}<ExternalMark />
+                  {' '}<ExternalMark label={externalLinkLabel} />
                 </>
               ) : null}
             </span>
@@ -146,7 +147,13 @@ const Contact = () => {
               <div className="mt-5 grid gap-3">
                 {contactLinks.map((link, index) => (
                   <div key={link.type} ref={reveal} className="reveal" style={{ transitionDelay: `${index * 90}ms` }}>
-                    <ContactChannelRow {...link} label={t(link.label)} description={t(link.description)} actionLabel={t(link.actionLabel)} />
+                    <ContactChannelRow
+                      {...link}
+                      label={t(link.label)}
+                      description={t(link.description)}
+                      actionLabel={t(link.actionLabel)}
+                      externalLinkLabel={t('externalLink')}
+                    />
                   </div>
                 ))}
               </div>

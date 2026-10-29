@@ -26,7 +26,7 @@ export default function ReadingNavigation({ sections, activeId, label }: Reading
 
   return (
     <details className="sidebar-accordion" open>
-      <summary><span className="inline-flex items-center gap-2"><Icon name="pen" />{navLabel}</span></summary>
+      <summary><span className="inline-flex items-center gap-2"><Icon name="article" />{navLabel}</span></summary>
       <nav className="accordion-body" aria-label={navLabel}>
         <ol className="reading-navigation space-y-1 text-sm">
           {sections.map((section, index) => (

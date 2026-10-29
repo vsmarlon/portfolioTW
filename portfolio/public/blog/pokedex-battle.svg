@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" role="img" aria-labelledby="title desc">
+  <title id="title">Pokédex: do catálogo à arena</title>
+  <desc id="desc">Busca e filtro selecionam os Pokémon; o estado da arena controla escolha, turno, ação e fim da batalha.</desc>
+  <style>
+    .flow { stroke-dasharray: 12 50; stroke-linecap: round; animation: flow 1.4s linear infinite; }
+    @keyframes flow { to { stroke-dashoffset: -62; } }
+    @media (prefers-reduced-motion: reduce) { .flow { display: none; } }
+  </style>
+  <rect width="1000" height="480" fill="#17202A"/>
+  <path d="M32 64H968M32 418H968" stroke="#64788C"/>
+  <text x="32" y="39" fill="#EAF3FF" font-family="monospace" font-size="17" font-weight="700">POKÉDEX / DA DESCOBERTA À DECISÃO</text>
+  <g fill="none" stroke="#80BEDD" stroke-width="3">
+    <path d="M243 214H326"/>
+    <path d="M541 214H624"/>
+    <path d="M792 214H884"/>
+  </g>
+  <g class="flow" fill="none" stroke="#E7F5FF" stroke-width="5">
+    <path d="M243 214H326" style="animation-delay:-.3s"/>
+    <path d="M541 214H624" style="animation-delay:-.6s"/>
+    <path d="M792 214H884"/>
+  </g>
+  <g stroke-width="2">
+    <rect x="32" y="135" width="211" height="160" fill="#203749" stroke="#80BEDD"/>
+    <rect x="326" y="135" width="215" height="160" fill="#203749" stroke="#80BEDD"/>
+    <rect x="624" y="135" width="168" height="160" fill="#203749" stroke="#80BEDD"/>
+    <rect x="884" y="167" width="84" height="94" fill="#304651" stroke="#F6C764"/>
+  </g>
+  <g fill="#EAF3FF" font-family="sans-serif">
+    <text x="51" y="178" font-size="20" font-weight="700">Catálogo</text>
+    <text x="51" y="211" font-size="15">Busca + tipo</text>
+    <text x="51" y="241" font-size="15">151 entradas</text>
+    <text x="346" y="178" font-size="20" font-weight="700">Detalhes</text>
+    <text x="346" y="211" font-size="15">Atributos e habilidades</text>
+    <text x="346" y="241" font-size="15">Escolha dos participantes</text>
+    <text x="644" y="178" font-size="20" font-weight="700">Arena</text>
+    <text x="644" y="211" font-size="15">Turno + ação</text>
+    <text x="644" y="241" font-size="15">Dano + vida</text>
+    <text x="910" y="207" font-size="16" font-weight="700">Fim</text>
+    <text x="910" y="232" font-size="14">HP 0</text>
+  </g>
+  <text x="32" y="377" fill="#C7D9E5" font-family="monospace" font-size="14">O dado da PokéAPI descreve o Pokémon; o motor de batalha decide o resultado.</text>
+  <text x="32" y="450" fill="#9FB8C9" font-family="monospace" font-size="12">CATÁLOGO / SELEÇÃO / TRANSIÇÃO DE ESTADO / RESULTADO</text>
+</svg>

@@ -17,6 +17,14 @@ const commonProps = {
 const paths: Record<IconName, ReactNode> = {
   'arrow-left': <path d="M19 12H5m7-7-7 7 7 7" />,
   'arrow-right': <path d="M5 12h14m-7-7 7 7-7 7" />,
+  article: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M7 9h6" />
+      <path d="M7 13h10" />
+      <path d="M7 17h7" />
+    </>
+  ),
   bars: (
     <>
       <path d="M4 7h16" />
@@ -60,6 +68,13 @@ const paths: Record<IconName, ReactNode> = {
       <path d="M19 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" />
     </>
   ),
+  feather: (
+    <>
+      <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+      <path d="M16 8 2 22" />
+      <path d="M17.5 15H9" />
+    </>
+  ),
   github: <path d="M9 19c-4.5 1.4-4.5-2.5-6-3m12 6v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6.3A4.9 4.9 0 0 0 18.7 7 4.5 4.5 0 0 0 18.6 4S17.5 3.7 15 5.3a13.3 13.3 0 0 0-6 0C6.5 3.7 5.4 4 5.4 4a4.5 4.5 0 0 0-.1 3A4.9 4.9 0 0 0 4 10.2c0 4.9 2.7 6 5.5 6.3-.6.6-.6 1.2-.5 2V22" />,
   grid: (
     <>
@@ -92,12 +107,6 @@ const paths: Record<IconName, ReactNode> = {
   ),
   moon: <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" />,
   'paper-plane': <path d="M21 3 10 14M21 3l-7 18-4-7-7-4 18-7Z" />,
-  pen: (
-    <>
-      <path d="m12 20 8-8-4-4-8 8-1 5 5-1Z" />
-      <path d="m14 6 4 4" />
-    </>
-  ),
   search: (
     <>
       <circle cx="11" cy="11" r="7" />

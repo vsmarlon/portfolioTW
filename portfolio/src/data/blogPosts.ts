@@ -112,7 +112,7 @@ const parsedPosts = Object.entries(rawPosts).flatMap(([path, source]) => {
       body,
        formattedDate: formatPostDate(meta.publishedAt, path.includes('/en/') ? 'en' : 'pt-BR'),
        locale: (path.includes('/en/') ? 'en' : 'pt-BR') as Locale,
-      readTime: getReadingTime(body),
+      readTime: getReadingTime(body, path.includes('/en/') ? 'en' : 'pt-BR'),
     },
   ];
 });

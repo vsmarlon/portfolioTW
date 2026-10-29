@@ -23,6 +23,7 @@ const ResumeSection = ({ title, children }: { title: string; children: ReactNode
 
 const Resume = ({ locale }: ResumeProps) => {
   const copy = copies[locale];
+  const externalLinkLabel = locale === 'en' ? 'opens in a new tab' : 'abre em nova aba';
   const pdfName = `Marlon-Vargas-${locale}.pdf`;
   const rootRef = useCallback((node: HTMLElement | null) => {
     if (!node) return;
@@ -46,7 +47,7 @@ const Resume = ({ locale }: ResumeProps) => {
         </Link>
         <button type="button" onClick={() => window.print()}>{copy.toolbar.print}</button>
         <a href={`/cv/${pdfName}`} target="_blank" rel="noopener noreferrer">
-          {copy.toolbar.viewPdf} <ExternalMark />
+          {copy.toolbar.viewPdf} <ExternalMark label={externalLinkLabel} />
         </a>
       </nav>
 
@@ -59,9 +60,9 @@ const Resume = ({ locale }: ResumeProps) => {
           <a href={`tel:${resumeFacts.phone.replace(/ /g, '')}`}>{resumeFacts.phone}</a>
           <a href={`mailto:${resumeFacts.email}`}>{resumeFacts.email}</a>
           <span>{copy.meta.location}</span>
-          <a href={resumeFacts.github} target="_blank" rel="noopener noreferrer">{copy.labels.github}: vsmarlon <ExternalMark /></a>
-          <a href={resumeFacts.linkedin} target="_blank" rel="noopener noreferrer">{copy.labels.linkedin}: marlon-vargas <ExternalMark /></a>
-          <a href={resumeFacts.portfolio} target="_blank" rel="noopener noreferrer">{copy.labels.portfolio}: portfolio-tw-theta <ExternalMark /></a>
+          <a href={resumeFacts.github} target="_blank" rel="noopener noreferrer">{copy.labels.github}: vsmarlon <ExternalMark label={externalLinkLabel} /></a>
+          <a href={resumeFacts.linkedin} target="_blank" rel="noopener noreferrer">{copy.labels.linkedin}: marlon-vargas <ExternalMark label={externalLinkLabel} /></a>
+          <a href={resumeFacts.portfolio} target="_blank" rel="noopener noreferrer">{copy.labels.portfolio}: portfolio-tw-theta <ExternalMark label={externalLinkLabel} /></a>
         </address>
       </header>
 
@@ -90,7 +91,7 @@ const Resume = ({ locale }: ResumeProps) => {
               <p><strong>{copy.labels.technologies}:</strong> {project.technologies}</p>
               <ul>{project.description.map((item) => <li key={item}>{item}</li>)}</ul>
               <a href={project.link} target="_blank" rel="noopener noreferrer">
-                {project.link.replace('https://github.com/', 'github.com/')} <ExternalMark />
+                {project.link.replace('https://github.com/', 'github.com/')} <ExternalMark label={externalLinkLabel} />
               </a>
             </div>
           ))}

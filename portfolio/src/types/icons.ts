@@ -1,6 +1,7 @@
 export type IconName =
   | 'arrow-left'
   | 'arrow-right'
+  | 'article'
   | 'bars'
   | 'chevron-down'
   | 'close'
@@ -8,6 +9,7 @@ export type IconName =
   | 'download'
   | 'envelope'
   | 'external-link'
+  | 'feather'
   | 'github'
   | 'grid'
   | 'heart'
@@ -17,7 +19,6 @@ export type IconName =
   | 'mobile'
   | 'moon'
   | 'paper-plane'
-  | 'pen'
   | 'search'
   | 'server'
   | 'sun'

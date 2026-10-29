@@ -5,7 +5,7 @@ excerpt: How to use a portfolio to show product decisions, contracts, and system
 publishedAt: 2026-04-12
 category: Architecture
 tags: [Full Stack, React, NestJS, Architecture]
-featured: true
+featured: false
 hasDemo: false
 ---
 # Architecture is also communication
