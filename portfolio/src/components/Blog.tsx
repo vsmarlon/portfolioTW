@@ -41,6 +41,14 @@ const Blog = () => {
 
   return (
     <main ref={routeRootRef} className="reading-page min-h-screen">
+      {activePost ? (
+        <>
+          <title>{activePost.title} | Marlon Vargas</title>
+          <meta name="description" content={activePost.excerpt} />
+          <meta property="og:title" content={activePost.title} />
+          <meta property="og:description" content={activePost.excerpt} />
+        </>
+      ) : null}
       <div className="w-full px-3 py-10 sm:px-4 lg:px-6">
          <BackLink to="/">{t('blog.back')}</BackLink>
 

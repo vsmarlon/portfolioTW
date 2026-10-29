@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, useParams } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { LocaleProvider, useLocale, type Locale } from './contexts/LocaleContext';
+import { LocaleProvider, useLocale } from './contexts/LocaleContext';
 import { ActiveSectionProvider } from './contexts/ActiveSectionContext';
 import Home from './components/Home';
 import Projects from './components/Projects';
@@ -19,21 +19,16 @@ import { useThemeRootRef } from './contexts/ThemeContext';
 import { useActiveSectionRoot } from './contexts/ActiveSectionContext';
 import { useRouteScrollRoot } from './hooks/useRouteScrollRoot';
 import type { ResumeLocale } from './data/resume';
-import { getLocalizedBlogPostBySlug } from './data/blogPosts';
 
 
 function resolvePageMeta(
   pathname: string,
-  locale: Locale,
   t: (key: string) => string,
 ): { pageTitle: string; description: string } {
   if (pathname === '/') return { pageTitle: t('home.title'), description: t('home.description') };
   if (pathname === '/blog') return { pageTitle: t('blog.title'), description: t('blog.description') };
   if (pathname === '/projects/freebay') return { pageTitle: 'Freebay', description: t('freebay.lead') };
-  if (pathname.startsWith('/blog/')) {
-    const article = getLocalizedBlogPostBySlug(pathname.slice('/blog/'.length), locale);
-    if (article) return { pageTitle: article.title, description: article.excerpt };
-  }
+  if (pathname.startsWith('/blog/')) return { pageTitle: t('blog.title'), description: t('blog.description') };
   return { pageTitle: t('notFound.title'), description: t('notFound.description') };
 }
 
@@ -71,8 +66,8 @@ const Background = () => (
 
 const SiteLayout = () => {
   const { pathname } = useLocation();
-  const { locale, t } = useLocale();
-  const { pageTitle, description } = resolvePageMeta(pathname, locale, t);
+  const { t } = useLocale();
+  const { pageTitle, description } = resolvePageMeta(pathname, t);
   const title = pathname === '/' ? `Marlon Vargas | ${pageTitle}` : `${pageTitle} | Marlon Vargas`;
 
   return (
@@ -161,7 +156,7 @@ export function App() {
   return (
     <ThemeProvider>
       <AppContent />
-      <Analytics />
+      {import.meta.env.PROD ? <Analytics /> : null}
     </ThemeProvider>
   );
 }

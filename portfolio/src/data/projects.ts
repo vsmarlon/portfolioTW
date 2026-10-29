@@ -1,7 +1,13 @@
+export type ProjectTone = 'berry' | 'blue' | 'green' | 'amber' | 'violet' | 'rose';
+
 export type ProjectItem = {
   title: string;
-  url: string;
-  image: string;
+  repositoryUrl: string;
+  liveUrl?: string;
+  caseStudyUrl?: string;
+  image?: string;
+  visual: string;
+  tone: ProjectTone;
   description: string;
   tools: string[];
   eyebrow: string;
@@ -11,40 +17,56 @@ export type ProjectItem = {
 export const projectsData: ProjectItem[] = [
   {
     title: 'Freebay',
-    url: '/projects/freebay',
+    repositoryUrl: 'https://github.com/vsmarlon/freebay',
+    caseStudyUrl: '/projects/freebay',
     image: '/freebay-login.webp',
+    visual: 'FB',
+    tone: 'berry',
     description: 'projectsData.freebayDescription',
     tools: ['React', 'Flutter', 'NestJS', 'PostgreSQL'],
     eyebrow: 'projectsData.freebayEyebrow',
   },
   {
     title: 'ChatBot RAG',
-    url: 'https://github.com/vsmarlon/chatbotRAG',
+    repositoryUrl: 'https://github.com/vsmarlon/chatbotRAG',
     image: '/chat.webp',
+    visual: 'RAG',
+    tone: 'violet',
     description: 'projectsData.ragDescription',
     tools: ['React', 'Python', 'PostgreSQL', 'Tailwind CSS'],
     eyebrow: 'projectsData.ragEyebrow',
     details: [
       'projectsData.ragDetail1',
       'projectsData.ragDetail2',
-      'projectsData.ragDetail3',
     ],
   },
   {
-    title: 'Buscador de Animes',
-    url: 'https://animeghost.vercel.app/',
-    image: '/Capturar.webp',
-    description: 'projectsData.animeDescription',
-    tools: ['HTML', 'CSS', 'JavaScript', 'API Jikan v4'],
-    eyebrow: 'projectsData.animeEyebrow',
+    title: 'MoviesFlutter',
+    repositoryUrl: 'https://github.com/vsmarlon/MoviesFlutter',
+    visual: 'MOV',
+    tone: 'blue',
+    description: 'projectsData.moviesDescription',
+    tools: ['Flutter', 'TypeScript', 'Express', 'PostgreSQL'],
+    eyebrow: 'projectsData.moviesEyebrow',
   },
   {
-    title: 'To-do List',
-    url: 'https://todolist-drab-one.vercel.app/',
-    image: '/todolist.webp',
-    description: 'projectsData.todoDescription',
-    tools: ['HTML', 'CSS', 'JavaScript'],
-    eyebrow: 'projectsData.todoEyebrow',
+    title: 'Pokédex & Battle Arena',
+    repositoryUrl: 'https://github.com/vsmarlon/pokedex',
+    visual: 'PKM',
+    tone: 'amber',
+    description: 'projectsData.pokedexDescription',
+    tools: ['TypeScript', 'Tailwind CSS', 'Vite', 'PokéAPI'],
+    eyebrow: 'projectsData.pokedexEyebrow',
+  },
+  {
+    title: 'AnimeGhost',
+    repositoryUrl: 'https://github.com/vsmarlon/MyAnimeAPI',
+    liveUrl: 'https://animeghost.vercel.app/',
+    image: '/Capturar.webp',
+    visual: 'ANI',
+    tone: 'rose',
+    description: 'projectsData.animeDescription',
+    tools: ['HTML', 'CSS', 'JavaScript', 'Jikan API'],
+    eyebrow: 'projectsData.animeEyebrow',
   },
 ];
-

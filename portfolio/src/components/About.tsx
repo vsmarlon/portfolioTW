@@ -51,7 +51,7 @@ const About = () => {
                 rel="noopener noreferrer"
                 className="focus-ring inline-flex items-center gap-2 border-2 border-stone-900 bg-transparent px-6 py-3 font-bold text-stone-900 transition-all duration-200 hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100 dark:text-stone-100 dark:hover:border-fuchsia-200 dark:hover:text-fuchsia-200"
               >
-                <Icon name="github" /> GitHub <ExternalMark />
+                <Icon name="github" /> GitHub <ExternalMark label={t('externalLink')} />
               </a>
             </div>
           </div>

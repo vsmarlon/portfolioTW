@@ -18,6 +18,27 @@ const LazyGitHubRepoExplorer = lazy(() => import('./GitHubRepoExplorer'));
 const DEMO_MARKER = '[[DEMO_GITHUB_REPOS]]';
 const demoQueryClient = new QueryClient();
 
+const MarkdownExternalLink = ({ children, href }: { children?: ReactNode; href?: string }) => {
+  const { t } = useLocale();
+  const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-semibold text-[#73004c] underline decoration-[#a1006b]/40 underline-offset-4 transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200"
+    >
+      {children}
+      {isExternal ? (
+        <>
+          {' '}<ExternalMark className="text-[0.9em] leading-none" label={t('externalLink')} />
+        </>
+      ) : null}
+    </a>
+  );
+};
+
 const markdownComponents = {
   h1: ({ children }: { children?: ReactNode }) => (
     <h1 className="mt-12 font-display text-3xl font-black text-stone-900 first:mt-0 dark:text-stone-100">
@@ -71,24 +92,7 @@ const markdownComponents = {
       {children}
     </pre>
   ),
-  a: ({ children, href }: { children?: ReactNode; href?: string }) => {
-    const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-semibold text-[#73004c] underline decoration-[#a1006b]/40 underline-offset-4 transition-colors duration-200 hover:text-[#a1006b] dark:text-fuchsia-200"
-      >
-        {children}
-        {isExternal ? (
-          <>
-            {' '}<ExternalMark className="text-[0.9em] leading-none" />
-          </>
-        ) : null}
-      </a>
-    );
-  },
+  a: MarkdownExternalLink,
 };
 
 const BlogPostView = ({ post, articleRef }: { post: BlogPost; articleRef?: (node: HTMLElement | null) => void }) => {
