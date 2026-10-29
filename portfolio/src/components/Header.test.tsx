@@ -54,7 +54,7 @@ describe('Header blog search', () => {
   it('uses the same searchable reading header on the case study', () => {
     renderHeader('/projects/freebay');
     const search = screen.getByRole('searchbox', { name: 'Buscar artigos' });
-    expect(within(search.closest('form')!).getByRole('link', { name: /Marlon Vargas/i })).toHaveTextContent('MV');
+    expect(within(search.closest('form')!).getByRole('link', { name: /Marlon Vargas/i }).querySelector('[data-brand-mark]')).toHaveAttribute('src', '/mv-editorial-mark-compact.svg');
     fireEvent.keyDown(document, { key: 'k', ctrlKey: true });
     expect(search).toHaveFocus();
     fireEvent.change(search, { target: { value: 'Freebay' } });
@@ -67,7 +67,7 @@ describe('Header blog search', () => {
     const banner = screen.getByRole('banner');
     const form = screen.getByRole('searchbox').closest('form')!;
 
-    expect(within(form).getByRole('link', { name: /Marlon Vargas/i })).toHaveTextContent('MV');
+    expect(within(form).getByRole('link', { name: /Marlon Vargas/i }).querySelector('[data-brand-mark]')).toBeInTheDocument();
     expect(form.querySelectorAll('a')).toHaveLength(1);
     expect(banner.querySelector('[data-header-group="brand"] > a')).not.toBeInTheDocument();
     expect(banner.querySelector('[data-header-group="actions"]')).toBeInTheDocument();
@@ -76,7 +76,12 @@ describe('Header blog search', () => {
   it('keeps the full home monogram and name beside the hamburger', () => {
     renderHeader('/');
 
-    expect(screen.getByRole('link', { name: /Marlon Vargas/i })).toHaveTextContent(/MV.*MARLON VARGAS/);
+    const brand = screen.getByRole('link', { name: /Marlon Vargas/i });
+    expect(brand.querySelector('[data-brand-mark]')).toHaveAttribute('src', '/mv-editorial-mark.png');
+    expect(brand).toHaveTextContent('MARLON VARGAS');
+    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/vsmarlon');
+    expect(screen.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute('href', 'https://www.linkedin.com/in/marlon-vargas-917618223/');
+    expect(screen.getByRole('banner').querySelector('[data-header-group="actions"]')?.lastElementChild).toHaveAttribute('id', 'locale-select');
     expect(screen.getByRole('banner').querySelector('form')).not.toBeInTheDocument();
   });
 

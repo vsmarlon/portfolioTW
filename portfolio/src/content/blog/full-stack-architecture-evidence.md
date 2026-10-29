@@ -1,7 +1,7 @@
 ---
 title: Arquitetura full stack como evidência de trabalho
 slug: full-stack-architecture-evidence
-excerpt: Como usar um portfólio para mostrar decisões de produto, contratos e limites de sistema sem transformar a apresentação em um inventário de ferramentas.
+excerpt: Uma análise de como fluxos, contratos e limites arquiteturais transformam projetos de portfólio em evidências técnicas verificáveis.
 publishedAt: 2026-04-12
 category: Arquitetura
 tags: [Full Stack, React, NestJS, Arquitetura]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Arquitetura também é comunicação
 
-Um portfólio técnico precisa provar mais do que a capacidade de montar uma tela. Ele precisa mostrar como uma decisão se sustenta quando deixa de ser um componente isolado e passa a participar de um sistema.
+Um portfólio técnico precisa demonstrar mais do que a capacidade de compor interfaces. Seu valor analítico está em mostrar como uma decisão permanece coerente quando deixa de ser isolada e passa a integrar um sistema.
 
 Isso muda a unidade de explicação. Em vez de apresentar uma tecnologia como conquista isolada, apresento uma sequência em que cada camada recebe uma responsabilidade observável.
 
@@ -107,6 +107,8 @@ A simplificação é aceitável quando é declarada. Ela se torna um problema qu
 Arquitetura full stack funciona como evidência quando mostra uma sequência verificável: intenção, contrato, decisão, estado e efeito persistido. A lista de tecnologias passa a ser consequência da necessidade, não o assunto principal.
 
 Essa abordagem também melhora a comunicação entre perfis. Pessoas de produto encontram o problema. Pessoas de engenharia encontram os limites. Pessoas de design encontram os estados e a consequência da regra na interface.
+
+Ao relacionar cada afirmação a um contrato, exemplo ou limitação, a apresentação permite revisão técnica sem depender de autoridade ou linguagem promocional.
 
 O que deve permanecer simples é dito como simples. O que é hipótese é rotulado como hipótese. Essa honestidade é parte do trabalho técnico, não uma nota de rodapé.
 

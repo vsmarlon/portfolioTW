@@ -41,7 +41,7 @@ const NavigationDrawer = () => {
         aria-controls="site-navigation"
         aria-expanded={isOpen}
         onClick={open}
-        className="z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center border-2 border-stone-900/25 bg-[#faf6ef] text-stone-900 transition-colors hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100/25 dark:bg-[#131110] dark:text-fuchsia-200 dark:hover:border-fuchsia-200"
+        className="z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center border-2 border-stone-900/25 bg-[#faf6ef] text-stone-900 transition-colors hover:border-[#a1006b] hover:text-[#a1006b] dark:border-stone-100/25 dark:bg-[#09090b] dark:text-fuchsia-200 dark:hover:border-fuchsia-200"
       >
         <Icon name="bars" className="text-lg" />
       </button>

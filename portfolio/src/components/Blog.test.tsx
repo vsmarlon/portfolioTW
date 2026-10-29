@@ -45,7 +45,7 @@ describe('Blog', () => {
   it('renders an article detail page with the embedded github grid demo', async () => {
     renderBlog('/blog/github-data-grid-case-study');
 
-    expect(screen.getByRole('heading', { name: /Explorador de repositórios com MUI DataGrid/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Dados reais e estados assíncronos em um explorador de repositórios/i })).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: /Reposit[óo]rios reais, grid sob demanda/i }),
     ).toBeInTheDocument();

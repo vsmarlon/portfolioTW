@@ -1,7 +1,7 @@
 ---
-title: Pokédex: quando a interface também explica as regras
+title: Pokédex: arquitetura da informação e regras de interação
 slug: pokedex-interface-regras
-excerpt: Um catálogo de 151 Pokémon leva a dois modos de batalha; o código revela como turnos e dano funcionam e onde ainda há limites.
+excerpt: Estudo sobre como busca, filtros e dois modos de batalha organizam dados e tornam explícitos os limites das regras implementadas.
 publishedAt: 2026-10-08
 category: Estudo de projeto
 tags: [TypeScript, Tailwind CSS, Vite, UX]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Muitos dados precisam de uma ordem visível
 
-Uma Pokédex reúne nomes, tipos, atributos, habilidades, altura, peso e imagens. Colocar tudo na tela de uma vez cria volume, mas não ajuda a encontrar ou comparar nada.
+Uma Pokédex reúne dados heterogêneos, como nomes, tipos, atributos, habilidades, medidas e imagens. Exibi-los simultaneamente aumenta a densidade informacional, mas não garante que possam ser localizados, comparados ou interpretados.
 
 Este projeto usa TypeScript, Tailwind CSS, Vite e a PokéAPI para organizar os primeiros 151 Pokémon. A aplicação combina catálogo, busca, filtros, detalhes e uma arena de batalha por turnos.
 
@@ -139,5 +139,12 @@ O projeto já reúne exploração e interação. As melhorias que mais agregaria
 Também seria valioso testar as regras da arena separadamente da interface. Assim, uma mudança visual não poderia alterar o resultado de uma batalha sem ser percebida.
 
 Uma revisão final em aparelhos reais completaria esse trabalho. Largura de tela, qualidade da conexão e forma de toque revelam problemas que um navegador de desktop nem sempre reproduz com fidelidade. O resultado deve continuar legível e previsível em todas essas condições.
+
+## Referências
+
+- [PokéAPI: documentação](https://pokeapi.co/docs/v2)
+- [W3C: Web Content Accessibility Guidelines 2.2](https://www.w3.org/TR/WCAG22/)
+- [MDN: Lazy loading](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading)
+- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
 
 **Explore o código do catálogo e da arena:** [Repositório Pokédex](https://github.com/vsmarlon/pokedex)

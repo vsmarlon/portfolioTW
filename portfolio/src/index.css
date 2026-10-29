@@ -14,7 +14,7 @@ html {
 }
 
 html[data-theme="dark"] {
-  background-color: #131110;
+  background-color: #09090b;
 }
 
 html[data-performance-mode="reduced"] {
@@ -88,87 +88,14 @@ code, pre, kbd, samp {
 }
 
 :root:not([data-theme="dark"]) .app-background {
-  background: #fde8e2;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(161, 0, 107, 0.09), transparent 27rem),
+    radial-gradient(circle at 92% 28%, rgba(14, 116, 144, 0.08), transparent 30rem),
+    linear-gradient(145deg, #faf6ef 0%, #fffdf8 46%, #f7efe8 100%);
 }
 
 [data-theme="dark"] .app-background {
-  background: #020202;
-}
-
-.app-background-grid {
-  position: absolute;
-  top: -8%;
-  left: -5%;
-  width: 68%;
-  height: 28%;
-  pointer-events: none;
-  background: #e8a098;
-  border-radius: 0 0 52% 34%;
-  transform: rotate(-2deg);
-}
-
-[data-theme="dark"] .app-background-grid {
-  top: 4%;
-  left: 7%;
-  width: 38%;
-  height: 23%;
-  border-radius: 0;
-  background: linear-gradient(145deg, #070707, #303030 68%, #111);
-  box-shadow: 42vw 4vh 0 -1vh #202020;
-  transform: rotate(-10deg);
-}
-
-.app-background-grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  transition: opacity var(--ui-motion-duration) linear;
-}
-
-.app-background-grain::before,
-.app-background-grain::after {
-  content: '';
-  position: absolute;
-}
-
-:root:not([data-theme="dark"]) .app-background-grain::before {
-  top: -3rem;
-  right: 8%;
-  width: 12rem;
-  height: 10rem;
-  background: radial-gradient(circle, #24201f 1.25px, transparent 1.5px) 0 0 / 7px 7px;
-  mask-image: radial-gradient(ellipse at top, black 35%, transparent 72%);
-  transform: rotate(-8deg);
-}
-
-:root:not([data-theme="dark"]) .app-background-grain::after {
-  bottom: -3.5rem;
-  left: 4%;
-  width: 11rem;
-  height: 9rem;
-  background: radial-gradient(circle, #e9bf41 1.4px, transparent 1.7px) 0 0 / 7px 7px;
-  mask-image: radial-gradient(ellipse at bottom, black 28%, transparent 68%);
-  transform: rotate(9deg);
-}
-
-[data-theme="dark"] .app-background-grain::before {
-  top: 41%;
-  left: -4%;
-  width: 37%;
-  height: 18%;
-  background: linear-gradient(160deg, #050505, #292929 70%, #0b0b0b);
-  box-shadow: 43vw -2vh 0 -1vh #242424;
-  transform: rotate(-10deg);
-}
-
-[data-theme="dark"] .app-background-grain::after {
-  right: -5%;
-  bottom: 12%;
-  width: 39%;
-  height: 19%;
-  background: linear-gradient(145deg, #080808, #252525 66%, #090909);
-  box-shadow: -47vw 8vh 0 -2vh #202020;
-  transform: rotate(-10deg);
+  background: #09090b;
 }
 
 /* Reading pages clear the fixed header (including the mobile second search row). */
@@ -716,7 +643,7 @@ a.card-interactive:hover {
 
 /* Dark mode: warm graphite */
 [data-theme="dark"] {
-  --bg-primary: #131110;
+  --bg-primary: #09090b;
   --bg-secondary: #1c1917;
   --text-primary: #fafaf9;
   --text-secondary: #d6d3d1;
@@ -800,11 +727,6 @@ a.card-interactive:hover {
   transition-duration: 0.3s;
 }
 
-:root[data-performance-mode="reduced"] .app-background-grid,
-:root[data-performance-mode="reduced"] .app-background-grain {
-  display: none;
-}
-
 /* Article tables: bordered, readable, contained overflow. */
 .article-table-wrap {
   margin-top: 1.5rem;
@@ -886,10 +808,6 @@ a.card-interactive:hover {
 }
 
 @media (max-width: 639px) {
-  .app-background-grid {
-    width: 88%;
-  }
-
   .project-card:hover {
     transform: none;
   }

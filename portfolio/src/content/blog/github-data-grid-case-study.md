@@ -1,7 +1,7 @@
 ---
-title: Explorador de repositórios com MUI DataGrid e GitHub
+title: Dados reais e estados assíncronos em um explorador de repositórios
 slug: github-data-grid-case-study
-excerpt: Estudo de caso sobre como transformar uma tabela comum em uma demo com dados reais, estados assíncronos previsíveis e narrativa técnica clara.
+excerpt: Estudo de caso com MUI DataGrid e GitHub API sobre contratos de dados, estados assíncronos e critérios de legibilidade.
 publishedAt: 2026-03-24
 category: Engenharia de Frontend
 tags: [React, MUI DataGrid, React Query, GitHub API]
@@ -10,7 +10,7 @@ hasDemo: true
 ---
 # Uma demo que parece produto, não playground
 
-No blog antigo, a experiência principal era uma demo técnica separada do conteúdo. Isso mostrava implementação, mas não comunicava decisão.
+Na versão anterior do blog, a demonstração técnica permanecia separada de sua justificativa. A implementação era visível, mas os critérios que a orientavam não eram examináveis.
 
 Nesta versão, a lógica foi invertida: o artigo explica critérios e a demo existe para sustentar a história.
 

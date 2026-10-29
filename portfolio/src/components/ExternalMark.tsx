@@ -11,7 +11,7 @@ const ExternalMark = ({
   label?: string;
 }) => (
   <>
-    <Icon name="external-link" className={className} />
+    <Icon name="external-link" className={`inline-block shrink-0 align-[-0.12em] ${className}`} />
     <span className="sr-only">({label})</span>
   </>
 );

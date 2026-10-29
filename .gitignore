@@ -1,1 +1,8 @@
 .claude/
+.idea/
+.vscode/
+*.code-workspace
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

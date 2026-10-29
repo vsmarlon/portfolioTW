@@ -9,8 +9,8 @@ const Footer = () => {
       <div className="editorial-container">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center border-2 border-stone-900 bg-[#a1006b] text-[#fff7fb] font-bold text-sm dark:border-stone-100 dark:bg-[#ec7cc3] dark:text-[#1c0a14]">
-              M
+            <div className="flex h-8 w-8 items-center justify-center border-2 border-stone-900 dark:border-stone-100">
+              <img data-brand-mark src="/mv-editorial-mark.png" alt="" className="h-full w-full" />
             </div>
             <span className="font-medium text-stone-700 dark:text-stone-300">Marlon Vargas</span>
           </div>

@@ -64,10 +64,7 @@ const MainPage = () => {
 };
 
 const Background = () => (
-  <div className="app-background">
-    <div className="app-background-grid" />
-    <div className="app-background-grain" />
-  </div>
+  <div className="app-background" />
 );
 
 const SiteLayout = () => {

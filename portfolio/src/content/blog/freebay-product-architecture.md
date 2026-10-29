@@ -1,7 +1,7 @@
 ---
-title: Freebay: produto, arquitetura e design system no mesmo caso
+title: Freebay: coerência entre produto, arquitetura e sistema visual
 slug: freebay-product-architecture
-excerpt: Um estudo sobre como comércio social, serviços, integrações e decisões visuais podem formar uma única narrativa de produto.
+excerpt: Estudo de caso sobre como contratos de domínio, integrações externas e decisões visuais sustentam uma experiência coerente de comércio social.
 publishedAt: 2026-03-28
 category: Estudo de caso
 tags: [Freebay, Produto, Design System, NestJS]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Freebay é um exercício de coerência
 
-O Freebay foi pensado como um produto em que descoberta, relacionamento e transação não ficam em telas sem conexão. A arquitetura e o design system precisam contar a mesma história: reduzir atrito sem esconder a complexidade necessária.
+O Freebay investiga uma hipótese de produto: descoberta, relacionamento e transação podem compor uma jornada única sem que a interface oculte a complexidade do domínio. O estudo analisa como arquitetura e sistema visual sustentam essa coerência.
 
 ## Contexto
 

@@ -12,7 +12,7 @@ const LatestWriting = () => {
       <div ref={reveal} className="reveal editorial-container">
         <div className="section-heading flex items-end justify-between gap-6">
            <div><p className="eyebrow">{t('writing.eyebrow')}</p><h2>{t('writing.title')}</h2></div>
-            <Link to="/blog" className="focus-ring hidden text-sm font-semibold text-[#73004c] underline-offset-4 hover:underline dark:text-fuchsia-200 sm:inline">{t('writing.all')}</Link>
+            <Link to="/blog" className="focus-ring hidden shrink-0 whitespace-nowrap text-sm font-semibold text-[#73004c] underline-offset-4 hover:underline dark:text-fuchsia-200 sm:inline">{t('writing.all')}</Link>
         </div>
         <div className="mt-8 border-y-2 border-stone-900/20 dark:border-stone-100/20">
           {blogPosts.map((post) => (

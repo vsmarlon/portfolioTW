@@ -1,7 +1,7 @@
 ---
-title: Pokédex: when the interface also explains the rules
+title: Pokédex: information architecture and interaction rules
 slug: pokedex-interface-rules
-excerpt: A 151-Pokémon catalog leads to two battle modes; the code shows how turns and damage work and where the limits remain.
+excerpt: A study of how search, filters, and two battle modes organize data while exposing the limits of the implemented rules.
 publishedAt: 2026-10-08
 category: Project study
 tags: [TypeScript, Tailwind CSS, Vite, UX]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Large datasets need a visible order
 
-A Pokédex brings together names, types, stats, abilities, height, weight, and artwork. Putting everything on one screen creates volume, but it does not help anyone find or compare information.
+A Pokédex brings together heterogeneous data: names, types, statistics, abilities, measurements, and artwork. Displaying everything at once increases information density, but does not ensure that people can locate, compare, or interpret it.
 
 This project uses TypeScript, Tailwind CSS, Vite, and PokéAPI to organize the first 151 Pokémon. The application combines a catalog, search, filters, details, and a turn-based battle arena.
 
@@ -137,5 +137,12 @@ Arena calculations can be tested without rendering the whole page. Keyboard navi
 The project already combines exploration and interaction. The improvements that would add the most value are full keyboard access to the battle, turn announcements for screen readers, and a locally saved team.
 
 Testing the arena rules separately from the interface would also help. A visual change could then never alter a battle result without being noticed.
+
+## References
+
+- [PokéAPI: documentation](https://pokeapi.co/docs/v2)
+- [W3C: Web Content Accessibility Guidelines 2.2](https://www.w3.org/TR/WCAG22/)
+- [MDN: Lazy loading](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading)
+- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
 
 **Explore the catalog and battle engine code:** [Pokédex repository](https://github.com/vsmarlon/pokedex)

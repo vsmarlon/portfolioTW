@@ -1,7 +1,7 @@
 ---
-title: What I remove before optimizing a React layout
+title: Refactoring before optimization in React interfaces
 slug: react-cleanup-before-optimization
-excerpt: Before discussing performance, I reduce structural noise: duplicated state, unnecessary effects, and wrappers that only add complexity.
+excerpt: A method for reducing derived state, indirect effects, and purposeless structure before formulating performance hypotheses.
 publishedAt: 2026-03-12
 category: Performance
 tags: [React, Performance, Refactor]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Optimization almost always starts with removal
 
-In a portfolio and in a real product, the first impulse is often to add memoization, virtualization, or another library. Before that, I look for duplicated state, effects without a clear responsibility, and structure without a purpose.
+In portfolio projects and production systems, performance problems often receive solutions before they are bounded. My first step is to investigate duplicated state, effects without clear responsibility, and structures with no observable purpose.
 
 ## Method
 

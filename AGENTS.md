@@ -46,11 +46,12 @@ npm test -- --grep "renders the contact pitch"  # Filter by test name
 ## Current Architecture
 
 - `portfolio/src/main.tsx` bootstraps the app and imports `portfolio/src/app.tsx`.
-- `portfolio/src/app.tsx` sets up `QueryClientProvider`, `ThemeProvider`, `ActiveSectionProvider`, router, background, routes, header, and footer.
+- `portfolio/src/app.tsx` sets up theme, locale and active-section providers, router, background, routes, header, and footer.
 - Routes:
   - `/` renders the single-page portfolio sections.
   - `/blog` renders the article listing with sidebar navigation.
   - `/blog/:slug` renders individual blog posts.
+  - `/projects/freebay` renders the Freebay case study.
   - `/cv/:locale` renders the standalone English or Portuguese resume viewer; unsupported locales render `NotFound`.
   - `*` renders `portfolio/src/components/NotFound.tsx`.
 
@@ -203,6 +204,7 @@ devError('Failed to load data', error);
 ## Testing And Validation
 
 - Use `npm run lint` for static checks.
+- Use `npm run lint:effects` to enforce the runtime Effect ban.
 - Use `npm run build` for TypeScript + production build verification.
 - Use `npm run test:run` for the Vitest suite.
 - Use `node scripts/portfolio-smoke.mjs` for browser checks across responsive widths, themes, localized pages, blog anchors, and resume routes. It requires Playwright's browser binaries.

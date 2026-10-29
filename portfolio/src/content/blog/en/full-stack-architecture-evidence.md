@@ -1,7 +1,7 @@
 ---
 title: Full-stack architecture as evidence of work
 slug: full-stack-architecture-evidence
-excerpt: How to use a portfolio to show product decisions, contracts, and system boundaries without turning the presentation into an inventory of tools.
+excerpt: An analysis of how flows, contracts, and architectural boundaries turn portfolio projects into verifiable technical evidence.
 publishedAt: 2026-04-12
 category: Architecture
 tags: [Full Stack, React, NestJS, Architecture]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Architecture is also communication
 
-A technical portfolio must prove more than the ability to assemble a screen. It must show how a decision holds up when it stops being an isolated component and becomes part of a system.
+A technical portfolio must demonstrate more than the ability to compose interfaces. Its analytical value lies in showing how a decision remains coherent when it stops being isolated and becomes part of a system.
 
 This changes the unit of explanation. Instead of presenting a technology as an isolated achievement, I present a sequence in which each layer receives an observable responsibility.
 
@@ -107,6 +107,8 @@ Simplification is acceptable when declared. It becomes a problem when a partial 
 Full-stack architecture works as evidence when it shows a verifiable sequence: intention, contract, decision, state, and persisted effect. The technology list becomes a consequence of need, not the main subject.
 
 This approach also improves communication across roles. Product people find the problem. Engineering people find the boundaries. Design people find the states and the rule's consequence in the interface.
+
+By relating each claim to a contract, example, or limitation, the presentation supports technical review without relying on authority or promotional language.
 
 What is simple should be stated as simple. What is a hypothesis should be labeled a hypothesis. This honesty is part of technical work, not a footnote.
 

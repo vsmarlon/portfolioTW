@@ -1,7 +1,7 @@
 ---
-title: O que eu removo antes de otimizar um layout React
+title: Refatoração antes da otimização em interfaces React
 slug: react-cleanup-before-optimization
-excerpt: Antes de falar em performance, eu reduzo ruído estrutural: estados duplicados, efeitos desnecessários e wrappers que só aumentam complexidade.
+excerpt: Um método para reduzir estado derivado, efeitos indiretos e estrutura sem função antes de formular hipóteses de desempenho.
 publishedAt: 2026-03-12
 category: Performance
 tags: [React, Performance, Refactor]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Otimização quase sempre começa removendo
 
-Em portfólio e em produto real, o impulso inicial costuma ser adicionar memoização, virtualização ou outra biblioteca. Antes disso, procuro estados duplicados, efeitos sem responsabilidade clara e estrutura sem função.
+Em projetos de portfólio e em produtos reais, problemas de desempenho frequentemente recebem soluções antes de serem delimitados. Meu primeiro passo é investigar estado duplicado, efeitos sem responsabilidade clara e estruturas sem função observável.
 
 ## Método
 

@@ -7,6 +7,7 @@ describe('ExternalMark', () => {
     const { container } = render(<ExternalMark />);
 
     expect(container.querySelector('svg[aria-hidden="true"]')).toBeInTheDocument();
+    expect(container.querySelector('svg')).toHaveClass('inline-block');
     expect(screen.getByText('(abre em nova aba)')).toBeInTheDocument();
   });
 });

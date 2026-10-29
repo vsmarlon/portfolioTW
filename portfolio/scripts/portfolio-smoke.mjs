@@ -71,19 +71,19 @@ async function checkHeader(page, label) {
     const blogLogo = header?.querySelector('[data-header-group="search"] a[aria-label]')
     const actions = header?.querySelector('#locale-select')?.parentElement
     const rect = (node) => node?.getBoundingClientRect().toJSON()
-    return { viewport: globalThis.innerWidth, header: rect(header), brand: rect(brand), actions: rect(actions), brandText: brand?.textContent ?? '', brandSvgs: brand?.querySelectorAll('svg').length ?? 0, blogLogoText: blogLogo?.textContent ?? '', blogLogo: rect(blogLogo), brandLinks: header?.querySelectorAll('[data-header-group="brand"] > a').length ?? 0 }
+    return { viewport: globalThis.innerWidth, header: rect(header), brand: rect(brand), actions: rect(actions), brandText: brand?.textContent ?? '', brandMarks: brand?.querySelectorAll('[data-brand-mark]').length ?? 0, blogLogoMarks: blogLogo?.querySelectorAll('[data-brand-mark]').length ?? 0, blogLogo: rect(blogLogo), brandLinks: header?.querySelectorAll('[data-header-group="brand"] > a').length ?? 0 }
   })
   const gutter = metrics.viewport >= 1024 ? 32 : metrics.viewport >= 640 ? 24 : 8
   check(metrics.actions?.right <= metrics.viewport - gutter + 1, `${label}: header actions exceed the ${gutter}px right gutter`)
   check(metrics.actions && Math.abs(metrics.actions.right - (metrics.viewport - gutter)) <= 2, `${label}: header actions are not anchored to the expected right gutter`)
   check(!metrics.brand || !metrics.actions || metrics.brand.right <= metrics.actions.left, `${label}: header brand and actions overlap`)
   if (label.startsWith('blog') || label.startsWith('freebay')) {
-    check(metrics.blogLogoText.trim() === 'MV', `${label}: blog MV mark is not inside the search form`)
+    check(metrics.blogLogoMarks === 1, `${label}: blog brand mark is not inside the search form`)
     check((metrics.blogLogo?.width ?? 0) <= 32, `${label}: blog MV mark is not the compact search-form logo`)
     check(metrics.brandLinks === 0, `${label}: blog has a duplicate MV mark beside the hamburger`)
   } else {
-    check(metrics.brandText.includes('MV'), `${label}: home brand link is missing the MV mark`)
-    check(metrics.brandSvgs === 0, `${label}: home brand link contains an overlaid SVG`)
+    check(metrics.brandText.includes('MARLON VARGAS'), `${label}: home brand link is missing the brand name`)
+    check(metrics.brandMarks === 1, `${label}: home brand link is missing the brand mark`)
   }
   check(metrics.header?.right <= metrics.viewport + 1, `${label}: header reaches beyond viewport`)
 }
@@ -167,7 +167,19 @@ async function checkBlog(browser, width, locale, theme) {
   if (locale === 'en' && theme === 'light') await page.screenshot({ path: resolve(artifactDir, `blog-${width}.png`) })
   const search = page.locator('#blog-search')
   check(await search.isVisible(), `${label}: search is not visible`)
-  if (width <= 375) check((await search.boundingBox())?.width >= width - 24, `${label}: mobile search is not full width`)
+  if (width <= 375) {
+    const controls = await page.evaluate(() => {
+      const searchBox = globalThis.document.querySelector('#blog-search')?.getBoundingClientRect()
+      const localeBox = globalThis.document.querySelector('#locale-select')?.getBoundingClientRect()
+      return {
+        searchWidth: searchBox?.width ?? 0,
+        searchCenter: searchBox ? searchBox.top + searchBox.height / 2 : 0,
+        localeCenter: localeBox ? localeBox.top + localeBox.height / 2 : 0,
+      }
+    })
+    check(controls.searchWidth >= 96, `${label}: mobile search is too narrow`)
+    check(Math.abs(controls.searchCenter - controls.localeCenter) <= 2, `${label}: mobile search wrapped onto another row`)
+  }
   await page.keyboard.press('Control+k')
   check(await page.evaluate(() => globalThis.document.activeElement?.id === 'blog-search'), `${label}: Ctrl+K did not focus search`)
   await page.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' })

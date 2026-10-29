@@ -169,7 +169,7 @@ const Projects = () => {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="focus-ring inline-flex items-center gap-2 text-sm font-bold text-stone-700 underline decoration-stone-500/30 underline-offset-4 hover:text-[#73004c] hover:decoration-[#a1006b] dark:text-stone-200 dark:hover:text-fuchsia-200"
+                      className="focus-ring inline-flex items-center gap-2 text-sm font-bold text-[#73004c] underline decoration-[#a1006b]/30 underline-offset-4 hover:text-[#a1006b] hover:decoration-[#a1006b] dark:text-fuchsia-200"
                     >
                       {t('projects.live')} <ExternalMark label={t('externalLink')} />
                     </a>

@@ -1,7 +1,7 @@
 ---
-title: MoviesFlutter: do catálogo ao produto completo
+title: MoviesFlutter: integração de catálogo, identidade e persistência
 slug: movies-flutter-produto-completo
-excerpt: Como o app combina TMDB, cache local e favoritos por usuário, com atualização otimista e limites verificáveis na API.
+excerpt: Estudo de um aplicativo Flutter que separa dados do TMDB, cache local e favoritos persistentes, com limites de consistência explicitados.
 publishedAt: 2026-10-21
 category: Estudo de projeto
 tags: [Flutter, TypeScript, PostgreSQL, Mobile]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Um catálogo é apenas o começo
 
-Mostrar filmes populares em uma tela é uma boa forma de aprender consumo de API. O desafio fica mais interessante quando a pessoa precisa criar uma conta, entrar com segurança, pesquisar o catálogo e manter uma lista de favoritos entre sessões.
+Exibir filmes populares permite exercitar o consumo de uma API, mas não constitui, por si só, um produto coerente. O problema se amplia quando identidade, pesquisa, persistência por usuário e continuidade entre sessões passam a integrar o mesmo fluxo.
 
 O MoviesFlutter foi construído com esse segundo objetivo. O aplicativo usa Flutter no celular, uma API em TypeScript com Express e um banco PostgreSQL. Os dados públicos dos filmes vêm do TMDB. Já as contas e os favoritos pertencem ao próprio produto.
 
@@ -140,5 +140,12 @@ O objetivo não é acumular testes. É proteger as ligações que tornam o proje
 MoviesFlutter mostra mais do que consumo de uma API pública. Ele conecta uma fonte externa a dados próprios, protege ações por usuário e mantém a experiência coerente entre várias telas.
 
 Os próximos passos mais úteis seriam testes de integração para as rotas de autenticação e favoritos, estados offline mais explícitos e uma revisão de acessibilidade nas telas mobile. São melhorias concretas, ligadas ao comportamento que já existe.
+
+## Referências
+
+- [Flutter: Guide to app architecture](https://docs.flutter.dev/app-architecture/guide)
+- [TMDB: Getting Started](https://developer.themoviedb.org/docs/getting-started)
+- [RFC 7519: JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519)
+- [PostgreSQL: Unique Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS)
 
 **Explore o código e as capturas originais:** [Repositório MoviesFlutter](https://github.com/vsmarlon/MoviesFlutter)

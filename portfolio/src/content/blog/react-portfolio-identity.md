@@ -1,7 +1,7 @@
 ---
-title: Como estou deixando este portfólio menos genérico
+title: Identidade visual como argumento em um portfólio técnico
 slug: react-portfolio-identity
-excerpt: O foco não é adicionar efeito por efeito, e sim construir identidade visual, hierarquia e decisões de interface coerentes com a narrativa técnica.
+excerpt: Uma análise de como hierarquia, tokens, acessibilidade e composição visual podem sustentar a evidência técnica sem substituí-la.
 publishedAt: 2026-03-18
 category: Produto pessoal
 tags: [Portfolio, React, UX]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Identidade não nasce de mais componentes
 
-Portfólio técnico costuma cair em dois extremos: uma landing bonita demais e sem substância, ou uma lista fria de projetos. Procuro um terceiro caminho: personalidade visual apoiada por contexto técnico.
+Portfólios técnicos tendem a oscilar entre apresentação visual sem evidência e inventário de projetos sem estrutura narrativa. Neste trabalho, procuro uma terceira abordagem: identidade visual subordinada ao contexto técnico e à possibilidade de verificar decisões.
 
 ## Público e problema
 

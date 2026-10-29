@@ -1,7 +1,7 @@
 ---
-title: MoviesFlutter: from catalog to complete product
+title: MoviesFlutter: integrating catalog, identity, and persistence
 slug: movies-flutter-complete-product
-excerpt: How the app combines TMDB, local caching, and user-owned favorites, with optimistic updates and verifiable API limits.
+excerpt: A study of a Flutter application that separates TMDB data, local caching, and persistent favorites while stating its consistency limits.
 publishedAt: 2026-10-21
 category: Project study
 tags: [Flutter, TypeScript, PostgreSQL, Mobile]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # A catalog is only the beginning
 
-Showing popular movies is a useful way to learn how to consume an API. The challenge becomes more meaningful when people can create an account, sign in securely, search the catalog, and keep a favorites list between sessions.
+Displaying popular movies exercises API consumption, but it does not by itself constitute a coherent product. The problem expands when identity, search, per-user persistence, and continuity across sessions become part of the same flow.
 
 MoviesFlutter was built around that second goal. It uses Flutter on mobile, a TypeScript API with Express, and PostgreSQL. Public movie data comes from TMDB. Accounts and favorites belong to the product itself.
 
@@ -140,5 +140,12 @@ The goal is not to collect tests. It is to protect the connections that make the
 MoviesFlutter goes beyond consuming a public API. It connects an outside source to owned data, protects actions by user, and keeps the experience coherent across several screens.
 
 The most useful next steps would be integration tests for authentication and favorite routes, clearer offline states, and an accessibility review of the mobile screens. These are concrete improvements tied to behavior that already exists.
+
+## References
+
+- [Flutter: Guide to app architecture](https://docs.flutter.dev/app-architecture/guide)
+- [TMDB: Getting Started](https://developer.themoviedb.org/docs/getting-started)
+- [RFC 7519: JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519)
+- [PostgreSQL: Unique Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS)
 
 **Explore the code and original screenshots:** [MoviesFlutter repository](https://github.com/vsmarlon/MoviesFlutter)

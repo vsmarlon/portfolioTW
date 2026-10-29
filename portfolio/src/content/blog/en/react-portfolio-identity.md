@@ -1,7 +1,7 @@
 ---
-title: How I am making this portfolio less generic
+title: Visual identity as an argument in a technical portfolio
 slug: react-portfolio-identity
-excerpt: The focus is not adding effects for their own sake, but building visual identity, hierarchy, and interface decisions that are coherent with the technical narrative.
+excerpt: An analysis of how hierarchy, tokens, accessibility, and visual composition can support technical evidence without replacing it.
 publishedAt: 2026-03-18
 category: Personal product
 tags: [Portfolio, React, UX]
@@ -10,7 +10,7 @@ hasDemo: false
 ---
 # Identity does not come from more components
 
-Technical portfolios often fall into two extremes: a landing page that is too polished and has no substance, or a cold list of projects. I am looking for a third path: visual personality supported by technical context.
+Technical portfolios tend to alternate between visual presentation without evidence and project inventories without narrative structure. In this work, I pursue a third approach: visual identity subordinated to technical context and verifiable decisions.
 
 ## Audience and problem
 

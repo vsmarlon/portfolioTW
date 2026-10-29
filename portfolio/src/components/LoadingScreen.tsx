@@ -6,7 +6,7 @@ const LoadingScreen = () => {
   const { t } = useLocale();
   return (
     <div className={`min-h-screen flex items-center justify-center ${
-      theme === 'dark' ? 'bg-[#131110]' : 'bg-[#faf6ef]'
+      theme === 'dark' ? 'bg-[#09090b]' : 'bg-[#faf6ef]'
     }`}>
       <div className={`flex flex-col items-center gap-4 border-[3px] px-8 py-6 ${
         theme === 'dark' ? 'border-stone-100 bg-[#131110]' : 'border-stone-900 bg-[#fffdf8]'

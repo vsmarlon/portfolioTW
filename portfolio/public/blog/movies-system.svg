@@ -22,8 +22,8 @@
   <g stroke-width="2">
     <rect x="45" y="130" width="232" height="158" fill="#2A2228" stroke="#EC7CC3"/>
     <rect x="393" y="130" width="182" height="158" fill="#211E22" stroke="#B7A7B0"/>
-    <rect x="697" y="104" width="255" height="130" fill="#211E22" stroke="#B7A7B0"/>
-    <rect x="697" y="254" width="255" height="110" fill="#211E22" stroke="#B7A7B0"/>
+    <rect x="697" y="90" width="255" height="130" fill="#211E22" stroke="#B7A7B0"/>
+    <rect x="697" y="240" width="255" height="110" fill="#211E22" stroke="#B7A7B0"/>
   </g>
   <g fill="#FFF7FB" font-family="sans-serif">
     <text x="68" y="174" font-size="19" font-weight="700">Aplicativo Flutter</text>
@@ -31,10 +31,10 @@
     <text x="416" y="174" font-size="19" font-weight="700">Dois contratos</text>
     <text x="416" y="206" font-size="14">Dados públicos</text>
     <text x="416" y="235" font-size="14">Dados privados</text>
-    <text x="720" y="148" font-size="19" font-weight="700">TMDB</text>
-    <text x="720" y="180" font-size="14">Catálogo e pôsteres</text>
-    <text x="720" y="295" font-size="19" font-weight="700">Express + PostgreSQL</text>
-    <text x="720" y="327" font-size="14">Sessão e favoritos</text>
+    <text x="720" y="134" font-size="19" font-weight="700">TMDB</text>
+    <text x="720" y="166" font-size="14">Catálogo e pôsteres</text>
+    <text x="720" y="281" font-size="19" font-weight="700">Express + PostgreSQL</text>
+    <text x="720" y="313" font-size="14">Sessão e favoritos</text>
   </g>
   <text x="36" y="395" fill="#C4AFBB" font-family="monospace" font-size="13">A interface reúne as fontes; a API própria decide a quem pertencem os favoritos.</text>
 </svg>
