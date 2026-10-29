@@ -125,7 +125,7 @@ async function checkHome(browser, width, locale, theme) {
   const colorScheme = await page.locator('html').evaluate((node) => globalThis.getComputedStyle(node).colorScheme)
   check(colorScheme.includes('light') && !colorScheme.includes('dark'), `${label}: authored themes are exposed to browser recoloring (${colorScheme})`)
   const flagshipMedia = page.getByTestId('freebay-flagship-media')
-  check(await flagshipMedia.getAttribute('src') === '/freebay-login.webp', `${label}: featured project is not using the optimized WebP image`)
+  check(await flagshipMedia.getAttribute('src') === '/freebay-login.gif', `${label}: featured project is not using the animated GIF`)
   check(await flagshipMedia.getAttribute('loading') === 'lazy', `${label}: featured project image is not lazy loaded`)
   check(await flagshipMedia.getAttribute('decoding') === 'async', `${label}: featured project image is not decoded asynchronously`)
   if (width <= 375) {
@@ -201,10 +201,10 @@ async function checkArticle(browser, locale, theme) {
   try {
     await page.waitForFunction((id) => {
       const target = globalThis.document.querySelector(`[data-blog-article] #${id}`)
-      const headerBottom = globalThis.document.querySelector('header')?.getBoundingClientRect().bottom ?? 0
+      const headerOffset = Number.parseFloat(globalThis.getComputedStyle(globalThis.document.documentElement).getPropertyValue('--scroll-header-offset'))
       if (!target) return false
       const top = target.getBoundingClientRect().top
-      return top >= headerBottom - 2 && top <= headerBottom + 80
+      return top >= headerOffset - 2 && top <= headerOffset + 80
     }, headingIds[0], { timeout: 5000 })
     check(true, `article ${locale}/${theme}: hash heading is not scrolled below header offset`)
   } catch {
@@ -217,10 +217,10 @@ async function checkArticle(browser, locale, theme) {
   try {
     await page.waitForFunction((id) => {
       const target = globalThis.document.querySelector(`[data-blog-article] #${id}`)
-      const headerBottom = globalThis.document.querySelector('header')?.getBoundingClientRect().bottom ?? 0
+      const headerOffset = Number.parseFloat(globalThis.getComputedStyle(globalThis.document.documentElement).getPropertyValue('--scroll-header-offset'))
       if (!target) return false
       const top = target.getBoundingClientRect().top
-      return top >= headerBottom - 2 && top <= headerBottom + 80
+      return top >= headerOffset - 2 && top <= headerOffset + 80
     }, headingIds[0], { timeout: 5000 })
     check(true, `article ${locale}/${theme}: clicked heading is not scrolled below header offset`)
   } catch {

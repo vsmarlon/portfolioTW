@@ -37,6 +37,20 @@ function renderHeader(initialEntry: string) {
 }
 
 describe('Header blog search', () => {
+  it('hides while scrolling down and returns while scrolling up', () => {
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
+    renderHeader('/');
+    const header = screen.getByRole('banner');
+
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 120 });
+    fireEvent.scroll(window);
+    expect(header).toHaveAttribute('data-header-hidden');
+
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 60 });
+    fireEvent.scroll(window);
+    expect(header).not.toHaveAttribute('data-header-hidden');
+  });
+
   it('uses the same searchable reading header on the case study', () => {
     renderHeader('/projects/freebay');
     const search = screen.getByRole('searchbox', { name: 'Buscar artigos' });

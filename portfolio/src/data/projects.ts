@@ -20,7 +20,7 @@ export const projectsData: ProjectItem[] = [
     title: 'Freebay',
     repositoryUrl: 'https://github.com/vsmarlon/freebay',
     caseStudyUrl: '/projects/freebay',
-    image: '/freebay-login.webp',
+    image: '/freebay-login.gif',
     visual: 'FB',
     tone: 'berry',
     description: 'projectsData.freebayDescription',

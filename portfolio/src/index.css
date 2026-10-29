@@ -88,54 +88,87 @@ code, pre, kbd, samp {
 }
 
 :root:not([data-theme="dark"]) .app-background {
-  background:
-    radial-gradient(circle at 8% 12%, rgba(161, 0, 107, 0.09), transparent 27rem),
-    radial-gradient(circle at 92% 28%, rgba(14, 116, 144, 0.08), transparent 30rem),
-    linear-gradient(145deg, #faf6ef 0%, #fffdf8 46%, #f7efe8 100%);
+  background: #fde8e2;
 }
 
 [data-theme="dark"] .app-background {
-  background:
-    radial-gradient(circle at 12% 16%, rgba(236, 124, 195, 0.11), transparent 28rem),
-    radial-gradient(circle at 88% 34%, rgba(56, 189, 248, 0.07), transparent 32rem),
-    linear-gradient(145deg, #131110 0%, #181413 52%, #0f0e0d 100%);
+  background: #020202;
 }
 
 .app-background-grid {
   position: absolute;
-  inset: 0;
+  top: -8%;
+  left: -5%;
+  width: 68%;
+  height: 28%;
   pointer-events: none;
-  opacity: 0.42;
-  background-image:
-    linear-gradient(rgba(28, 25, 23, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(28, 25, 23, 0.055) 1px, transparent 1px);
-  background-size: 3.5rem 3.5rem;
-  mask-image: linear-gradient(to bottom, black, transparent 82%);
+  background: #e8a098;
+  border-radius: 0 0 52% 34%;
+  transform: rotate(-2deg);
 }
 
 [data-theme="dark"] .app-background-grid {
-  opacity: 0.38;
-  background-image:
-    linear-gradient(rgba(250, 250, 249, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(250, 250, 249, 0.055) 1px, transparent 1px);
+  top: 4%;
+  left: 7%;
+  width: 38%;
+  height: 23%;
+  border-radius: 0;
+  background: linear-gradient(145deg, #070707, #303030 68%, #111);
+  box-shadow: 42vw 4vh 0 -1vh #202020;
+  transform: rotate(-10deg);
 }
 
 .app-background-grain {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.5;
   transition: opacity var(--ui-motion-duration) linear;
-  background:
-    linear-gradient(118deg, transparent 0 47%, rgba(161, 0, 107, 0.055) 47% 47.15%, transparent 47.15% 100%),
-    linear-gradient(62deg, transparent 0 72%, rgba(14, 116, 144, 0.045) 72% 72.12%, transparent 72.12% 100%);
 }
 
-[data-theme="dark"] .app-background-grain {
-  opacity: 0.56;
-  background:
-    linear-gradient(118deg, transparent 0 47%, rgba(236, 124, 195, 0.07) 47% 47.15%, transparent 47.15% 100%),
-    linear-gradient(62deg, transparent 0 72%, rgba(125, 211, 252, 0.055) 72% 72.12%, transparent 72.12% 100%);
+.app-background-grain::before,
+.app-background-grain::after {
+  content: '';
+  position: absolute;
+}
+
+:root:not([data-theme="dark"]) .app-background-grain::before {
+  top: -3rem;
+  right: 8%;
+  width: 12rem;
+  height: 10rem;
+  background: radial-gradient(circle, #24201f 1.25px, transparent 1.5px) 0 0 / 7px 7px;
+  mask-image: radial-gradient(ellipse at top, black 35%, transparent 72%);
+  transform: rotate(-8deg);
+}
+
+:root:not([data-theme="dark"]) .app-background-grain::after {
+  bottom: -3.5rem;
+  left: 4%;
+  width: 11rem;
+  height: 9rem;
+  background: radial-gradient(circle, #e9bf41 1.4px, transparent 1.7px) 0 0 / 7px 7px;
+  mask-image: radial-gradient(ellipse at bottom, black 28%, transparent 68%);
+  transform: rotate(9deg);
+}
+
+[data-theme="dark"] .app-background-grain::before {
+  top: 41%;
+  left: -4%;
+  width: 37%;
+  height: 18%;
+  background: linear-gradient(160deg, #050505, #292929 70%, #0b0b0b);
+  box-shadow: 43vw -2vh 0 -1vh #242424;
+  transform: rotate(-10deg);
+}
+
+[data-theme="dark"] .app-background-grain::after {
+  right: -5%;
+  bottom: 12%;
+  width: 39%;
+  height: 19%;
+  background: linear-gradient(145deg, #080808, #252525 66%, #090909);
+  box-shadow: -47vw 8vh 0 -2vh #202020;
+  transform: rotate(-10deg);
 }
 
 /* Reading pages clear the fixed header (including the mobile second search row). */
@@ -641,7 +674,17 @@ a.card-interactive:hover {
 .project-card-visual[data-tone="rose"] { background-color: #6c2847; }
 
 .header-enter {
-  animation: slideDown 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease;
+  will-change: transform;
+}
+
+.header-enter[data-header-hidden] {
+  transform: translateY(calc(-100% - 2px));
+  opacity: 0;
 }
 
 .freebay-flow-button[aria-pressed="true"] {
@@ -832,6 +875,9 @@ a.card-interactive:hover {
   .freebay-stack-item {
     transform: none !important;
   }
+  .header-enter {
+    transition: none;
+  }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -841,12 +887,7 @@ a.card-interactive:hover {
 
 @media (max-width: 639px) {
   .app-background-grid {
-    opacity: 0.28;
-    background-size: 2.75rem 2.75rem;
-  }
-
-  .app-background-grain {
-    opacity: 0.34;
+    width: 88%;
   }
 
   .project-card:hover {

@@ -5,6 +5,33 @@ import { useLocale, type Locale } from '../contexts/LocaleContext';
 import Icon from './Icon';
 import NavigationDrawer from './NavigationDrawer';
 
+function attachAutoHideHeader(header: HTMLElement | null): (() => void) | undefined {
+  if (!header) return undefined;
+
+  let previousScrollY = Math.max(window.scrollY, 0);
+  const showHeader = () => header.removeAttribute('data-header-hidden');
+  const handleScroll = () => {
+    const scrollY = Math.max(window.scrollY, 0);
+    const hideAfter = header.offsetHeight || 80;
+
+    if (scrollY <= hideAfter || scrollY < previousScrollY) {
+      showHeader();
+    } else if (scrollY > previousScrollY) {
+      header.setAttribute('data-header-hidden', '');
+    }
+
+    previousScrollY = scrollY;
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  header.addEventListener('focusin', showHeader);
+
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+    header.removeEventListener('focusin', showHeader);
+  };
+}
+
 function attachSearchShortcut(input: HTMLInputElement | null): (() => void) | undefined {
   if (!input) return undefined;
 
@@ -51,7 +78,7 @@ const Header = () => {
   };
 
   return (
-    <header data-reading={isReadingRoute || undefined} className="header-enter fixed inset-x-0 top-0 z-40 border-b-2 border-stone-900/20 bg-[#faf6ef]/90 backdrop-blur-md dark:border-stone-100/20 dark:bg-[#131110]/90">
+    <header ref={attachAutoHideHeader} data-reading={isReadingRoute || undefined} className="header-enter fixed inset-x-0 top-0 z-40 border-b-2 border-stone-900/20 bg-[#faf6ef]/90 backdrop-blur-md dark:border-stone-100/20 dark:bg-[#131110]/90">
       <div className="flex min-h-20 min-w-0 flex-wrap items-center gap-2 px-2 sm:px-6 lg:px-8">
         <div data-header-group="brand" className="order-1 flex min-w-0 shrink items-center gap-2 sm:gap-3">
           <NavigationDrawer />
