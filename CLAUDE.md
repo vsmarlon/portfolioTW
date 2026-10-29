@@ -1,1 +1,0 @@
-C:/Users/Qiyana/Documents/GitHub/ME/portfolioTW/AGENTS.md
